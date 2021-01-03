@@ -1,6 +1,7 @@
-from itertools import permutations, product, combinations_with_replacement
+from itertools import permutations, combinations_with_replacement
 from typing import List, Tuple
-from tqdm import trange, tqdm
+
+from tqdm import trange
 
 
 def ans():

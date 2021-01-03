@@ -12,16 +12,16 @@ def ans():
 def long_division_cycle(x):
     count = 0
     num = 1
-    ans = []
+    result = []
     rem = []
-    while num != 0 and loop_detected(ans, rem) == 0:
+    while num != 0 and loop_detected(result, rem) == 0:
         while num < x:
             num *= 10
-            ans.append(num // x)
+            result.append(num // x)
             rem.append(num % x)
         num -= x * (num // x)
         count += 1
-    return loop_detected(ans, rem)
+    return loop_detected(result, rem)
 
 
 def loop_detected(div, rem):

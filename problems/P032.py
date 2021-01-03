@@ -7,7 +7,7 @@ def ans():
 
     products = []
     for a in good_nums:
-        for b in [i for i in good_nums if i<1000]:
+        for b in [i for i in good_nums if i < 1000]:
             p = a * b
             if p in good_nums:
                 if good_trio(a, b, p):

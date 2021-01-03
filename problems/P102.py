@@ -21,7 +21,7 @@ class Line(NamedTuple):
 
 def ans():
     lines = get_file_lines("P102")
-    triangles = [create_triangle(l.split(",")) for l in lines]
+    triangles = [create_triangle(line.split(",")) for line in lines]
     count = 0
     for t in triangles:
         if zz_inside_triangle(t):
@@ -36,11 +36,11 @@ def create_triangle(t):
     return Triangle(p1, p2, p3)
 
 
-def slope(l: Line):
-    if l.p1.x == l.p2.x:
+def slope(line: Line):
+    if line.p1.x == line.p2.x:
         return infinity
     else:
-        return (l.p1.y - l.p2.y) / (l.p1.x - l.p2.x)
+        return (line.p1.y - line.p2.y) / (line.p1.x - line.p2.x)
 
 
 def lines_cross(l1: Line, l2: Line):  # not finished
@@ -59,21 +59,21 @@ def zz_inside_triangle(t: Triangle):
                 return False
             y = (-s) * o1.x + o1.y
             if check.y > 0:
-                return y >= 0 and y <= check.y
+                return 0 <= y <= check.y
             else:
-                return y <= 0 and y >= check.y
+                return 0 >= y >= check.y
         # else:
         s = slope(Line(check, Point(0, 0)))
         m = slope(Line(o1, o2))
         if m == infinity:
             y1 = (-slope(Line(check, o1))) * check.x + check.y
             y2 = (-slope(Line(check, o2))) * check.x + check.y
-            return (y1 > 0 and y2 < 0) or (y1 < 0 and y2 > 0)
+            return (y2 < 0 < y1) or (y1 < 0 < y2)
         if s == m:
             return False
         # else:
         x = (m * o1.x - o1.y) / (m - s)
         y = s * x
-        return x > min(o1.x, o2.x) and x < max(o1.x, o2.x) and y > min(o1.y, o2.y) and y < max(o1.y, o2.y)
+        return min(o1.x, o2.x) < x < max(o1.x, o2.x) and min(o1.y, o2.y) < y < max(o1.y, o2.y)
 
     return one_point_check(t.p1, t.p2, t.p3) and one_point_check(t.p2, t.p1, t.p3) and one_point_check(t.p3, t.p1, t.p2)

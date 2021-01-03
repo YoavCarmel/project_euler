@@ -21,8 +21,10 @@ def calc(r, c):
     return r * c * (r + 1) * (c + 1) // 4
 
 
-def bad_mat(
-        wanted_number_of_rectangles):  # calc diagonals until all diangonal values are biggest than wanted_number_of_rectangles
+def bad_mat(wanted_number_of_rectangles):
+    """
+    calc diagonals until all diagonal values are biggest than wanted_number_of_rectangles
+    """
     m = [[0]]
     d = 1
     # calc grid with solution
@@ -39,7 +41,10 @@ def bad_mat(
     return m
 
 
-def good_mat(wanted_number_of_rectangles):  # cakc each line until it exceeds wanted_number_of_rectangles
+def good_mat(wanted_number_of_rectangles):
+    """
+    calc each line until it exceeds wanted_number_of_rectangles
+    """
     m = [[0]]
     d = 1
     while len(m[-1]) > 2 or len(m) == 1:

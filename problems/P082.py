@@ -5,7 +5,7 @@ from objects.graph import Graph
 def ans():
     mat = create_matrix_from_file("files//P082.txt", ",")
     g, source, target = create_graph_from_matrix(mat)
-    return g.shortest_distance(source, target)[0]
+    return Graph.shortest_distance(source, target)[0]
 
 
 def create_graph_from_matrix(mat):

@@ -5,16 +5,16 @@ def ans():
     count = 0
     words = words_list()
     for word in words:
-        if is_polygonal_number(score(word),3):
+        if is_polygonal_number(score(word), 3):
             count += 1
     return count
 
 
 def words_list():
-    l=open("files//P042.txt").read()
-    words=l.split(",")
+    file_read = open("files//P042.txt").read()
+    words = file_read.split(",")
     for i in range(len(words)):
-         words[i] = words[i].strip('"')
+        words[i] = words[i].strip('"')
     words.sort()
     return words
 

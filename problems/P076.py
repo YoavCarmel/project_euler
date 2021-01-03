@@ -1,8 +1,7 @@
 def ans():
     n = 100
     # a[i][j] is number of partitions with sum i and biggest number is j, and j must be there
-    a = []
-    a.append([0] * (n + 1))
+    a = [[0] * (n + 1)]
     for i in range(n):
         a.append([0, 1] + [0] * (n - 1))
     for i in range(1, n + 1):

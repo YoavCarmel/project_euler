@@ -1,7 +1,8 @@
-from solution.problems import *
-from libs.numbers_properties import num_size
 import time
+
 import pandas as pd
+
+from libs.numbers_properties import num_size
 
 
 def create_file():
@@ -13,7 +14,7 @@ def add_problem_solution(problem_number, override=False):
     df = pd.read_csv("solution_file//solution_file.csv")
     if not override and problem_number in df["Problem Number"].values:
         return
-    s = "from solution.problems import P" + get_file_number(problem_number)
+    s = "from problems import P" + get_file_number(problem_number)
     exec(s)
     start_time = int(round(time.time() * 1000))
     answer = []

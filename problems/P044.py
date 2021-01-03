@@ -7,7 +7,7 @@ def ans():
     for i in range(1, 100000):
         for j in range(1, i):
             if is_int(pent_difference(i, j)) and is_int(pent_sum(i, j)):
-                return polygonal_number(pent_difference(i, j), 5)
+                return polygonal_number(int(pent_difference(i, j)), 5)
 
 
 def pent_difference(i, j):

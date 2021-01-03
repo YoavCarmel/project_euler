@@ -44,14 +44,18 @@ def calc(max_depth: int, min_value_depth: MinValueDepth) -> List[int]:
     # for depth=1
     i = min_value_depth.values[max_depth - 1] + 1
     # the current found solution
-    best_found: Solution = None
+    best_found: Union[Solution, None] = None
     while True:
         # if we are sure that the current i cannot bring a better solution
         # because the current i with the min possible values (min solution of previous depth) is still too big
         if best_found is not None and i >= best_found.solution_sum - min_value_depth.sums[-1]:
             break
         # limit the sum of the next calculation to the sum of the best solution found
-        max_sum_for_iter = None if best_found is None else best_found.solution_sum - i
+        if best_found is None:
+            max_sum_for_iter = None
+        else:
+            best: Solution
+            max_sum_for_iter = best_found.solution_sum - i
         res = rec([i], {0, i}, max_depth, max_sum_for_iter, min_value_depth)
         # if we found a first solution, or a better solution
         if res is not None and (best_found is None or best_found.solution_sum > sum(res)):

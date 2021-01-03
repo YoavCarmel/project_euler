@@ -4,7 +4,7 @@ from libs.polygon_numbers import is_polygonal_number, is_any_polygon_number, all
 
 def ans():
     polygons = [3, 4, 5, 6, 7, 8]
-    NOT_FOUND = 0
+    not_found = 0
 
     def next_in_chain(chain, left):
         if len(chain) == 5:
@@ -20,7 +20,7 @@ def ans():
                         if s in left:
                             left.remove(s)
                             result_chain = next_in_chain(chain.copy(), left.copy())
-                            if result_chain != NOT_FOUND:
+                            if result_chain != not_found:
                                 return result_chain
                             left.append(s)
                     chain.remove(i)
@@ -34,10 +34,10 @@ def ans():
                             if s in left:
                                 left.remove(s)
                                 result_chain = next_in_chain(chain.copy(), left.copy())
-                                if result_chain != NOT_FOUND:
+                                if result_chain != not_found:
                                     return result_chain
                                 left.append(s)
                         chain.remove(i)
-        return NOT_FOUND
+        return not_found
 
     return sum(next_in_chain([], polygons.copy()))

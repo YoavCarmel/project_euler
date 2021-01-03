@@ -23,9 +23,9 @@ def forbidden_digit(x, digits):
 
 
 def is_circular_prime(x):
-    l = num_size(x)
-    for i in range(l):
-        x = x // 10 + (x % 10) * 10 ** (l - 1)
+    n_size = num_size(x)
+    for i in range(n_size):
+        x = x // 10 + (x % 10) * 10 ** (n_size - 1)
         if not isprime(x):
             return False
     return True

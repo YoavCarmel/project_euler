@@ -1,6 +1,6 @@
 def ans():
     n = 50
-    return sum([rec(n,m,dict())-1 for m in [2,3,4]])
+    return sum([rec(n, m, dict()) - 1 for m in [2, 3, 4]])
 
 
 def rec(length_left, m, values):

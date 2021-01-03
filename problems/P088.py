@@ -25,9 +25,9 @@ def ans():
 
 
 def all_product_subgroups(n: int) -> List[Subgroup]:
-    def get_duplicates_in_list(l: List[Any]) -> List[int]:
+    def get_duplicates_in_list(values: List[Any]) -> List[int]:
         counts: Dict[Any, int] = dict()
-        for i in l:
+        for i in values:
             if i in counts.keys():
                 counts[i] += 1
             else:

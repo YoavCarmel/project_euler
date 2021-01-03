@@ -5,14 +5,14 @@ def ans():
     m = 0
     i = 1
     while i < 500000:
-        if concate_num(i) != 0:
-            if concate_num(i) > m:
-                m = concate_num(i)
+        if concatenate_num(i) != 0:
+            if concatenate_num(i) > m:
+                m = concatenate_num(i)
         i += 1
     return m
 
 
-def concate_num(x):
+def concatenate_num(x):
     n = 1
     s = ""
     while len(s) < 9:

@@ -8,9 +8,9 @@ from sympy import isprime
 
 
 def ans():
-    l = set()
-    rec(set(range(1, 9 + 1)), dict(), list(), l)
-    return len(l)
+    s = set()
+    rec(set(range(1, 9 + 1)), dict(), list(), s)
+    return len(s)
 
 
 def rec(digs_left: Set[int], primes: Dict[FrozenSet[int], Set[int]], current_solution: List[int],

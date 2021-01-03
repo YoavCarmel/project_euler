@@ -1,28 +1,51 @@
 import math
-from typing import List, Iterable
+from typing import List, Iterable, Set
 
 import numpy as np
 import sympy
 from itertools import chain, combinations
 
+from objects.frac import Frac
+from objects.frac_with_sqrt import QPair, FracWithSqrt
 
-# from scipy.special import binom
 
 def multinom(params):
+    """
+    calculate the multinom of the input numbers, the numerator is their sum
+    :param params: the numbers to calculate the multinom of
+    :return: their multinom
+    """
     if len(params) == 1:
         return 1
+    # call recursively
     return binom(sum(params), params[-1]) * multinom(params[:-1])
 
 
 def binom(n: int, k: int) -> int:
+    """
+    calculate n choose k
+    :param n: the top
+    :param k: the bottom
+    :return: n choose k
+    """
     return math.factorial(n) // (math.factorial(k) * math.factorial(n - k))
 
 
 def base2(x: int) -> int:
+    """
+    :param x: an integer
+    :return: the input number in base 2, as int
+    """
     return int(bin(x)[2:])
 
 
 def totient_euler(n: int) -> int:
+    """
+    calculate the euler's totient function (phi)
+    :param n: the input number of phi
+    :return: the result of phi(n)
+    """
+    # apply exactly the known formula from number theory
     result = float(n)
     for i in sympy.primefactors(n):
         result *= (1 - 1 / i)
@@ -30,21 +53,65 @@ def totient_euler(n: int) -> int:
 
 
 def totient_euler_range(n: int) -> List[int]:
-    l = np.array(range(n), dtype='float64')
+    """
+    calculate simultaneously the phi() of all numbers from 0 to n-1
+    :param n: the highest number to get phi() of
+    :return: a list of the results of phi() of all numbers from 0 to n-1
+    """
+    results = np.array(range(n), dtype='float64')  # init an array
     for p in sympy.primerange(1, n + 1):
-        l[p::p] *= (1 - 1 / p)
-    return [int(i) for i in l]
+        # for each prime, multiply all numbers it divides by the known formula
+        results[p::p] *= (1 - 1 / p)
+    return [int(i) for i in results]
 
 
 def smallest_number_with_digit_sum(n: int) -> int:
+    """
+    :param n: wanted digits sum
+    :return: smallest number with input digits sum
+    """
     return int(str(n % 9) + "9" * (n // 9))
 
 
-def powerset(iterable: Iterable, with_empty=True, as_iterable=False):
+def power_set(iterable: Iterable, with_empty: bool = True, as_iterable: bool = False) -> Iterable:
+    """
+    returns the power set of the input iterable
+    :param iterable: the iterable to create its power set
+    :param with_empty: include/exclude the empty set
+    :param as_iterable: return as iterable or as list
+    :return: the power set
+    """
     s = list(iterable)
+    # formula form the internet
     res = chain.from_iterable(combinations(s, r) for r in range(len(s) + 1))
     if not with_empty:
-        next(res,None)
+        next(res, None)
     if as_iterable:
         return res
     return list(res)
+
+
+def continued_fraction_of_sqrt(x: int) -> List[int]:
+    """
+    returns the coefficients cycle of the continued fraction of sqrt(input).
+    empty list if input is perfect square
+    :param x: number to get continued fraction of its square
+    :return: the coefficients cycle of the continued fraction of sqrt(input)
+    """
+    sqrt_x: float = math.sqrt(x)
+    if sqrt_x.is_integer():
+        return []
+    s: Set[QPair] = set()  # set of all pairs of QPairs
+    l: List[QPair] = list()  # list of these pairs, the result cycle
+    # create the initial pair
+    start_value: FracWithSqrt = FracWithSqrt(Frac(1), Frac(0), x)
+    pair: QPair = start_value.split_int_nonint()
+    # calculate the continued fractions until we get a repetition
+    while pair not in s:
+        s.add(pair)
+        l.append(pair)
+        # get new pair
+        r: FracWithSqrt = pair.rem.flip()
+        pair = r.split_int_nonint()
+    # the whole parts of the pairs until the repetition in the cycle
+    return [i.whole for i in l[l.index(pair):]]

@@ -1,6 +1,6 @@
 from typing import List, Set, Dict, Tuple
 from itertools import product
-from libs.calculations import powerset
+from libs.calculations import power_set
 from libs.types_converting import list_to_num
 
 
@@ -12,7 +12,7 @@ def is_special_sum_set(curr_nums: List[int], subsets_sums: Set[int] = None, is_s
     :return: True if the input nums list is a valid special sum set
     """
     if subsets_sums is None:
-        subsets_sums = set([sum(subset) for subset in powerset(curr_nums)])
+        subsets_sums = set([sum(subset) for subset in power_set(curr_nums)])
     if not is_sorted_big_to_small:
         curr_nums = sorted(curr_nums, reverse=True)
     """

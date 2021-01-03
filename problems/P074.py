@@ -11,10 +11,10 @@ def ans():
             chain.append(j)
             j = fact_digits(j)
         if j in chain_length.keys():
-            pluss = 1
+            plus_s = 1
             for k in reversed(chain):
-                chain_length[k] = chain_length[j] + pluss
-                pluss += 1
+                chain_length[k] = chain_length[j] + plus_s
+                plus_s += 1
         else:  # j in chain
             loop_start = chain.index(j)
             for k in range(loop_start):

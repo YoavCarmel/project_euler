@@ -23,9 +23,7 @@ def ans():
 
 def make_words_list():
     words_list = get_file_lines("P098")[0].split(",")
-    for i in range(len(words_list)):
-        words_list[i] = (list_to_string(sorted(string_to_list(words_list[i].strip("\"")))), words_list[i].strip("\""))
-    return words_list
+    return [(list_to_string(sorted(string_to_list(i.strip("\"")))), i.strip("\"")) for i in words_list]
 
 
 def get_repeated_anagrams(words_list):

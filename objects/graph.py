@@ -1,12 +1,7 @@
-from collections import namedtuple
-from math import inf
-from Lib import heapq
+from __future__ import annotations
+
+import heapq
 from typing import Dict, List, Set, NamedTuple
-
-
-# just for the typing of edge
-class Node:
-    pass
 
 
 class Edge(NamedTuple):
@@ -16,8 +11,8 @@ class Edge(NamedTuple):
 
 
 class Node:
-    def __init__(self, id, value):
-        self.id: int = id
+    def __init__(self, node_id, value):
+        self.id: int = node_id
         self.value: int = value
         self.children: List[Edge] = []
 
@@ -49,8 +44,8 @@ class Graph:
         if not self.is_directed:
             self.nodes[target.id].add_child(self.nodes[source.id], length)
 
-    def get_node(self, id):
-        return self.nodes[id]
+    def get_node(self, node_id):
+        return self.nodes[node_id]
 
     def weight(self):
         s = 0
@@ -61,16 +56,17 @@ class Graph:
             return s
         return s // 2  # each edge was counted twice
 
-    def shortest_distance(self, source: Node, target: Node):
+    @staticmethod
+    def shortest_distance(source: Node, target: Node):
         class SearchNode(NamedTuple):
             dist: float
             node: Node
             path: List[Node]
 
         def find_node_in_heap(node: Node, heap):
-            for i in range(len(heap)):
-                if heap[i].node == node:
-                    return i
+            for j in range(len(heap)):
+                if heap[j].node == node:
+                    return j
             return None
 
         h: List[SearchNode] = []
@@ -87,8 +83,8 @@ class Graph:
                 if edge.target not in closed and edge.target not in in_heap:
                     heapq.heappush(h,
                                    SearchNode(head.dist + edge.target.value, edge.target, head.path + [edge.target]))
-                elif edge.target in in_heap and head.dist + edge.target.value < h[
-                    find_node_in_heap(edge.target, h)].dist:
+                elif edge.target in in_heap and head.dist + edge.target.value < \
+                        h[find_node_in_heap(edge.target, h)].dist:
                     i = find_node_in_heap(edge.target, h)
                     h[i] = SearchNode(head.dist + edge.target.value, edge.target, head.path + [edge.target])
         return None

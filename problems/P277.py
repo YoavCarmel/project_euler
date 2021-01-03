@@ -1,3 +1,5 @@
+from typing import Union
+
 from libs.numbers_properties import is_int
 
 
@@ -29,7 +31,7 @@ def get_sequence(number):
     return seq
 
 
-def apply_sequence_backwards(number: int, sequence: str) -> int:
+def apply_sequence_backwards(number: int, sequence: str) -> Union[int, None]:
     sequence = sequence[::-1]
     for d in sequence:
         number = apply_step_backwards(number, d)
@@ -38,7 +40,7 @@ def apply_sequence_backwards(number: int, sequence: str) -> int:
     return number
 
 
-def apply_step_backwards(number: int, step: str) -> int:
+def apply_step_backwards(number: int, step: str) -> Union[int, None]:
     if step == "D":
         return 3 * number
     if step == "U":

@@ -5,7 +5,7 @@ from libs.numbers_properties import is_square
 # algorithm is copied from the internet, because i could not find any place to learn about pell equations from
 def ans():
     result = 0
-    pmax = 0
+    p_max = 0
     for D in range(2, 1000 + 1):
         if is_square(D):
             continue
@@ -30,7 +30,7 @@ def ans():
             num = a * num1 + num2
             den = a * den1 + den2
 
-        if num > pmax:
-            pmax = num
+        if num > p_max:
+            p_max = num
             result = D
     return result

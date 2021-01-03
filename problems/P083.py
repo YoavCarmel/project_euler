@@ -5,7 +5,7 @@ from objects.graph import Graph
 def ans():
     mat = create_matrix_from_file("files//P083.txt", ",")
     g, source, target = create_graph_from_matrix(mat)
-    return g.shortest_distance(source, target)[0]
+    return Graph.shortest_distance(source, target)[0]
 
 
 def create_graph_from_matrix(mat):
@@ -46,7 +46,7 @@ def create_graph_from_matrix(mat):
             g.get_node(n).add_child(g.get_node(n + len(mat[0])))
             g.get_node(n).add_child(g.get_node(n + 1))
             g.get_node(n).add_child(g.get_node(n - 1))
-        elif n > (len(mat) - 1) * len(mat[0]) :  # bottom
+        elif n > (len(mat) - 1) * len(mat[0]):  # bottom
             g.get_node(n).add_child(g.get_node(n - len(mat[0])))
             g.get_node(n).add_child(g.get_node(n + 1))
             g.get_node(n).add_child(g.get_node(n - 1))

@@ -60,20 +60,20 @@ def first_prime_in_family(num, digits):
 
 
 def combinations(size):
-    all = []
+    results = []
 
     def add_combination(i, curr):
         if i == size - 1:
             # dont combination the units digit
             if len(curr) != 0:
-                all.append(curr)
+                results.append(curr)
         else:
             add_combination(i + 1, curr.copy())
             curr.append(i)
             add_combination(i + 1, curr.copy())
 
     add_combination(0, [])
-    return all
+    return results
 
 
 def next_units_dig(i):

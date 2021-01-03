@@ -38,7 +38,7 @@ def brute_find_all(digs_limit):
 
 
 def smart_calc(digs_limit):
-    details_list:List[List[(List[int],List[int])]] = []
+    details_list: List[List[(List[int], List[int])]] = []
     # detail is number of numbers with this number of digits with this left digit that go up(0)/down(1)
     n = 1
     while n <= digs_limit:

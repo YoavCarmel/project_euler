@@ -1,6 +1,3 @@
-from libs.calculations import smallest_number_with_digit_sum as s
-
-
 def ans():
     m = 1000000007
     last_fib = 90
@@ -15,6 +12,7 @@ def best_s_sum(n, m):
     return s_sum7(n, m)
 
 
+"""
 def s_sum1(n, mod):
     su = 0
     for i in range(n + 1):
@@ -76,6 +74,7 @@ def s_sum6(n, mod):
             + s1to9 * (p // 9)
             + r * (p - 1)
             + p * (r + 1) * r // 2) % mod
+"""
 
 
 def s_sum7(n, mod):
@@ -95,7 +94,7 @@ def fib_list(n):
     if n == 1:
         return [0, 1]
     else:
-        l = [0, 1]
+        result = [0, 1]
         for i in range(1, n):
-            l.append(l[-1] + l[-2])
-        return l
+            result.append(result[-1] + result[-2])
+        return result

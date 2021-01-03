@@ -23,4 +23,4 @@ def ans():
         today_dict[1][0] += (yesterday_dict_l1[0] + yesterday_dict_l1[1] + yesterday_dict_l1[2])  # added "on time"
         today_dict[1][1] += yesterday_dict_l1[0]  # added "absent"
         today_dict[1][2] += yesterday_dict_l1[1]  # added "absent"
-    return sum([days[n][l][abs_count] for l in [0, 1] for abs_count in [0, 1, 2]])
+    return sum([days[n][late][abs_count] for late in [0, 1] for abs_count in [0, 1, 2]])

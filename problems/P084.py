@@ -1,7 +1,10 @@
 import random
-from typing import List
-from libs.numbers_properties import num_size
+from typing import List, Any
+
 from tqdm import trange
+
+from libs.numbers_properties import num_size
+
 
 def ans():
     # board:
@@ -18,8 +21,10 @@ def ans():
     jail_location = 10
     go_location = 0
     # card piles:
-    cc_pile: List = [None] * 14 + [go_location, jail_location]
-    ch_pile: List = [None] * 6 + [go_location, jail_location, 11, 24, 39, 5, "R", "R", "U", "M3"]
+    cc_pile: List[Any] = [go_location, jail_location]
+    cc_pile += [None] * (16 - len(cc_pile))
+    ch_pile: List[Any] = [go_location, jail_location, 11, 24, 39, 5, "R", "R", "U", "M3"]
+    ch_pile += [None] * (16 - len(ch_pile))
     random.shuffle(cc_pile)
     random.shuffle(ch_pile)
     # dice range:
@@ -50,7 +55,8 @@ def ans():
         raise Exception("got an unknown card:", card)
 
     def is_in_special_location(curr_player_location):
-        return curr_player_location in g2j_squares or curr_player_location in cc_squares or curr_player_location in ch_squares
+        return curr_player_location in g2j_squares or curr_player_location in cc_squares or \
+               curr_player_location in ch_squares
 
     def next_location_after_special_location(curr_player_location):
         if curr_player_location in g2j_squares:
@@ -75,7 +81,7 @@ def ans():
             raise Exception("not in special location, yet in special location movement function", curr_player_location)
 
     # play the game:
-    for i in trange(number_of_iterations):
+    for _ in trange(number_of_iterations):
         # arrived here, add 1 to this place
         square_count[player_location] += 1
         # roll dice
@@ -86,7 +92,8 @@ def ans():
         player_location %= board_size
         prev_location = -1
         while is_in_special_location(
-                player_location) and player_location != prev_location:  # may pull M3 card and go back to another special location
+                player_location) and player_location != prev_location:
+            # may pull M3 card and go back to another special location
             prev_location = player_location
             player_location = next_location_after_special_location(player_location)
     # get stats of placing:

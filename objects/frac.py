@@ -2,7 +2,7 @@ from math import gcd, inf
 
 
 class Frac:
-    def __init__(self, n, d):
+    def __init__(self, n, d=1):
         g = gcd(n, d)
         self.n = n // g
         self.d = d // g
@@ -29,6 +29,9 @@ class Frac:
             raise NotImplemented()
 
     def __str__(self):
+        return str(self.n) + "/" + str(self.d)
+
+    def __repr__(self):
         return str(self.n) + "/" + str(self.d)
 
     def __neg__(self):
@@ -77,7 +80,7 @@ class Frac:
                 return self.d == 0 and self.n < 0
             return other == float(self)
         if type(other) is Frac:
-            return self >= other and other >= self
+            return self >= other >= self
         else:
             raise NotImplemented()
 

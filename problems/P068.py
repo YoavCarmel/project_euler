@@ -3,27 +3,27 @@ from itertools import permutations
 
 def ans():
     n = 10
-    l = list(range(1, n + 1))
-    p = list(permutations(l))
+    n_range = list(range(1, n + 1))
+    p = list(permutations(n_range))
     magic = set()
     for i in p:
         if handle_perm(i) is not None:
             magic.add(handle_perm(i))
-    l = list()
+    magic_strings = list()
     for i in magic:
-        l.append(magic_to_string(i))
-    l.sort()
-    for i in range(len(l)):
-        if len(l[i]) == 17:
-            return l[i - 1]
-    return max(l)
+        magic_strings.append(magic_to_string(i))
+    magic_strings.sort()
+    for i in range(len(magic_strings)):
+        if len(magic_strings[i]) == 17:
+            return magic_strings[i - 1]
+    return max(magic_strings)
 
 
-def handle_perm(l):
+def handle_perm(perm):
     # split to outer half and inner half
-    o = l[:len(l) // 2]
-    i = l[len(l) // 2:]
-    #10 must be outside, because the request is for only 16 digit result, not 17
+    o = perm[:len(perm) // 2]
+    i = perm[len(perm) // 2:]
+    # 10 must be outside, because the request is for only 16 digit result, not 17
     if 10 in i:
         return None
     # now calc each line in the shape

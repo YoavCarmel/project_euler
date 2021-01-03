@@ -21,7 +21,7 @@ def ans():
 
 def convert_list_to_cards(p):
     for i in range(5):
-        p[i] = card(p[i][0], p[i][1])
+        p[i] = Card(p[i][0], p[i][1])
 
 
 def print_cards(c):
@@ -33,7 +33,7 @@ def print_cards(c):
 
 ###########################################################
 
-class card:
+class Card:
     def __init__(self, number, shape):
         # 2-15 as two-ten,jack,queen,king,ace,joker
         if number == "T":
@@ -96,7 +96,7 @@ def numbers_count(cards):
 
 ###############################################################
 
-def power(cards):
+def power(input_cards):
     def straight_flush(cards):
         return flush(cards) and straight(cards)
 
@@ -133,33 +133,33 @@ def power(cards):
     def pair(cards):
         return max(numbers_count(cards).values()) == 2
 
-    if straight_flush(cards):
+    if straight_flush(input_cards):
         return 9
-    elif four_of_a_kind(cards):
+    elif four_of_a_kind(input_cards):
         return 8
-    elif full_house(cards):
+    elif full_house(input_cards):
         return 7
-    elif flush(cards):
+    elif flush(input_cards):
         return 6
-    elif straight(cards):
+    elif straight(input_cards):
         return 5
-    elif three_of_a_kind(cards):
+    elif three_of_a_kind(input_cards):
         return 4
-    elif two_pair(cards):
+    elif two_pair(input_cards):
         return 3
-    elif pair(cards):
+    elif pair(input_cards):
         return 2
     else:
         return 1
 
 
-def tie_breaker(p1, p2):
+def tie_breaker(player1, player2):
     def get_keys_of_value(d, v):  # returns all keys with v values, sorted from biggest to smallest
-        l = []
+        keys = list()
         for i in d.keys():
             if d[i] == v:
-                l.append(i)
-        return tuple(reversed(sorted(l)))
+                keys.append(i)
+        return tuple(reversed(sorted(keys)))
 
     def high_card(p1, p2):
         p1 = sort_by_number(p1)
@@ -234,25 +234,25 @@ def tie_breaker(p1, p2):
     def straight_flush(p1, p2):
         straight(p1, p2)
 
-    power_value = power(p1)
+    power_value = power(player1)
     if power_value == 1:
-        return high_card(p1, p2)
+        return high_card(player1, player2)
     elif power_value == 2:
-        return pair(p1, p2)
+        return pair(player1, player2)
     elif power_value == 3:
-        return two_pair(p1, p2)
+        return two_pair(player1, player2)
     elif power_value == 4:
-        return three_of_a_kind(p1, p2)
+        return three_of_a_kind(player1, player2)
     elif power_value == 5:
-        return straight(p1, p2)
+        return straight(player1, player2)
     elif power_value == 6:
-        return flush(p1, p2)
+        return flush(player1, player2)
     elif power_value == 7:
-        return full_house(p1, p2)
+        return full_house(player1, player2)
     elif power_value == 8:
-        return four_of_a_kind(p1, p2)
+        return four_of_a_kind(player1, player2)
     elif power_value == 9:
-        return straight_flush(p1, p2)
+        return straight_flush(player1, player2)
     else:
         print("something is wring in winner ot 2")
         return -1

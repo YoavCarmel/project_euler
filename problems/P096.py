@@ -19,8 +19,8 @@ def ans():
 
 def convert_line_to_sudoku(lines):
     s = []
-    for l in lines:
-        s.append([int(i) for i in l])
+    for line in lines:
+        s.append([int(i) for i in line])
     return s
 
 

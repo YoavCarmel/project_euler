@@ -1,4 +1,4 @@
-from sympy import isprime, nextprime, primerange
+from sympy import primerange
 
 
 def ans():

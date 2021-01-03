@@ -1,3 +1,5 @@
+from typing import List
+
 from libs.chars import is_any_case_letter, is_number_char
 
 
@@ -22,12 +24,10 @@ def ans():
             nums[i] = nums[i] ^ c1
 
 
-def load_file():
+def load_file() -> List[int]:
     f = open("files//P059.txt")
     nums = f.read().split(",")
-    for i in range(len(nums)):
-        nums[i] = int(nums[i])
-    return nums
+    return [int(i) for i in nums]
 
 
 def get_char_of_ascii(x):

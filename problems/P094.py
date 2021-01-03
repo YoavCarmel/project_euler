@@ -1,9 +1,8 @@
 # using diophantine equations
 def ans():
     n = 10 ** 9
-    sols = []  # 4 solution paths:
+    sols = [[(1, 0)]]  # 4 solution paths:
     # first path of 3x^2-2x-1=0: the (x,x,x+1) solution
-    sols.append([(1, 0)])
     while sols[0][-1][0] * 3 + 1 <= 4 * n:
         xn = sols[0][-1][0]
         yn = sols[0][-1][1]

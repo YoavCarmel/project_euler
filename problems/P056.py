@@ -6,5 +6,5 @@ def ans():
     for a in range(100):
         for b in range(100):
             p = a ** b
-            max_sum = max(max_sum,digits_sum(p))
+            max_sum = max(max_sum, digits_sum(p))
     return max_sum
