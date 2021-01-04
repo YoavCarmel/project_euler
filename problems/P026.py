@@ -1,6 +1,9 @@
+from typing import Set, Tuple
+
+
 def ans():
-    max_cycle = 0
-    found_d = 0
+    max_cycle: int = 0
+    found_d: int = 0
     for i in range(1, 1000):
         ldc = long_division_cycle(i)
         if max_cycle < ldc:
@@ -10,26 +13,18 @@ def ans():
 
 
 def long_division_cycle(x):
-    count = 0
-    num = 1
-    result = []
-    rem = []
-    while num != 0 and loop_detected(result, rem) == 0:
+    """
+    :param x: denominator
+    :return: length of cycle of decimal representation of 1/x
+    """
+    num: int = 1
+    result_rem: Set[Tuple[int, int]] = set()
+    while num != 0:
         while num < x:
             num *= 10
-            result.append(num // x)
-            rem.append(num % x)
+            curr_len = len(result_rem)
+            result_rem.add((num // x, num % x))
+            if len(result_rem) == curr_len:  # we got a loop
+                return curr_len
         num -= x * (num // x)
-        count += 1
-    return loop_detected(result, rem)
-
-
-def loop_detected(div, rem):
-    if len(div) < 2:
-        return False
-    curr_rem = rem[len(rem) - 1]
-    curr_div = div[len(div) - 1]
-    for i in range(len(div) - 2, 0, -1):
-        if curr_rem == rem[i] and curr_div == div[i]:
-            return (len(div) - 1) - i
     return 0

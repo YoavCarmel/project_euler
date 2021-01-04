@@ -2,13 +2,17 @@ from libs.numbers_properties import num_size
 
 
 def ans():
-    num = create_num()
-    num = num // (10 ** (num_size(num) - 10))
-    return num
+    num: int = create_num()
+    # get the first 10 digs
+    return int(str(num)[:10])
 
 
-def create_num():
-    num = 0
+def create_num() -> int:
+    """
+    add all given numbers
+    :return: the sum of all given numbers
+    """
+    num: int = 0
     num += 37107287533902102798797998220837590246510135740250
     num += 46376937677490009712648124896970078050417018260538
     num += 74324986199524741059474233309513058123726617309629

@@ -1,22 +1,30 @@
 def ans():
-    num = create_num()
-    amount = 13
-    max_p = 0
+    num: str = create_num()
+    amount: int = 13
+    max_p: int = 0
+    # loop on all substrings
     for i in range(len(num) - amount):
         if prod(num[i:i + amount]) > max_p:
             max_p = prod(num[i:i + amount])
     return max_p
 
 
-def prod(x):
-    product = 1
+def prod(x: str) -> int:
+    """
+    :param x: input substring of the number
+    :return: product of the digits
+    """
+    product: int = 1
     for i in range(len(x)):
         product *= int(x[i])
     return product
 
 
-def create_num():
-    s = "73167176531330624919225119674426574742355349194934"
+def create_num() -> str:
+    """
+    :return: the long number of the question as a string
+    """
+    s: str = "73167176531330624919225119674426574742355349194934"
     s += "96983520312774506326239578318016984801869478851843"
     s += "85861560789112949495459501737958331952853208805511"
     s += "12540698747158523863050715693290963295227443043557"

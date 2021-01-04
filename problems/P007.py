@@ -2,5 +2,6 @@ from sympy import prime
 
 
 def ans():
-    n = 10001
+    n: int = 10001
+    # just call the sympy function that calculates this
     return prime(n)

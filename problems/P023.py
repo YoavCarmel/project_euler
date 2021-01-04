@@ -1,14 +1,19 @@
+from typing import List, Set
+
 from sympy import divisors
 from itertools import combinations_with_replacement
 
 
 def ans():
-    abundant = []
-    n = 28123
+    abundant: List[int] = []
+    n: int = 28123
+    # add all abundant numbers
     for i in range(1, n + 1):
         if sum(divisors(i)) - i > i:
             abundant.append(i)
-    expressed = set()
+    # create all numbers that can be reresented by a sum of two abundant numbers
+    expressed: Set[int] = set()
     for i, j in combinations_with_replacement(abundant, 2):
         expressed.add(i + j)
+    # return sum of all numbers from 1 to n that are not in expressed
     return sum(set([i for i in range(n + 1)]).difference(expressed))

@@ -11,6 +11,8 @@ def create_file():
 
 
 def add_problem_solution(problem_number, override=False):
+    pd.options.mode.chained_assignment = None
+
     df = pd.read_csv("solution_file//solution_file.csv")
     if not override and problem_number in df["Problem Number"].values:
         return
@@ -23,8 +25,14 @@ def add_problem_solution(problem_number, override=False):
     end_time = int(round(time.time() * 1000))
     runtime = (end_time - start_time) / 1000
     # add to file
-    df.loc[problem_number] = [problem_number, answer[0], runtime, get_grade(runtime)]
-    df.sort_values(by=["Problem Number"], inplace=True)
+    if override and problem_number in df["Problem Number"].values:
+        index = df.index[df['Problem Number'] == problem_number][0]
+        df.at[index,"Solution"] = answer[0]
+        df.at[index,"Runtime"] = runtime
+        df.at[index,"Grade"] = get_grade(runtime)
+    else:
+        df.loc[-1] = [problem_number, answer[0], runtime, get_grade(runtime)]
+        df.sort_values(by=["Problem Number"], inplace=True)
     df.to_csv("solution_file//solution_file.csv", index=False)
 
 
