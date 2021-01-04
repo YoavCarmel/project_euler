@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Set, List
 
 from libs.numbers_operations import concat_nums
 from sympy import isprime, nextprime
@@ -6,42 +6,27 @@ from sympy import isprime, nextprime
 
 def ans():
     a = 3
-    primes = []
-    pairs: Dict[frozenset, bool] = dict()
+    primes: List[int] = []
+    valids: Dict[int, Set[int]] = dict()
     while True:
+        valids[a] = {smaller_prime for smaller_prime in primes if concatenated_primes(smaller_prime, a)}
         primes.append(a)
-        for i_b in range(len(primes) - 1):
-            if concatenated_primes(a, primes[i_b], pairs):
-                for i_c in range(i_b):
-                    if concatenated_triple(a, primes[i_b], primes[i_c], pairs):
-                        for i_d in range(i_c):
-                            if concatenated_four(a, primes[i_b], primes[i_c], primes[i_d], pairs):
-                                for i_e in range(i_d):
-                                    if concatenated_five(a, primes[i_b], primes[i_c], primes[i_d], primes[i_e], pairs):
-                                        return a + primes[i_b] + primes[i_c] + primes[i_d] + primes[i_e]
+        valids_a = valids[a]
+        for b in valids_a:
+            valids_ab = valids_a.intersection(valids[b])
+            for c in valids_ab:
+                valids_abc = valids_ab.intersection(valids[c])
+                for d in valids_abc:
+                    valids_abcd = valids_abc.intersection(valids[d])
+                    for e in valids_abcd:
+                        return a + b + c + d + e
         a = nextprime(a)
 
 
-def concatenated_primes(x, y, pairs: Dict):
-    fxy = frozenset([x, y])
-    if fxy in pairs:
-        return pairs[fxy]
-    res = isprime(concat_nums(x, y)) and isprime(concat_nums(y, x))
-    pairs[fxy] = res
-    return res
-
-
-def concatenated_triple(a, b, c, pairs: Dict):
-    # already checked (a,b)
-    return concatenated_primes(a, c, pairs) and concatenated_primes(b, c, pairs)
-
-
-def concatenated_four(a, b, c, d, pairs: Dict):
-    # already checked (a,b,c)
-    return concatenated_primes(a, d, pairs) and concatenated_primes(b, d, pairs) and concatenated_primes(c, d, pairs)
-
-
-def concatenated_five(a, b, c, d, e, pairs: Dict):
-    # already checked (a,b,c,d)
-    return concatenated_primes(a, e, pairs) and concatenated_primes(b, e, pairs) and \
-           concatenated_primes(c, e, pairs) and concatenated_primes(d, e, pairs)
+def concatenated_primes(x:int, y:int) -> bool:
+    """
+    :param x: first number, prime
+    :param y: second number, prime
+    :return: True if x,y is a concataneted primes pair
+    """
+    return isprime(concat_nums(x, y)) and isprime(concat_nums(y, x))

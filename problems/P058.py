@@ -2,12 +2,13 @@ from sympy import isprime
 
 
 def ans():
-    primes_count = 0
-    total_count = 1
-    num = 1
-    square_size = 3
+    primes_count: int = 0
+    total_count: int = 1
+    num: int = 1
+    square_size: int = 3
     while True:
-        h = square_size - 1
+        # add layer to square
+        h: int = square_size - 1
         for i in range(4):
             num += h
             if isprime(num):

@@ -1,43 +1,76 @@
-from libs.numbers_properties import num_size
-from libs.polygon_numbers import is_polygonal_number, is_any_polygon_number, all_polygons_fit_to_number
+from collections import defaultdict
+from typing import Dict, Set, Tuple, NamedTuple, List
+
+from libs.polygon_numbers import polygonal_number
+
+
+class Chain(NamedTuple):
+    nums: List[int]
+    shapes: List[int]
 
 
 def ans():
-    polygons = [3, 4, 5, 6, 7, 8]
-    not_found = 0
+    set_3: Set[int] = create_3()
+    dict_other_shapes: Dict[int, Dict[int, Set[int]]] = create_dict_other_shapes()
+    for num in set_3:
+        res = get_chain(Chain([num], [3]), dict_other_shapes)
+        if res != -1:
+            return res
+    return None
 
-    def next_in_chain(chain, left):
-        if len(chain) == 5:
-            last_in_chain = (chain[len(chain) - 1] % 100) * 100 + chain[0] // 100
-            if is_polygonal_number(last_in_chain, left[0]) and num_size(last_in_chain) == 4:
-                chain.append((chain[len(chain) - 1] % 100) * 100 + chain[0] // 100)
-                return chain
-        elif len(chain) == 0:
-            for i in range(1000, 10000):
-                if is_any_polygon_number(i, left):
-                    chain.append(i)
-                    for s in all_polygons_fit_to_number(i, polygons):
-                        if s in left:
-                            left.remove(s)
-                            result_chain = next_in_chain(chain.copy(), left.copy())
-                            if result_chain != not_found:
-                                return result_chain
-                            left.append(s)
-                    chain.remove(i)
-        else:
-            last = chain[-1]
-            if last % 100 >= 10:
-                for i in range((last % 100) * 100, (last % 100 + 1) * 100):
-                    if is_any_polygon_number(i, left):
-                        chain.append(i)
-                        for s in all_polygons_fit_to_number(i, polygons):
-                            if s in left:
-                                left.remove(s)
-                                result_chain = next_in_chain(chain.copy(), left.copy())
-                                if result_chain != not_found:
-                                    return result_chain
-                                left.append(s)
-                        chain.remove(i)
-        return not_found
 
-    return sum(next_in_chain([], polygons.copy()))
+def create_3() -> Set[int]:
+    """
+    :return: create a set of all 4 digits triangle number
+    """
+    res: Set[int] = set()
+    i = 1
+    while polygonal_number(i, 3) < 1000:
+        i += 1
+    pn = polygonal_number(i, 3)
+    while pn < 10000:
+        res.add(pn)
+        i += 1
+        pn = polygonal_number(i, 3)
+    return res
+
+
+def create_dict_other_shapes() -> Dict[int, Dict[int, Set[int]]]:
+    """
+    creates dict with key shape, value is dict from 2 left digits to all 4 digis of this shape with these 2 left digits
+    :return: the dict as stated
+    """
+    polygons = [4, 5, 6, 7, 8]
+    res: Dict[int, Dict[int, Set[int]]] = dict()
+    for poly in polygons:
+        i = 1
+        while polygonal_number(i, poly) < 1000:
+            i += 1
+        res[poly] = defaultdict(set)
+        pn = polygonal_number(i, poly)
+        while pn < 10000:
+            res[poly][pn // 100].add(pn)
+            i += 1
+            pn = polygonal_number(i, poly)
+    return res
+
+
+def get_chain(chain: Chain, poly_dict: Dict[int, Dict[int, Set[int]]]) -> int:
+    """
+    calculates the only valid chain
+    :param chain: the current chain
+    :param poly_dict: the dict of values
+    :return: the sum of the valid chain. -1 if not found
+    """
+    if len(chain.nums) == 6:
+        # if the chain is complete, check if the end matches the beginning
+        if chain.nums[0] // 100 == chain.nums[-1] % 100:
+            return sum(chain.nums)
+        return -1  # else reutnr -1, not found
+    for shape in {3, 4, 5, 6, 7, 8}.difference(chain.shapes):
+        for next_in_chain in poly_dict[shape][chain.nums[-1] % 100]:
+            # go over all possible numbers to continue with, and continue with each of them
+            res = get_chain(Chain(chain.nums + [next_in_chain], chain.shapes + [shape]), poly_dict)
+            if res != -1:
+                return res
+    return -1

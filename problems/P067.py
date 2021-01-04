@@ -1,7 +1,11 @@
+from typing import List
+
+
 def ans():
-    p = load_pyramid()
+    p: List[List[int]] = load_pyramid()
     p.reverse()
-    maxes = [p[0]]
+    maxes: List[List[int]] = [p[0]]
+    # use dynamic programming to keep the maxes of the prev layers
     for i in range(1, len(p)):
         maxes.append([])
         for j in range(len(p[i])):
@@ -9,9 +13,9 @@ def ans():
     return maxes[-1][0]
 
 
-def load_pyramid():
+def load_pyramid() -> List[List[int]]:
     f = open("files//P067.txt")
-    p = []
+    p: List[List[int]] = []
     for line in f.readlines():
         p.append([int(i) for i in line.strip("\n").split(" ")])
     return p

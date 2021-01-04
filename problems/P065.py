@@ -1,18 +1,25 @@
+from typing import List
+
 from objects.frac import Frac
 from libs.numbers_properties import digits_sum
 
 
 def ans():
-    generated_list = generate_list(100)
+    generated_list: List[int] = generate_list(100)
     generated_list.reverse()
-    f = Frac(generated_list[0], 1)
+    f: Frac = Frac(generated_list[0])
     for i in generated_list[1:]:
-        f = Frac(i, 1) + f.flip()
+        f = Frac(i) + f.flip()
     n = f.simplify().n
     return digits_sum(n)
 
 
-def generate_list(n):
+def generate_list(n: int) -> List[int]:
+    """
+    generate the list by the pattern we found
+    :param n: number of elements in the output list
+    :return: the generated list
+    """
     if n == 1:
         return [2]
     if n == 2:
