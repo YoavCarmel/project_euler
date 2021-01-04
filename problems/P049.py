@@ -1,20 +1,27 @@
-from libs.numbers_properties import same_digits
-from sympy import isprime
+from collections import defaultdict
+from itertools import combinations
+from typing import Dict, Tuple, Set, List
+
+from sympy import primerange
+
+from libs.types_converting import num_to_list
 
 
 def ans():
-    four_digits_primes = []
-    results = []
-    for i in range(10 ** 3, 10 ** 4):
-        if isprime(i):
-            same_digits_primes = []
-            for j in four_digits_primes:
-                if same_digits(i, j):
-                    same_digits_primes.append(j)
-            four_digits_primes.append(i)
-            if len(same_digits_primes) >= 2:
-                for p1 in range(len(same_digits_primes)):
-                    for p2 in range(p1+1, len(same_digits_primes)):
-                        if same_digits_primes[p2] - same_digits_primes[p1] == i - same_digits_primes[p2]:
-                            results.append(str(same_digits_primes[p1])+str(same_digits_primes[p2])+str(i))
+    # get all primes
+    four_digits_primes: List[int] = list(primerange(10 ** 3, 10 ** 4))
+    # split priesm by digits
+    primes_by_digs: Dict[Tuple[int, ...], Set[int]] = defaultdict(set)
+    for prime in four_digits_primes:
+        primes_by_digs[tuple(sorted(num_to_list(prime)))].add(prime)
+    results: List[str] = []
+    # for all 4-digits perms that have 3 or more primes
+    for four_digs, primes in primes_by_digs.items():
+        if len(primes) < 3:
+            continue
+        for triple in combinations(primes, 3):
+            ts: Tuple[int, ...] = tuple(sorted(triple))
+            # if arithmetic sequence, add to results
+            if ts[2] - ts[1] == ts[1] - ts[0]:
+                results.append(str(ts[0]) + str(ts[1]) + str(ts[2]))
     return results[1]

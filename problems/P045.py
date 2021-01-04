@@ -5,14 +5,14 @@ from math import sqrt
 
 def ans():
     # all hexagon numbers are also triangle numbers
-    i = 144
+    i: int = 144  # we should find the next after 143
     while True:
         if is_int(hex_and_pent_number(i)):
             return polygonal_number(i, 6)
         i += 1
 
 
-def hex_and_pent_number(n):
+def hex_and_pent_number(n: int) -> float:
     """
     hexagon number is at form 2n^2-n
     pentagon number is at form (3x^2-x)/2

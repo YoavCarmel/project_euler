@@ -15,11 +15,19 @@ def ans():
     return s
 
 
-def both_sides_prime(x):
+def both_sides_prime(x: int) -> bool:
+    """
+    :param x: input number
+    :return: True if unput number is both right and left prime
+    """
     return right_prime(x) and left_prime(x)
 
 
-def right_prime(x):
+def right_prime(x: int) -> bool:
+    """
+    :param x: input number
+    :return: True if unput number is a right prime
+    """
     while x > 0:
         if not isprime(x):
             return False
@@ -27,7 +35,11 @@ def right_prime(x):
     return True
 
 
-def left_prime(x):
+def left_prime(x: int) -> bool:
+    """
+    :param x: input number
+    :return: True if unput number is a left prime
+    """
     while x > 0:
         if not isprime(x):
             return False

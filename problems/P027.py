@@ -1,10 +1,12 @@
+from typing import Set
+
 from sympy import isprime
 
 
 def ans():
-    max_primes = 0
-    p = 0
-    primes_found = set()
+    max_primes: int = 0
+    p: int = 0
+    primes_found: Set[int] = set()
     """
     if a is even and b is odd, then every odd n will result in an even result, so remove these options
     if a is odd and b is even, then every n will result in an even result, so remove these options
@@ -21,13 +23,22 @@ def ans():
     return p
 
 
-def apply_quadratic(n, a, b):
+def apply_quadratic(n: int, a: int, b: int) -> int:
+    """
+    apply the formula
+    """
     return n * n + a * n + b
 
 
-def get_max_n(a, b, primes_found):
-    n = 0  # n is also counter
-    f = apply_quadratic(n, a, b)
+def get_max_n(a: int, b: int, primes_found: Set[int]) -> int:
+    """
+    :param a: a of the formula
+    :param b: b of the formula
+    :param primes_found: set of already found primes to prevent repeated computations
+    :return: number of consecutive primes
+    """
+    n: int = 0  # n is also counter
+    f: int = apply_quadratic(n, a, b)
     while f in primes_found or isprime(f):
         primes_found.add(f)
         n += 1

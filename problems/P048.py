@@ -1,6 +1,7 @@
 def ans():
-    s = 0
-    limit = 1000
+    s: int = 0
+    limit: int = 1000
+    ten_ten: int = 10 ** 10
     for i in range(1, limit + 1):
-        s += (i ** i)
-    return s % (10 ** 10)
+        s += pow(i, i, ten_ten)  # pow modulu
+    return s % ten_ten
