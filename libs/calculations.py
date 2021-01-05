@@ -1,5 +1,6 @@
 import math
-from typing import List, Iterable, Set
+from collections import defaultdict
+from typing import List, Iterable, Set, Dict
 
 import numpy as np
 import sympy
@@ -115,3 +116,15 @@ def continued_fraction_of_sqrt(x: int) -> List[int]:
         pair = r.split_int_nonint()
     # the whole parts of the pairs until the repetition in the cycle
     return [i.whole for i in l[l.index(pair):]]
+
+
+def get_co_primes(n: int) -> List[int]:
+    """
+    :param n: an input number
+    :return: a list of all numbers from 1 to n-1 that are co primes with n
+    """
+    results = np.array(range(n), dtype='bool')  # init an array
+    for p in sympy.primefactors(n):
+        # for each prime, set all numbers it divides to false
+        results[p::p] = False
+    return [i for i, is_co_prime in enumerate(results) if is_co_prime]

@@ -10,7 +10,7 @@ def ans():
     # for one factor, this is not possible to have the same digits. so only need 2 factors
     ten_power = 7
     limit = 10 ** ten_power
-    primes = list(primerange(10 ** 3, 10 ** 4))  # no need for 10**7 if we start from 10**3
+    primes: List[int] = list(primerange(10 ** 3, 10 ** 4))  # no need for 10**7 if we start from 10**3
     result = 0
     calc_result = 1000
     for p1, p2 in combinations(primes, 2):
@@ -21,13 +21,3 @@ def ans():
                 result = p1p2
                 calc_result = p1p2 / te
     return result
-
-    # print("solution in about 30 seconds")
-    # n: int = 10 ** 7
-    # te_range: List[int] = totient_euler_range(n)
-    # te_range_enumerated: List = list(enumerate(te_range))[2:]
-    # te_range_enumerated.sort(key=lambda pair: pair[0] / pair[1])
-    # for i, te in te_range_enumerated:
-    #     if same_digits(i, te):
-    #         return i
-    # return None

@@ -1,25 +1,24 @@
-from itertools import permutations
+from itertools import permutations, combinations, product
+from typing import FrozenSet, Set, Tuple, List
 
 
 def ans():
-    n = 10
-    n_range = list(range(1, n + 1))
-    p = list(permutations(n_range))
-    magic = set()
-    for i in p:
+    magic: Set[FrozenSet[Tuple[int, int, int]]] = set()
+    # get all permutations, find valid n-gons
+    for i in permutations(range(1, 10 + 1)):
         if handle_perm(i) is not None:
             magic.add(handle_perm(i))
-    magic_strings = list()
-    for i in magic:
-        magic_strings.append(magic_to_string(i))
-    magic_strings.sort()
-    for i in range(len(magic_strings)):
-        if len(magic_strings[i]) == 17:
-            return magic_strings[i - 1]
+    # get the strings of the valid
+    magic_strings: List[str] = [magic_to_string(i) for i in magic]
+    magic_strings = [s for s in magic_strings if len(s) == 16]
     return max(magic_strings)
 
 
-def handle_perm(perm):
+def handle_perm(perm: Tuple[int, ...]):
+    """
+    :param perm: a permutations
+    :return: frozenset of the lines of the valid n-gon, None if not valid
+    """
     # split to outer half and inner half
     o = perm[:len(perm) // 2]
     i = perm[len(perm) // 2:]
@@ -33,7 +32,11 @@ def handle_perm(perm):
     return None
 
 
-def is_magic(lines):
+def is_magic(lines: List[Tuple[int, ...]]):
+    """
+    :param lines: a list of lines
+    :return: True if all lines have the same sum
+    """
     s = sum(lines[0])
     for i in lines[1:]:
         if s != sum(i):
@@ -41,7 +44,11 @@ def is_magic(lines):
     return True
 
 
-def magic_to_string(lines):
+def magic_to_string(lines: List[Tuple[int, ...]]) -> str:
+    """
+    :param lines: lines of valid n-gon
+    :return: string representations
+    """
     s = ""
     m = min(lines)
     lines = set(lines)

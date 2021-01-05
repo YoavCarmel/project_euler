@@ -1,13 +1,15 @@
+from collections import defaultdict
+from typing import List, Dict
+
+
 def ans():
+    # a[i][j] is number of partitions with sum i and biggest number is j
     n = 100
-    # a[i][j] is number of partitions with sum i and biggest number is j, and j must be there
-    a = [[0] * (n + 1)]
-    for i in range(n):
-        a.append([0, 1] + [0] * (n - 1))
+    a: Dict[int, Dict[int, int]] = defaultdict(dict)
+    a[0][0] = 1
     for i in range(1, n + 1):
-        for j in range(2, i):
-            a[i][j] = sum(a[i - j][:j + 1])
-        a[i][i] = 1
-        for j in range(i + 1, n):
-            a[i][j] = 0
-    return sum(a[-1]) - 1
+        a[i][0] = 0
+        for j in range(1, i + 1):
+            # either put j and handle the rest, or dont put j and lower it by 1
+            a[i][j] = a[i - j][min(i - j, j)] + a[i][j - 1]
+    return a[n][n] - 1

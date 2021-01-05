@@ -7,7 +7,8 @@ def ans():
     max_d = 12000
     count = 0
     for d in range(1, max_d + 1):
-        for n in range(int(d * low), int(d * high) + 1):
-            if low < n/d < high and co_primes(d, n):
+        for n in range(d // 3, d // 2 + 1):
+            # add all numbers that are coprimes to d, so each fraction will be counted once
+            if low < n / d < high and co_primes(d, n):
                 count += 1
     return count

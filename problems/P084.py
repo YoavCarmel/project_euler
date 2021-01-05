@@ -1,7 +1,5 @@
 import random
-from typing import List, Any
-
-from tqdm import trange
+from typing import List, Any, Union
 
 from libs.numbers_properties import num_size
 
@@ -11,7 +9,7 @@ def ans():
     board_size = 40
     square_count = [0] * board_size
     # number of iterations
-    number_of_iterations = 10 ** 6
+    number_of_iterations = 10 ** 5
     # special squares
     cc_squares = [2, 17, 33]
     ch_squares = [7, 22, 36]
@@ -33,7 +31,12 @@ def ans():
     player_location = 0
 
     # function for card movement:
-    def next_location(card, curr_player_location):
+    def next_location(card: Union[str, int, None], curr_player_location: int) -> int:
+        """
+        :param card: card gotten
+        :param curr_player_location: current location
+        :return: enx tlocation based on card
+        """
         if card is None:
             return curr_player_location
         if card == "R":
@@ -54,11 +57,19 @@ def ans():
             return card
         raise Exception("got an unknown card:", card)
 
-    def is_in_special_location(curr_player_location):
+    def is_in_special_location(curr_player_location: int) -> bool:
+        """
+        :param curr_player_location: current location
+        :return: True if current location is a special location
+        """
         return curr_player_location in g2j_squares or curr_player_location in cc_squares or \
                curr_player_location in ch_squares
 
-    def next_location_after_special_location(curr_player_location):
+    def next_location_after_special_location(curr_player_location:int)->int:
+        """
+        :param curr_player_location: current location, knowing it is a special locaiton
+        :return: the new location from the current location
+        """
         if curr_player_location in g2j_squares:
             return jail_location
         if curr_player_location in cc_squares:
@@ -81,7 +92,7 @@ def ans():
             raise Exception("not in special location, yet in special location movement function", curr_player_location)
 
     # play the game:
-    for _ in trange(number_of_iterations):
+    for _ in range(number_of_iterations):
         # arrived here, add 1 to this place
         square_count[player_location] += 1
         # roll dice

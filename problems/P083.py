@@ -1,14 +1,20 @@
+from typing import List
+
 from libs.files import create_matrix_from_file
 from objects.graph import Graph
 
 
 def ans():
-    mat = create_matrix_from_file("files//P083.txt", ",")
+    mat: List[List[int]] = create_matrix_from_file("files//P083.txt", ",")
     g, source, target = create_graph_from_matrix(mat)
     return Graph.shortest_distance(source, target)[0]
 
 
-def create_graph_from_matrix(mat):
+def create_graph_from_matrix(mat: List[List[int]]) -> (Graph, int, int):
+    """
+    :param mat: matrix that represents a graph
+    :return: a graph object from the input matrix, and source and target for the distance calculation
+    """
     g = Graph()
     source = None
     target = None
