@@ -13,7 +13,6 @@ class Solution(NamedTuple):
 
 
 def ans():
-    print("solution takes about 9 seconds")
     n = 7
     sol = solve(n)
     return "".join([str(i) for i in reversed(sol)])

@@ -1,6 +1,5 @@
 import math
-from collections import defaultdict
-from typing import List, Iterable, Set, Dict
+from typing import List, Iterable, Set
 
 import numpy as np
 import sympy
@@ -128,3 +127,50 @@ def get_co_primes(n: int) -> List[int]:
         # for each prime, set all numbers it divides to false
         results[p::p] = False
     return [i for i, is_co_prime in enumerate(results) if is_co_prime]
+
+
+def divisors_sum(n: int, including_i=True) -> List[int]:
+    """
+    :param n: max number for range (exclude it)
+    :param including_i: should we include i itself in the sum of divisiors
+    :return: a list of the sum of divisors of all numbers from 0 to n-1
+    """
+    l = np.zeros(n, dtype='int32')
+    if including_i:
+        for i in range(1, len(l)):
+            l[i::i] += i
+    else:
+        for i in range(1, len(l)):
+            l[i] -= i
+            l[i::i] += i
+    return [i for i in l]
+
+
+def fibonnaci_number_by_index(index: int):
+    """
+    calculated fast using matrix multiplication and power, in log(n) time
+    :param index: index of wanted fibonacci number
+    :return: the number
+    """
+    if index == 0:
+        return 0
+    if index == 1 or index == 2:
+        return 1
+
+    def mult_mat(x: ((int, int), (int, int)), y: ((int, int), (int, int))) -> ((int, int), (int, int)):
+        return ((x[0][0] * y[0][0] + x[0][1] * y[1][0], x[0][0] * y[0][1] + x[0][1] * y[1][1]),
+                (x[1][0] * y[0][0] + x[1][1] * y[1][0], x[1][0] * y[0][1] + x[1][1] * y[1][1]))
+
+    def power_mat(x, y) -> ((int, int), (int, int)):
+        if y == 0:
+            return (1, 0), (0, 1)  # identity mat
+        temp = power_mat(x, y // 2)
+
+        if y % 2 == 0:
+            return mult_mat(temp, temp)
+        else:
+            return mult_mat(x, mult_mat(temp, temp))
+
+    fib_mat = ((1, 1), (1, 0))  # the fibonacci matrix
+    mat_n = power_mat(fib_mat, index - 2)
+    return sum(mat_n[0])

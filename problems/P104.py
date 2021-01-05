@@ -1,16 +1,17 @@
 from libs.numbers_properties import is_pandigital
+from libs.calculations import fibonnaci_number_by_index
 
 
 def ans():
-    print("takes about 16 seconds")
-    fn = 1
-    fnm = 1
+    curr = 1
+    prev = 1
     k = 3
     last_ten_digs = 10 ** 9
     while True:
-        fnp = fn + fnm
-        fnm = fn
-        fn = fnp
-        if is_pandigital(fn % last_ten_digs, 9) and is_pandigital(int(str(fn)[:9]), 9):
-            return k
+        # work only on small numbers
+        prev, curr = curr, (prev + curr) % last_ten_digs
+        if is_pandigital(curr, 9):
+            full_fib_k = fibonnaci_number_by_index(k)  # get full number
+            if is_pandigital(curr, 9) and is_pandigital(int(str(full_fib_k)[:9]), 9):
+                return k
         k += 1

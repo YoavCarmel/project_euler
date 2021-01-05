@@ -1,12 +1,10 @@
+from typing import List
+
 from libs.types_converting import num_to_list
 
 
 def ans():
     percent = 99
-    return first_to_percent(percent)
-
-
-def first_to_percent(percent):
     bouncy_count = 0
     i = 1
     while True:
@@ -18,7 +16,11 @@ def first_to_percent(percent):
 
 
 def is_bouncy(x: int) -> bool:
-    digs = num_to_list(x)
+    """
+    :param x: input number
+    :return: True if the numebr is bouncy
+    """
+    digs: List[int] = num_to_list(x)
     form = 0
     for i in range(len(digs) - 1):
         if form == 0:

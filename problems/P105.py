@@ -1,8 +1,10 @@
+from typing import List
+
 from libs.special_groups import is_special_sum_set
 
 
 def ans():
-    lines = list()
+    lines: List[List[int]] = list()
     f = open("files//P105.txt")
     for line in f.readlines():
         line = [int(i) for i in line.strip("\n").split(",")]

@@ -18,6 +18,12 @@ def ans():
     all_results = set()
 
     def get_all_results(curr_index: int = 0, curr_product: int = 1):
+        """
+        use this function to put all results inside all_results
+        :param curr_index: current index of prime
+        :param curr_product: the current product
+        :return: None
+        """
         all_results.add(curr_product)
         for i in range(curr_index, len(primes)):
             if curr_product * primes[i] > prod:

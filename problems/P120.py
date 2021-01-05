@@ -7,8 +7,9 @@ def ans():
 
 def fa(a):
     """
-    for even n always returns 2.
+    for even n always returns 2, so init with it and go only over odd n values
     for odd n, the calculation equals (2*n*a)%(a**2)
+    :param a: the a to calculate to
     """
     m = 2
     ap2 = a ** 2

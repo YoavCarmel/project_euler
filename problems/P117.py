@@ -1,9 +1,17 @@
+from typing import Dict
+
+
 def ans():
     n = 50
     return rec(n, dict())
 
 
-def rec(length_left, values):
+def rec(length_left: int, values: Dict[int, int]) -> int:
+    """
+    :param length_left: the length of the row left to fill
+    :param values: the current values
+    :return: number of possibilities to fill length_left
+    """
     if length_left < 2:
         return 1  # finished an option
     # in each step, choose between one more grey, or a new red with any length from 3 to the end

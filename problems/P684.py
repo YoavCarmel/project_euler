@@ -1,3 +1,6 @@
+from typing import List
+
+
 def ans():
     m = 1000000007
     last_fib = 90
@@ -9,6 +12,11 @@ def ans():
 
 
 def best_s_sum(n, m):
+    """
+    :param n: n of S sum
+    :param m: modulu of S sum
+    :return: the S sum
+    """
     return s_sum7(n, m)
 
 
@@ -78,6 +86,11 @@ def s_sum6(n, mod):
 
 
 def s_sum7(n, mod):
+    """
+    :param n: n of S sum
+    :param m: modulu of S sum
+    :return: the S sum
+    """
     s1to9 = 45
     p = pow(10, (n // 9), mod * 9)
     r = n % 9
@@ -88,7 +101,11 @@ def s_sum7(n, mod):
             + p * (r + 1) * r // 2) % mod
 
 
-def fib_list(n):
+def fib_list(n: int) -> List[int]:
+    """
+    :param n: input number, last index of fibonacci numebrs wanted
+    :return: a list of all fibonnaci numbers up to the input number
+    """
     if n == 0:
         return [0]
     if n == 1:

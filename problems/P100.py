@@ -17,7 +17,7 @@ def ans():
     *****
     """
     low_bound = 10 ** 12
-    first_side = (1, 1)
+    first_side: (int, int) = (1, 1)
     while first_side[1] < low_bound:
         xn = first_side[0]
         tn = first_side[1]

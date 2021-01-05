@@ -1,12 +1,13 @@
 from itertools import product
 from collections import defaultdict
+from typing import Dict
 
 
 def ans():
-    peter = defaultdict(int)
+    peter: Dict[int, int] = defaultdict(int)
     for p in product(range(1, 4 + 1), repeat=9):
         peter[sum(p)] += 1
-    colin = defaultdict(int)
+    colin: Dict[int, int] = defaultdict(int)
     for p in product(range(1, 6 + 1), repeat=6):
         colin[sum(p)] += 1
 

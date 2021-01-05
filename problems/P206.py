@@ -1,7 +1,7 @@
 from typing import Set
 
 
-def ans():  # really bad solution based on the fact that i already know the answer
+def ans():  # really bad solution based on the fact that i already know the answer.
     pattern = "1_2_3_4_5_6_7_8_9_0"
     pattern = pattern[::-1]
     curr_layer: Set[str] = {"0"}

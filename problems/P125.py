@@ -1,7 +1,27 @@
+from typing import List, Set
+
 from tqdm import trange
 
 from libs.numbers_properties import is_palindrome
 from math import sqrt
+
+
+def ans():
+    print("takes about 18 seconds")
+    n = 10 ** 8
+    squares: List[int] = [0]
+    res: Set[int] = set()
+    # create array of sums of squares
+    for i in range(1, int(sqrt(n)) + 1):
+        squares.append(i ** 2 + squares[-1])
+    # go over of subsequences ant check if palindromes
+    for i in trange(1, len(squares)):
+        for j in range(i - 1):
+            x = squares[i] - squares[j]
+            if is_palindrome(x) and x < n:
+                res.add(x)
+    return sum(res)
+
 
 """def ans():
     number_of_digs=8
@@ -30,18 +50,3 @@ def find_pair(arr, n):
         else:
             i += 1
     return False"""
-
-
-def ans():
-    print("takes about 18 seconds")
-    n = 10 ** 8
-    squares = [0]
-    res = set()
-    for i in range(1, int(sqrt(n))+1):
-        squares.append(i ** 2 + squares[-1])
-    for i in trange(1, len(squares)):
-        for j in range(i - 1):
-            x = squares[i] - squares[j]
-            if is_palindrome(x) and x < n:
-                res.add(x)
-    return sum(res)

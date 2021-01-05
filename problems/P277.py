@@ -16,7 +16,11 @@ def ans():
             return start
 
 
-def get_sequence(number):
+def get_sequence(number: int) -> str:
+    """
+    :param number: an input number
+    :return: the number's sequence to reach to 1
+    """
     seq = ""
     while number != 1:
         if number % 3 == 0:
@@ -32,6 +36,11 @@ def get_sequence(number):
 
 
 def apply_sequence_backwards(number: int, sequence: str) -> Union[int, None]:
+    """
+    :param number: a result number
+    :param sequence: all steps that were taken
+    :return: the origin number
+    """
     sequence = sequence[::-1]
     for d in sequence:
         number = apply_step_backwards(number, d)
@@ -41,6 +50,11 @@ def apply_sequence_backwards(number: int, sequence: str) -> Union[int, None]:
 
 
 def apply_step_backwards(number: int, step: str) -> Union[int, None]:
+    """
+    :param number: a result number
+    :param step: the step that was taken
+    :return: the origin number
+    """
     if step == "D":
         return 3 * number
     if step == "U":

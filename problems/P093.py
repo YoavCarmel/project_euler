@@ -1,11 +1,8 @@
 from itertools import permutations, combinations_with_replacement
 from typing import List, Tuple
 
-from tqdm import trange
-
 
 def ans():
-    print("after many optimization runs in 12 seconds because of exec function time cost")
     brackets = [[(1, 2)], [(2, 3)], [(3, 4)], [(1, 3)], [(2, 4)], [(1, 2), (3, 4)], [(1, 2), (1, 3)], [(2, 3), (1, 3)],
                 [(2, 3), (2, 4)], [(3, 4), (2, 4)], [(1, 4)]]
     operators = ["+", "-", "*", "/"]
@@ -13,7 +10,7 @@ def ans():
     for brack in brackets:
         brackets_templates.append(generate_calculation_template(brack))
     m = (-1, -1)
-    for a in trange(10):
+    for a in range(10):
         for b in range(a):
             for c in range(b):
                 for d in range(c):
@@ -34,8 +31,7 @@ def calc(nums, operators, brackets_templates):
                     template[nums_indices[i]] = p[i]
                 try:
                     s = "".join(template)
-                    com = "results.add(" + s + ")"
-                    exec(com)
+                    results.add(eval(s))
                 except ZeroDivisionError:
                     continue
     i = 1
@@ -45,6 +41,10 @@ def calc(nums, operators, brackets_templates):
 
 
 def generate_calculation_template(brack: List) -> (List[str], List[int], List[int]):
+    """
+    :param brack: a list of pairs of brackets
+    :return: the tempale for these brackets, and a list of nums indices and a list of operators indices in the template
+    """
     res = []
     nums_indices = []
     opers_indices = []

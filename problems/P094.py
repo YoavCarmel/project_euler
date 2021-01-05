@@ -1,7 +1,10 @@
 # using diophantine equations
+from typing import Tuple, List, Set
+
+
 def ans():
     n = 10 ** 9
-    sols = [[(1, 0)]]  # 4 solution paths:
+    sols: List[List[Tuple[int, int]]] = [[(1, 0)]]  # 4 solution paths:
     # first path of 3x^2-2x-1=0: the (x,x,x+1) solution
     while sols[0][-1][0] * 3 + 1 <= 4 * n:
         xn = sols[0][-1][0]
@@ -26,7 +29,7 @@ def ans():
         yn = sols[3][-1][1]
         sols[3].append((-2 * xn + yn - 1, 3 * xn - 2 * yn + 1))
     # got all solutions. sum perimeters:
-    final_sols = set()
+    final_sols: Set[Tuple[int, int, int]] = set()
     for i in sols[:2]:  # (x,x,x+1)
         for j in i:
             if j[0] > 1 and ((j[0] + 1) * j[1]) % 8 == 0:
