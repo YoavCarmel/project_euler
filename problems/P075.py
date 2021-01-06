@@ -4,18 +4,18 @@ from typing import Dict, Set, Tuple
 
 
 def ans():
-    max_L = 1.5 * 10 ** 6
+    max_big_l = 1.5 * 10 ** 6
     solutions: Dict[int, Set[Tuple[int, ...]]] = defaultdict(set)
     # create pythagorean triplets
-    for s in range(1, int((sqrt(1 + 2 * max_L) - 1) / 2) + 1):
+    for s in range(1, int((sqrt(1 + 2 * max_big_l) - 1) / 2) + 1):
         for t in range(1, s):
-            L = 2 * s * s + 2 * s * t
-            if L > max_L:
+            big_l = 2 * s * s + 2 * s * t
+            if big_l > max_big_l:
                 break
-            solutions[L].add(tuple(sorted([2 * s * t, s * s - t * t])))
+            solutions[big_l].add(tuple(sorted([2 * s * t, s * s - t * t])))
     # add more triplets
     for i in list(solutions):
-        for k in range(2, int(max_L / i) + 1):
+        for k in range(2, int(max_big_l / i) + 1):
             for t in solutions[i]:
                 solutions[i * k].add(tuple(sorted([t[0] * k, t[1] * k])))
     count = 0

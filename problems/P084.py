@@ -62,8 +62,8 @@ def ans():
         :param curr_player_location: current location
         :return: True if current location is a special location
         """
-        return curr_player_location in g2j_squares or curr_player_location in cc_squares or \
-               curr_player_location in ch_squares
+        return curr_player_location in g2j_squares or \
+            curr_player_location in cc_squares or curr_player_location in ch_squares
 
     def next_location_after_special_location(curr_player_location: int) -> int:
         """

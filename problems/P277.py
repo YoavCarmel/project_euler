@@ -6,9 +6,18 @@ from libs.numbers_properties import is_int
 def ans():
     min_start = 10 ** 15
     seq = "UDDDUdddDDUDDddDdDddDDUDDdUUDd"
-    i = 0
+    """
+    first step is d, which applies (3 * i + 1) / 2. i must be odd = 2k-1, result is 3k
+    second is D, which is ok. result is 9k
+    third is U, -> (3 * 9k - 2) / 4 = (27k-2)/4 = 6k+(3k-2)/4. k = 4t+2 -> i = 8t+1. result is 36t+18
+    fourth is U, -> (3 * (36t + 18) - 2) / 4 = (108t-52)/4 = 27t-13, ok. result is 27t-13
+    fifth is d, -> (3 * (27 - 13t) + 1) / 2 = (82-39t)/2 = 41-19.5t. t must be even, t = 2s. result is 72s+18
+
+    to conclude: i = 2k-1 = 8t+1 = 16s+1
+    """
+    i = 1
     while True:
-        i += 1
+        i += 16
         start = apply_sequence_backwards(i, seq)
         if start is None:
             continue
@@ -62,7 +71,7 @@ def apply_step_backwards(number: int, step: str) -> Union[int, None]:
         if is_int(res) and int(res) % 3 == 1:
             return int(res)
     if step == "d":
-        res = (3 * number + 1) // 2
+        res = (3 * number + 1) / 2
         if is_int(res) and int(res) % 3 == 2:
             return int(res)
     return None

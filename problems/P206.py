@@ -5,12 +5,12 @@ def ans():
     pattern = "1_2_3_4_5_6_7_8_9_0"
     pattern = pattern[::-1]
     # only the first i digits of n affect the first i digits of n**2.
-    # first digit must be 0, but then add 2 digits each time and see if matcehs the next number in pattern
+    # first digit must be 0, but then add 2 digits each time and see if matches the next number in pattern
     possible_n: Set[int] = set()
     possible_n.add(0)
     level = 1
     while True:
-        # continue addign numbers that match
+        # continue adding numbers that match
         next_level: Set[int] = set()
         for n in possible_n:
             for i in range(1, 100):

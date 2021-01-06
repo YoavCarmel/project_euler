@@ -16,5 +16,5 @@ def is_result(x: int) -> bool:
     :param x: input number
     :return: True if it is the answer
     """
-    return same_digits(x, 2 * x) and same_digits(x, 3 * x) and same_digits(x, 4 * x) and \
-           same_digits(x, 5 * x) and same_digits(x, 6 * x)
+    return same_digits(x, 2 * x) and same_digits(x, 3 * x) and same_digits(
+        x, 4 * x) and same_digits(x, 5 * x) and same_digits(x, 6 * x)
