@@ -1,7 +1,5 @@
 from typing import List
 
-from libs.types_converting import list_to_num
-
 
 def ans():
     digs_limit = 100

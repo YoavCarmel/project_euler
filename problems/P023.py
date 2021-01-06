@@ -11,7 +11,7 @@ def ans():
     for i in range(1, n + 1):
         if sum(divisors(i)) - i > i:
             abundant.append(i)
-    # create all numbers that can be reresented by a sum of two abundant numbers
+    # create all numbers that can be represented by a sum of two abundant numbers
     expressed: Set[int] = set()
     for i, j in combinations_with_replacement(abundant, 2):
         expressed.add(i + j)

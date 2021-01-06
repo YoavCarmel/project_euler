@@ -1,4 +1,4 @@
-from itertools import permutations, combinations, product
+from itertools import permutations
 from typing import FrozenSet, Set, Tuple, List
 
 
@@ -44,7 +44,7 @@ def is_magic(lines: List[Tuple[int, ...]]):
     return True
 
 
-def magic_to_string(lines: List[Tuple[int, ...]]) -> str:
+def magic_to_string(lines: FrozenSet[Tuple[int, ...]]) -> str:
     """
     :param lines: lines of valid n-gon
     :return: string representations

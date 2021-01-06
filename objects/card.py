@@ -5,7 +5,7 @@ from typing import List, Dict, Union
 
 
 class Card:
-    def __init__(self, number: Union[str,int], shape: str):
+    def __init__(self, number: Union[str, int], shape: str):
         # 2-15 as two-ten,jack,queen,king,ace,joker
         if number == "T":
             self.number = 10

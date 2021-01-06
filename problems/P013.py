@@ -1,6 +1,3 @@
-from libs.numbers_properties import num_size
-
-
 def ans():
     num: int = create_num()
     # get the first 10 digs

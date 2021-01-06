@@ -34,7 +34,7 @@ def family_size(num: int, digits: List[int], wanted: int, primes_checked: Dict[i
     :param digits: indices of digits to replace
     :param wanted: the wanted family size, for optimization
     :param primes_checked: primes/non primes dict
-    :return: 0 if family size is smaller than wanted, else return the size of the famiily
+    :return: 0 if family size is smaller than wanted, else return the size of the family
     """
     count = 0
     for i in range(10):
@@ -49,7 +49,7 @@ def family_size(num: int, digits: List[int], wanted: int, primes_checked: Dict[i
                 count += 1
 
         if (wanted - count) > (9 - i):
-            # not possible to reahc the wanted, dont waste time
+            # not possible to reach the wanted, dont waste time
             return 0
     return count
 
@@ -96,7 +96,7 @@ def need_check(num: int, digits: List[int]) -> bool:
 def is_prime_check(n: int, primes_checked: Dict[int, bool]):
     """
     smart prime check to prevent repeated calculations
-    :param n: the numebr to chekc if prime
+    :param n: the number to check if prime
     :param primes_checked: all of the already checked numbers
     :return: True if n is prime
     """

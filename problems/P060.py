@@ -23,10 +23,10 @@ def ans():
         a = nextprime(a)
 
 
-def concatenated_primes(x:int, y:int) -> bool:
+def concatenated_primes(x: int, y: int) -> bool:
     """
     :param x: first number, prime
     :param y: second number, prime
-    :return: True if x,y is a concataneted primes pair
+    :return: True if x,y is a concatenated primes pair
     """
     return isprime(concat_nums(x, y)) and isprime(concat_nums(y, x))

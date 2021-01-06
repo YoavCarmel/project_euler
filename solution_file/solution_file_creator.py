@@ -27,9 +27,9 @@ def add_problem_solution(problem_number, override=False):
     # add to file
     if override and problem_number in df["Problem Number"].values:
         index = df.index[df['Problem Number'] == problem_number][0]
-        df.at[index,"Solution"] = answer[0]
-        df.at[index,"Runtime"] = runtime
-        df.at[index,"Grade"] = get_grade(runtime)
+        df.at[index, "Solution"] = answer[0]
+        df.at[index, "Runtime"] = runtime
+        df.at[index, "Grade"] = get_grade(runtime)
     else:
         df.loc[-1] = [problem_number, answer[0], runtime, get_grade(runtime)]
         df.sort_values(by=["Problem Number"], inplace=True)

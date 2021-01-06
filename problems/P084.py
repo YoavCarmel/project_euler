@@ -35,7 +35,7 @@ def ans():
         """
         :param card: card gotten
         :param curr_player_location: current location
-        :return: enx tlocation based on card
+        :return: next location based on card
         """
         if card is None:
             return curr_player_location
@@ -65,9 +65,9 @@ def ans():
         return curr_player_location in g2j_squares or curr_player_location in cc_squares or \
                curr_player_location in ch_squares
 
-    def next_location_after_special_location(curr_player_location:int)->int:
+    def next_location_after_special_location(curr_player_location: int) -> int:
         """
-        :param curr_player_location: current location, knowing it is a special locaiton
+        :param curr_player_location: current location, knowing it is a special location
         :return: the new location from the current location
         """
         if curr_player_location in g2j_squares:

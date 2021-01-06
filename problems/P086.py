@@ -1,5 +1,5 @@
-from math import sqrt
 from libs.numbers_properties import is_square
+
 
 def ans():
     """

@@ -15,7 +15,7 @@ def ans():
     return count
 
 
-def forbidden_digits(x: int, digits: List[int])->int:
+def forbidden_digits(x: int, digits: List[int]) -> int:
     """
     increment the input number such that after the increment it contains only the input digits
     :param x: input number

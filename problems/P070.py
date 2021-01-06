@@ -1,8 +1,9 @@
-from typing import List, Tuple
-from sympy import primerange, isprime
 from itertools import combinations
+from typing import List
+
+from sympy import primerange
+
 from libs.numbers_properties import same_digits
-from libs.calculations import totient_euler_range, totient_euler
 
 
 def ans():

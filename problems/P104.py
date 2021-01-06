@@ -1,5 +1,5 @@
 from libs.numbers_properties import is_pandigital
-from libs.calculations import fibonnaci_number_by_index
+from libs.calculations import fibonacci_number_by_index
 
 
 def ans():
@@ -11,7 +11,7 @@ def ans():
         # work only on small numbers
         prev, curr = curr, (prev + curr) % last_ten_digs
         if is_pandigital(curr, 9):
-            full_fib_k = fibonnaci_number_by_index(k)  # get full number
+            full_fib_k = fibonacci_number_by_index(k)  # get full number
             if is_pandigital(curr, 9) and is_pandigital(int(str(full_fib_k)[:9]), 9):
                 return k
         k += 1

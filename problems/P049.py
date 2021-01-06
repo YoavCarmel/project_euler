@@ -10,7 +10,7 @@ from libs.types_converting import num_to_list
 def ans():
     # get all primes
     four_digits_primes: List[int] = list(primerange(10 ** 3, 10 ** 4))
-    # split priesm by digits
+    # split primes by digits
     primes_by_digs: Dict[Tuple[int, ...], Set[int]] = defaultdict(set)
     for prime in four_digits_primes:
         primes_by_digs[tuple(sorted(num_to_list(prime)))].add(prime)

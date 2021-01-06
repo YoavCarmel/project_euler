@@ -3,7 +3,7 @@ from typing import Set
 
 def ans():
     arr: Set[int] = set()
-    max_power:int = 100
+    max_power: int = 100
     # for all bases
     for a in range(2, max_power + 1):
         # calculate powers

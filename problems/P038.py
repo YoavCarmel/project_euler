@@ -4,7 +4,7 @@ from libs.numbers_properties import is_pandigital
 def ans():
     m: int = 0
     i: int = 1
-    # after mult by 2 and concatenate, we should have at mosts 9 digits, so this is a good upper bound
+    # after mult by 2 and concatenate, we should have at most 9 digits, so this is a good upper bound
     while i < 10000:
         if concatenate_num(i):
             m = max(m, concatenate_num(i))

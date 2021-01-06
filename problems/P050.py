@@ -1,6 +1,6 @@
 from typing import List, Set
 
-from sympy import primerange, isprime
+from sympy import primerange
 
 
 def ans():

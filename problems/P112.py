@@ -18,7 +18,7 @@ def ans():
 def is_bouncy(x: int) -> bool:
     """
     :param x: input number
-    :return: True if the numebr is bouncy
+    :return: True if the number is bouncy
     """
     digs: List[int] = num_to_list(x)
     form = 0

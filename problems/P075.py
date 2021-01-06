@@ -6,7 +6,7 @@ from typing import Dict, Set, Tuple
 def ans():
     max_L = 1.5 * 10 ** 6
     solutions: Dict[int, Set[Tuple[int, ...]]] = defaultdict(set)
-    # create pythagorian triplets
+    # create pythagorean triplets
     for s in range(1, int((sqrt(1 + 2 * max_L) - 1) / 2) + 1):
         for t in range(1, s):
             L = 2 * s * s + 2 * s * t
@@ -19,7 +19,7 @@ def ans():
             for t in solutions[i]:
                 solutions[i * k].add(tuple(sorted([t[0] * k, t[1] * k])))
     count = 0
-    # get L values with exacty one triangle
+    # get L values with exactly one triangle
     for i in solutions:
         if len(solutions[i]) == 1:
             count += 1

@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Dict, Set, Tuple, NamedTuple, List
+from typing import Dict, Set, NamedTuple, List
 
 from libs.polygon_numbers import polygonal_number
 
@@ -37,7 +37,7 @@ def create_3() -> Set[int]:
 
 def create_dict_other_shapes() -> Dict[int, Dict[int, Set[int]]]:
     """
-    creates dict with key shape, value is dict from 2 left digits to all 4 digis of this shape with these 2 left digits
+    creates dict with key shape, value is dict from 2 left digits to all 4 digits of this shape with these 2 left digits
     :return: the dict as stated
     """
     polygons = [4, 5, 6, 7, 8]
@@ -66,7 +66,7 @@ def get_chain(chain: Chain, poly_dict: Dict[int, Dict[int, Set[int]]]) -> int:
         # if the chain is complete, check if the end matches the beginning
         if chain.nums[0] // 100 == chain.nums[-1] % 100:
             return sum(chain.nums)
-        return -1  # else reutnr -1, not found
+        return -1  # else return -1, not found
     for shape in {3, 4, 5, 6, 7, 8}.difference(chain.shapes):
         for next_in_chain in poly_dict[shape][chain.nums[-1] % 100]:
             # go over all possible numbers to continue with, and continue with each of them

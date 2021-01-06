@@ -1,4 +1,3 @@
-from libs.calculations import totient_euler
 from sympy import nextprime
 
 

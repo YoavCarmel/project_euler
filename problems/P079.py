@@ -12,7 +12,7 @@ def ans():
                 # then it is the next char
                 password += k
                 for i in range(len(nums)):
-                    # remove the char from the first positions whre it was
+                    # remove the char from the first positions where it was
                     if nums[i][0] == k:
                         nums[i] = nums[i][1:]
                 # remove empty strings

@@ -88,7 +88,7 @@ def s_sum6(n, mod):
 def s_sum7(n, mod):
     """
     :param n: n of S sum
-    :param m: modulu of S sum
+    :param mod: modulu of S sum
     :return: the S sum
     """
     s1to9 = 45
@@ -103,8 +103,8 @@ def s_sum7(n, mod):
 
 def fib_list(n: int) -> List[int]:
     """
-    :param n: input number, last index of fibonacci numebrs wanted
-    :return: a list of all fibonnaci numbers up to the input number
+    :param n: input number, last index of fibonacci numbers wanted
+    :return: a list of all fibonacci numbers up to the input number
     """
     if n == 0:
         return [0]

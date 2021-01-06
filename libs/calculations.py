@@ -132,21 +132,21 @@ def get_co_primes(n: int) -> List[int]:
 def divisors_sum(n: int, including_i=True) -> List[int]:
     """
     :param n: max number for range (exclude it)
-    :param including_i: should we include i itself in the sum of divisiors
+    :param including_i: should we include i itself in the sum of divisors
     :return: a list of the sum of divisors of all numbers from 0 to n-1
     """
-    l = np.zeros(n, dtype='int32')
+    divs_sums = np.zeros(n, dtype='int32')
     if including_i:
-        for i in range(1, len(l)):
-            l[i::i] += i
+        for i in range(1, len(divs_sums)):
+            divs_sums[i::i] += i
     else:
-        for i in range(1, len(l)):
-            l[i] -= i
-            l[i::i] += i
-    return [i for i in l]
+        for i in range(1, len(divs_sums)):
+            divs_sums[i] -= i
+            divs_sums[i::i] += i
+    return [i for i in divs_sums]
 
 
-def fibonnaci_number_by_index(index: int):
+def fibonacci_number_by_index(index: int):
     """
     calculated fast using matrix multiplication and power, in log(n) time
     :param index: index of wanted fibonacci number

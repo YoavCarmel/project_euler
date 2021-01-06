@@ -33,7 +33,7 @@ def solve_sudoku(sudoku, i=0, j=0):
     """
     :param sudoku: the board
     :param i: current cell's row
-    :param j: current cells's column
+    :param j: current cell's column
     :return: True if the sudoku is solved
     """
     if i == j == 8:

@@ -43,7 +43,7 @@ def calc(nums, operators, brackets_templates):
 def generate_calculation_template(brack: List) -> (List[str], List[int], List[int]):
     """
     :param brack: a list of pairs of brackets
-    :return: the tempale for these brackets, and a list of nums indices and a list of operators indices in the template
+    :return: the template for these brackets, and a list of nums indices and a list of operators indices in the template
     """
     res = []
     nums_indices = []

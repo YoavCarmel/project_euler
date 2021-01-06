@@ -6,7 +6,7 @@ from libs.calculations import divisors_sum
 def ans():
     max_chain = []
     million = 10 ** 6
-    divs_sums: List[int] = divisors_sum(million + 1, including_i=False)  # this gives a massive improvment
+    divs_sums: List[int] = divisors_sum(million + 1, including_i=False)  # this gives a massive improvement
     checked: Set[int] = set()
     for i in range(1, million + 1):
         # if we already saw i, dont calculate again
@@ -15,7 +15,7 @@ def ans():
         chain_s = set()
         chain_l = list()
         s = i
-        # continue as long as the chain does not exceed a million, and we do not get a number we have alraedy seen
+        # continue as long as the chain does not exceed a million, and we do not get a number we have already seen
         while s <= million and s not in chain_s and s not in checked:
             checked.add(s)
             chain_s.add(s)
