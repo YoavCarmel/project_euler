@@ -1,6 +1,4 @@
-from typing import Dict, List
-
-from sympy import divisors
+from typing import List
 
 
 def ans():
@@ -9,9 +7,9 @@ def ans():
     our algorithm will keep track of all found numbers, and calculate the next one based on the prevs.
     the pattern is like that: have another list that contains indices of the list (counting backward from current)
     together with plus/minus for each one, that is created during the run.
-    to get the next numebr of partitions each time, we apply the calculation based on the indices in the second list.
+    to get the next number of partitions each time, we apply the calculation based on the indices in the second list.
     the second list is built like that: start with [(1,+),(2,+)].
-    when appending the i'th term:
+    when appending the i_th term:
         value:
             if i is even, append l[i-1]+(i+1)
             if i is odd, append l[i-1]+(i+1)//2
