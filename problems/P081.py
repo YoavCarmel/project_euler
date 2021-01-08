@@ -7,7 +7,7 @@ from objects.graphs.directed_graph import DirectedGraph
 def ans():
     mat: List[List[int]] = create_matrix_from_file("files//P081.txt", ",")
     g, source, target = create_graph_from_matrix(mat)
-    return DirectedGraph.shortest_distance(source, target)[0] + g.get_node(0).value
+    return DirectedGraph.shortest_distance(source, target)[0] + g.get_node(0).get_value()
 
 
 def create_graph_from_matrix(mat: List[List[int]]) -> (DirectedGraph, int, int):
@@ -24,11 +24,11 @@ def create_graph_from_matrix(mat: List[List[int]]) -> (DirectedGraph, int, int):
             g.add_node(mat[i][j])
     for n in range(len(g) - 1):
         if n % row_length == row_length - 1:  # end of row
-            g.add_connection(n, n + row_length, g.get_node(n + row_length).value)
+            g.add_connection(n, n + row_length, g.get_node(n + row_length).get_value())
         elif n // column_length == column_length - 1:  # last row
-            g.add_connection(n, n + 1, g.get_node(n + 1).value)
+            g.add_connection(n, n + 1, g.get_node(n + 1).get_value())
         else:
-            g.add_connection(n, n + row_length, g.get_node(n + row_length).value)
-            g.add_connection(n, n + 1, g.get_node(n + 1).value)
+            g.add_connection(n, n + row_length, g.get_node(n + row_length).get_value())
+            g.add_connection(n, n + 1, g.get_node(n + 1).get_value())
     # source is the first added node (top left), target is the last added node (bottom right)
     return g, g.get_node(0), g.get_node(len(g) - 1)

@@ -18,7 +18,7 @@ class Graph(ABC):
         :param value: value of the node
         :return: the new node
         """
-        new_node = Node(self.__next_id, value, list())
+        new_node = Node(self.__next_id, value)
         self._nodes[self.__next_id] = new_node
         self.__next_id += 1
         return new_node
@@ -53,7 +53,7 @@ class Graph(ABC):
         """
         s = 0
         for node in self.get_all_nodes():
-            for connection in node.connections:
+            for connection in node.get_connections():
                 s += connection.length
         return s
 
@@ -66,6 +66,15 @@ class Graph(ABC):
 
     def __len__(self):
         return len(self._nodes)
+
+    def __copy__(self) -> Graph:
+        g = type(self)()
+        g._nodes = {node.node_id: Node(node.node_id, node.get_value()) for node in self.get_all_nodes()}
+        for node in self.get_all_nodes():
+            for connection in node.get_connections():
+                g.add_connection(node.node_id, connection.other.node_id, connection.length)
+        g.__next_id = self.__next_id
+        return g
 
     @staticmethod
     def shortest_distance(source: Node, target: Node) -> Tuple[float, List[int]]:
@@ -109,7 +118,7 @@ class Graph(ABC):
             closed.add(head.node.node_id)
             in_heap: Set[int] = {sn.node.node_id for sn in heap}
             # go over all connections of current node (head)
-            for connection in head.node.connections:
+            for connection in head.node.get_connections():
                 if connection.other.node_id not in closed and connection.other.node_id not in in_heap:
                     # add a new unseen node to the heap
                     heapq.heappush(heap, SearchNode(connection.other, head.total_dist + connection.length, head))
@@ -128,3 +137,32 @@ class Graph(ABC):
         path.append(result_sn.node.node_id)
         path.reverse()
         return result_distance, path
+
+    def __eq__(self, other: Graph):
+        if other._nodes.keys() != self._nodes.keys():
+            return False
+        for node in self.get_all_nodes():
+            other_node = other.get_node(node.node_id)
+            if node.get_value() != other_node.get_value():
+                return False
+            if len(node.get_connections()) != len(other_node.get_connections()):
+                return False
+            connections_ids = {(con.other.node_id, con.length) for con in node.get_connections()}
+            for con in other_node.get_connections():
+                if (con.other.node_id, con.length) not in connections_ids:
+                    print("X")
+                    return False
+            other_connections_ids = {(con.other.node_id, con.length) for con in other_node.get_connections()}
+            for con in node.get_connections():
+                if (con.other.node_id, con.length) not in other_connections_ids:
+                    return False
+        return True
+
+    def __str__(self):
+        s = "Graph:\n"
+        for node in self.get_all_nodes():
+            s += f"id:{node.node_id},value:{node.get_value()},connections: [ "
+            for con in node.get_connections():
+                s += f"({con.other.node_id},{con.length}) "
+            s += "]\n"
+        return s

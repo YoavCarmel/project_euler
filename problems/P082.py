@@ -30,26 +30,26 @@ def create_graph_from_matrix(mat: List[List[int]]) -> (DirectedGraph, int, int):
 
     for n in range(row_length * column_length):
         if n == row_length - 1:  # top right corner
-            g.add_connection(n, n + row_length, g.get_node(n + row_length).value)
+            g.add_connection(n, n + row_length, g.get_node(n + row_length).get_value())
             g.add_connection(n, target.node_id, 0)  # point to target
         elif n == row_length * column_length - 1:  # bottom left corner
-            g.add_connection(n, n - row_length, g.get_node(n - row_length).value)
+            g.add_connection(n, n - row_length, g.get_node(n - row_length).get_value())
             g.add_connection(n, target.node_id, 0)  # point to target
         elif n % row_length == row_length - 1:  # right but not corner:
-            g.add_connection(n, n + row_length, g.get_node(n + row_length).value)
-            g.add_connection(n, n - row_length, g.get_node(n - row_length).value)
+            g.add_connection(n, n + row_length, g.get_node(n + row_length).get_value())
+            g.add_connection(n, n - row_length, g.get_node(n - row_length).get_value())
             g.add_connection(n, target.node_id, 0)  # point to target
         elif n < row_length - 1:  # top but not top right
-            g.add_connection(n, n + row_length, g.get_node(n + row_length).value)
-            g.add_connection(n, n + 1, g.get_node(n + 1).value)
+            g.add_connection(n, n + row_length, g.get_node(n + row_length).get_value())
+            g.add_connection(n, n + 1, g.get_node(n + 1).get_value())
         elif (column_length - 1) * row_length <= n < row_length * column_length - 1:  # bottom but not bottom right
-            g.add_connection(n, n - row_length, g.get_node(n - row_length).value)
-            g.add_connection(n, n + 1, g.get_node(n + 1).value)
+            g.add_connection(n, n - row_length, g.get_node(n - row_length).get_value())
+            g.add_connection(n, n + 1, g.get_node(n + 1).get_value())
         else:
-            g.add_connection(n, n + row_length, g.get_node(n + row_length).value)
-            g.add_connection(n, n - row_length, g.get_node(n - row_length).value)
-            g.add_connection(n, n + 1, g.get_node(n + 1).value)
+            g.add_connection(n, n + row_length, g.get_node(n + row_length).get_value())
+            g.add_connection(n, n - row_length, g.get_node(n - row_length).get_value())
+            g.add_connection(n, n + 1, g.get_node(n + 1).get_value())
 
         if n % row_length == 0:  # left
-            g.add_connection(source.node_id, n, g.get_node(n).value)  # pointed by source
+            g.add_connection(source.node_id, n, g.get_node(n).get_value())  # pointed by source
     return g, source, target
