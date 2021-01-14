@@ -3,7 +3,7 @@ from __future__ import annotations
 import heapq
 import random
 from math import inf
-from typing import Union, List, Set, Dict
+from typing import Union, List, Set, Dict, Optional
 
 from objects.graphs.graph import Graph
 from objects.graphs.node import Node
@@ -29,7 +29,7 @@ class UndirectedGraph(Graph):
             def __init__(self, self_node: Node, con_len: float):
                 self.node: Node = self_node
                 self.con_len: float = con_len
-                self.parent: Union[Node, None] = None
+                self.parent: Optional[Node] = None
 
             def __lt__(self, other: MSTNode):
                 return self.con_len < other.con_len

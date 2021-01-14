@@ -16,8 +16,7 @@ def get_graph_from_matrix(mat: List[List[str]]) -> UndirectedGraph:
     :return: the graph
     """
     g = UndirectedGraph()
-    for _ in range(len(mat)):
-        g.add_node(0)
+    g.expand_graph(len(mat))
     for i in range(len(mat)):
         for j in range(len(mat)):
             if mat[i][j] != "-":

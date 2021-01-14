@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Optional
 
 from libs.numbers_properties import is_int
 
@@ -44,7 +44,7 @@ def get_sequence(number: int) -> str:
     return seq
 
 
-def apply_sequence_backwards(number: int, sequence: str) -> Union[int, None]:
+def apply_sequence_backwards(number: int, sequence: str) -> Optional[int]:
     """
     :param number: a result number
     :param sequence: all steps that were taken
@@ -58,7 +58,7 @@ def apply_sequence_backwards(number: int, sequence: str) -> Union[int, None]:
     return number
 
 
-def apply_step_backwards(number: int, step: str) -> Union[int, None]:
+def apply_step_backwards(number: int, step: str) -> Optional[int]:
     """
     :param number: a result number
     :param step: the step that was taken

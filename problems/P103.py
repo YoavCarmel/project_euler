@@ -1,4 +1,5 @@
-from typing import List, Set, Union, NamedTuple
+from typing import List, Set, NamedTuple, Optional
+
 from libs.special_groups import is_special_sum_set
 
 
@@ -43,7 +44,7 @@ def calc(max_depth: int, min_value_depth: MinValueDepth) -> List[int]:
     # for depth=1
     i = min_value_depth.values[max_depth - 1] + 1
     # the current found solution
-    best_found: Union[Solution, None] = None
+    best_found: Optional[Solution] = None
     while True:
         # if we are sure that the current i cannot bring a better solution
         # because the current i with the min possible values (min solution of previous depth) is still too big
@@ -64,7 +65,7 @@ def calc(max_depth: int, min_value_depth: MinValueDepth) -> List[int]:
 
 
 # returns list of max_depth len he found to work
-def rec(curr_nums: List[int], curr_subsets_sums: Set[int], max_depth: int, max_sum: Union[int, None],
+def rec(curr_nums: List[int], curr_subsets_sums: Set[int], max_depth: int, max_sum: Optional[int],
         min_value_depth: MinValueDepth) -> List[int]:
     """
     calculate recursively the solution for the input depth with given first element

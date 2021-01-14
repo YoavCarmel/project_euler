@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 import heapq
-from typing import Dict, List, Set, NamedTuple, Tuple, Union
+from typing import Dict, List, Set, NamedTuple, Tuple, Union, Optional
 
 from objects.graphs.node import Node
 
@@ -88,12 +88,12 @@ class Graph(ABC):
         class SearchNode(NamedTuple):
             node: Node
             total_dist: float
-            parent: Union[SearchNode, None]
+            parent: Optional[SearchNode]
 
             def __lt__(self, other: SearchNode):
                 return self.total_dist < other.total_dist
 
-        def find_search_node_index_in_heap(h: List[SearchNode], node: Node) -> Union[int, None]:
+        def find_search_node_index_in_heap(h: List[SearchNode], node: Node) -> Optional[int]:
             """
             :param h: heap
             :param node: wanted node
@@ -166,3 +166,12 @@ class Graph(ABC):
                 s += f"({con.other.node_id},{con.length}) "
             s += "]\n"
         return s
+
+    def expand_graph(self, size: int, nodes_values=None):
+        """
+        add nodes to the graph
+        :param size: number of nodes to add
+        :param nodes_values: value of nodes
+        """
+        for _ in range(size):
+            self.add_node(nodes_values)
