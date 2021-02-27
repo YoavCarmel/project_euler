@@ -43,7 +43,7 @@ def one_point_check(check: Point, o1: Point, o2: Point) -> bool:
     if check.x == 0:
         if check.y == 0:
             return False
-        s = Line(o1, o2).slope()
+        s = Line(o1, o2).m
         if s == infinity:
             return False
         y = (-s) * o1.x + o1.y
@@ -52,11 +52,11 @@ def one_point_check(check: Point, o1: Point, o2: Point) -> bool:
         else:
             return 0 >= y >= check.y
     # else:
-    s = Line(check, Point(0, 0)).slope()
-    m = Line(o1, o2).slope()
+    s = Line(check, Point(0, 0)).m
+    m = Line(o1, o2).m
     if m == infinity:
-        y1 = (-(Line(check, o1)).slope()) * check.x + check.y
-        y2 = (-(Line(check, o2)).slope()) * check.x + check.y
+        y1 = (-(Line(check, o1)).m) * check.x + check.y
+        y2 = (-(Line(check, o2)).m) * check.x + check.y
         return (y2 < 0 < y1) or (y1 < 0 < y2)
     if s == m:
         return False

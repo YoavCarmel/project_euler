@@ -3,29 +3,42 @@ from math import gcd, inf
 
 class Frac:
     def __init__(self, n, d=1):
-        g = gcd(n, d)
-        self.n = n // g
-        self.d = d // g
+        if d == 0:
+            raise Exception("division by 0")
+        n, d = Frac.reduce_frac(n, d)
+        self.n = n
+        self.d = d
 
     def simplify(self):
-        g = gcd(self.n, self.d)
-        return Frac(self.n // g, self.d // g)
+        n, d = Frac.reduce_frac(self.n, self.d)
+        return Frac(n, d)
+
+    @staticmethod
+    def reduce_frac(n, d) -> (int, int):
+        g = gcd(n, d)
+        if d < 0:
+            return -n // g, -d // g
+        else:
+            return n // g, d // g
 
     def __add__(self, other):
+        if type(other) is Frac:
+            return Frac(self.n * other.d + self.d * other.n, self.d * other.d)
         if type(other) is int:
             return self + Frac(other, 1)
-        if type(other) is Frac:
-            return Frac(self.n * other.d + self.d * other.n, self.d * other.d).simplify()
+        if other == inf or other == -inf:
+            return other
         else:
             raise NotImplemented()
 
     def __mul__(self, other):
-        if type(other) is int:
-            return self * Frac(other, 1)
         if type(other) is Frac:
-            return Frac(self.n * other.n, self.d * other.d).simplify()
+            return Frac(self.n * other.n, self.d * other.d)
+        if type(other) is int:
+            return self * Frac(other)
+        if other == inf or other == -inf:
+            return other
         else:
-            print(other)
             raise NotImplemented()
 
     def __str__(self):
@@ -39,6 +52,9 @@ class Frac:
 
     def __sub__(self, other):
         return self + (-other)
+
+    def __rsub__(self, other):
+        return self - other
 
     def __int__(self):
         return self.n // self.d
