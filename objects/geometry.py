@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import NamedTuple, Optional, Union, NewType
+from dataclasses import dataclass
+from typing import Optional, Union, NewType
 from math import inf
 
 from objects.frac import Frac
@@ -233,7 +234,8 @@ class QLine(Line):
         return self.min_x <= x <= self.max_x
 
 
-class Triangle(NamedTuple):
+@dataclass(init=True, repr=True)
+class Triangle:
     p1: Point
     p2: Point
     p3: Point

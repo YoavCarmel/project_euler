@@ -1,6 +1,6 @@
 import time
 
-from problems.P165 import ans
+from problems.P124 import ans
 from solution_file.solution_file_creator import add_problem_solution
 
 start_time = int(round(time.time() * 1000))

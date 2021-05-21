@@ -1,13 +1,12 @@
 from __future__ import annotations
-from typing import NamedTuple, List
+from typing import List
+from dataclasses import dataclass
 
 
-class Connection(NamedTuple):
+@dataclass(init=True, repr=True)
+class Connection:
     other: Node
     length: float
-
-    def __repr__(self):
-        return f"{self.other.node_id},{self.length}"
 
 
 class Node:

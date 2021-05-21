@@ -174,3 +174,10 @@ def fibonacci_number_by_index(index: int):
     fib_mat = ((1, 1), (1, 0))  # the fibonacci matrix
     mat_n = power_mat(fib_mat, index - 2)
     return sum(mat_n[0])
+
+
+def list_product(nums: List[int]):
+    p = 1
+    for x in nums:
+        p *= x
+    return p

@@ -1,14 +1,15 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
 from math import sqrt
-from typing import NamedTuple
 
 from objects.frac import Frac
 
 
-class QPair(NamedTuple):
+@dataclass(init=True, repr=True)
+class QPair:
     """
-    named tuple that contains the whole part of the FracWithSqrt and the non-int part of the FracWithSqrt
+    data class that contains the whole part of the FracWithSqrt and the non-int part of the FracWithSqrt
     """
     whole: int
     rem: FracWithSqrt
