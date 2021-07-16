@@ -181,3 +181,7 @@ def list_product(nums: List[int]):
     for x in nums:
         p *= x
     return p
+
+
+def lcm(a, b):
+    return abs(a * b) // math.gcd(a, b)
