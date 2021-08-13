@@ -1,7 +1,8 @@
 import math
 from collections import defaultdict
-from typing import Union, List, Dict, Collection
+from typing import Union, List, Dict, Collection, Set, Iterable
 
+import sympy
 from sympy import factorint
 
 from libs.types_converting import num_to_list
@@ -94,3 +95,14 @@ def lcm_list(nums: List[int]) -> int:
     for k in factors:
         p *= (k ** factors[k])
     return p
+
+
+def coprime_to_list(num: int, nums_list: List[int]):
+    return co_primes(num, lcm_list(nums_list))
+
+
+def list_prime_factors(nums: Iterable[int]) -> Set[int]:
+    s = set()
+    for n in nums:
+        s = s.union(sympy.primefactors(n))
+    return s
