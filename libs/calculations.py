@@ -185,3 +185,12 @@ def list_product(nums: List[int]):
 
 def lcm(a, b):
     return abs(a * b) // math.gcd(a, b)
+
+
+def sieve_primes(n):
+    flags = np.ones(n, dtype=bool)
+    flags[0] = flags[1] = False
+    for i in range(2, int(math.sqrt(n) + 1)):
+        if flags[i]:
+            flags[i * i::i] = False
+    return list(np.flatnonzero(flags))
