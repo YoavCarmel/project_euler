@@ -1,20 +1,29 @@
+from functools import lru_cache
 from math import gcd, inf
 
 
 class Frac:
-    def __init__(self, n, d=1):
+    def __init__(self, n, d=1, reduce=True):
         if d == 0:
             raise Exception("division by 0")
-        n, d = Frac.reduce_frac(n, d)
-        self.n = n
-        self.d = d
+        if reduce:
+            n, d = Frac.reduce_frac(n, d)
+        self.n: int = n
+        self.d: int = d
+        self.is_int = self.d == 1
+        self.hash_val = self.calc_hash()
+
+    def calc_hash(self):
+        return hash(self.n) ^ hash(self.d)
 
     def simplify(self):
         n, d = Frac.reduce_frac(self.n, self.d)
-        return Frac(n, d)
+        return Frac(n, d, reduce=False)
 
     @staticmethod
     def reduce_frac(n, d) -> (int, int):
+        if d == 1:
+            return n, d
         g = gcd(n, d)
         if d < 0:
             return -n // g, -d // g
@@ -22,20 +31,26 @@ class Frac:
             return n // g, d // g
 
     def __add__(self, other):
-        if type(other) is Frac:
+        if isinstance(other, Frac):
             return Frac(self.n * other.d + self.d * other.n, self.d * other.d)
-        if type(other) is int:
-            return self + Frac(other, 1)
+        if isinstance(other, int):
+            if self.is_int:
+                return Frac(other + self.n, reduce=False)
+            else:
+                return self + Frac(other, reduce=False)
         if other == inf or other == -inf:
             return other
         else:
             raise NotImplemented()
 
     def __mul__(self, other):
-        if type(other) is Frac:
+        if isinstance(other, Frac):
             return Frac(self.n * other.n, self.d * other.d)
-        if type(other) is int:
-            return self * Frac(other)
+        if isinstance(other, int):
+            if self.is_int:
+                return Frac(other * self.n, reduce=False)
+            else:
+                return self * Frac(other)
         if other == inf or other == -inf:
             return other
         else:
@@ -48,7 +63,7 @@ class Frac:
         return str(self.n) + "/" + str(self.d)
 
     def __neg__(self):
-        return Frac(-self.n, self.d)
+        return Frac(-self.n, self.d, reduce=False)
 
     def __sub__(self, other):
         return self + (-other)
@@ -62,41 +77,47 @@ class Frac:
     def __float__(self):
         return self.n / self.d
 
-    def flip(self):
-        return Frac(self.d, self.n)
-
     def __truediv__(self, other):
-        if type(other) is int:
-            return self * Frac(1, other)
-        if type(other) is Frac:
-            return self * other.flip()
+        if isinstance(other, Frac):
+            return Frac(self.n * other.d, self.d * other.n)
+        if isinstance(other, int):
+            return Frac(self.n, self.d * other)
         else:
             raise NotImplemented()
 
+    def flip(self):
+        return Frac(self.d, self.n, reduce=False)
+
     def __hash__(self):
-        return hash(self.n) + hash(self.d)
+        return self.hash_val
 
     def __ge__(self, other):
-        if type(other) is int or type(other) is float:
+        if isinstance(other, int):
+            return self.n // self.d >= other
+        if isinstance(other, Frac):
+            return self.n * other.d >= self.d * other.n
+        if isinstance(other, float):
             if other == inf:
                 return False
             if other == -inf:
                 return True
             return other <= float(self)
-        if type(other) is Frac:
-            return self.n * other.d >= self.d * other.n
         else:
             raise NotImplemented()
 
     def __eq__(self, other):
-        if type(other) is int or type(other) is float:
+        if isinstance(other, Frac):
+            return self.n == other.n and self.d == other.d
+        if isinstance(other, float):
             if other == inf:
                 return self.d == 0 and self.n > 0
             if other == -inf:
                 return self.d == 0 and self.n < 0
             return other == float(self)
-        if type(other) is Frac:
-            return self >= other >= self
+        if isinstance(other, int):
+            if not self.is_int:
+                return False
+            return self.n == other
         else:
             raise NotImplemented()
 

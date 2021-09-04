@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from functools import lru_cache
 from typing import Optional, Union, NewType
 from math import inf
 
@@ -8,13 +9,17 @@ from objects.frac import Frac
 
 EPSILON = 1e-6
 
-Number = NewType("Number", Union[int, float, Frac, None])
+Number = Union[int, float, Frac, None]
 
 
 class Point:
     def __init__(self, x: Number, y: Number):
         self.x: Number = x
         self.y: Number = y
+        self.hash_val = self.calc_hash()
+
+    def calc_hash(self):
+        return hash(self.x) ^ hash(self.y)
 
     def __repr__(self):
         """
@@ -26,7 +31,7 @@ class Point:
         return self.x == other.x and self.y == other.y
 
     def __hash__(self):
-        return hash(self.x) ^ hash(self.y)
+        return self.hash_val
 
 
 class Line:
@@ -37,10 +42,14 @@ class Line:
         self.max_x = max(p1.x, p2.x)
         self.min_y = min(p1.y, p2.y)
         self.max_y = max(p1.y, p2.y)
+        self.hash_val = self.calc_hash()
         if should_calc_mb:
             m, b = self.get_mb()
             self.m: float = m
             self.b: float = b
+
+    def calc_hash(self):
+        return hash(self.p1) ^ hash(self.p2)
 
     def get_mb(self) -> (float, float):
         """
@@ -142,7 +151,7 @@ class Line:
     def intersection_point(self, other: Line) -> Optional[Point]:
         """
         intersecting point between lines.
-        uses the code od intersection check for speed-up: if we called the is_intersecting func
+        uses the code of intersection check for speed-up: if we called the is_intersecting func
         we would calculate basically the same thing twice
         :param other: other line
         :return: intersecting point of the lines. None if no intersection
@@ -160,23 +169,20 @@ class Line:
         if self.m == inf:
             # get the y of the other line at the x value of the inf line
             line1_x = self.p1.x
+            if not other.is_in_x_range(line1_x):
+                return None
             inter_y = other.m * line1_x + other.b
-            if self.is_in_range(line1_x, inter_y) and other.is_in_range(line1_x, inter_y):
+            if self.is_in_y_range(inter_y) and other.is_in_y_range(inter_y):
                 return Point(line1_x, inter_y)
             return None
         # if other is parallel to the y axis. we know self is for sure not, because they are not parallel
         elif other.m == inf:
-            # get the y of the other line at the x value of the inf line
-            line2_x = other.p1.x
-            inter_y = self.m * line2_x + self.b
-            if self.is_in_range(line2_x, inter_y) and other.is_in_range(line2_x, inter_y):
-                return Point(line2_x, inter_y)
-            return None
+            return other.intersection_point(self)
         # calculate the x,y of the intersection based on the known formula, but the point may be anywhere in the grid
         inter_x: float = (other.b - self.b) / (self.m - other.m)
-        inter_y: float = self.m * inter_x + self.b
         # return True if the point of intersection is exactly on the line cuts that are self and other
-        if self.is_in_range(inter_x, inter_y) and other.is_in_range(inter_x, inter_y):
+        if self.is_in_x_range(inter_x) and other.is_in_x_range(inter_x):
+            inter_y: float = self.m * inter_x + self.b
             return Point(inter_x, inter_y)
         return None
 
@@ -205,6 +211,9 @@ class Line:
         # which must be where the intersection is
         return True
 
+    def __hash__(self):
+        return self.hash_val
+
 
 class QLine(Line):
     """
@@ -218,20 +227,70 @@ class QLine(Line):
         m, b = self.get_mb()
         self.m: Frac = m
         self.b: Frac = b
+        self.is_m_inf = self.m == inf
 
     def is_in_y_range(self, y: Number):
         """
         :param y: input y value
         :return: True if y is between the min y and max y of the line
         """
-        return self.min_y <= y <= self.max_y
+        return self.min_y <= float(y) <= self.max_y
 
     def is_in_x_range(self, x: Number):
         """
         :param x: input y value
         :return: True if x is between the min x and max x of the line
         """
-        return self.min_x <= x <= self.max_x
+        return self.min_x <= float(x) <= self.max_x
+
+    def intersection_point(self, other: QLine, possible_parallel: bool = True) -> Optional[Point]:
+        """
+        intersecting point between lines.
+        uses the code of intersection check for speed-up: if we called the is_intersecting func
+        we would calculate basically the same thing twice
+        :param other: other line
+        :return: intersecting point of the lines. None if no intersection
+        """
+        if possible_parallel and self.m == other.m:
+            if self.b == other.b:
+                return None
+            if self.p1 in {other.p1, other.p2}:
+                return self.p1
+            if self.p2 in {other.p1, other.p2}:
+                return self.p2
+            return None
+        # else, they are not parallel, they either intersect in a single point, or do not intersect
+        # if self is parallel to the y axis. we know other is for sure not, because they are not parallel
+        if self.is_m_inf:
+            # get the y of the other line at the x value of the inf line
+            line1_x = self.p1.x
+            if not other.is_in_x_range(line1_x):
+                return None
+            inter_y = other.m * line1_x + other.b
+            if self.is_in_y_range(inter_y) and other.is_in_y_range(inter_y):
+                return Point(line1_x, inter_y)
+            return None
+        # if other is parallel to the y axis. we know self is for sure not, because they are not parallel
+        elif other.is_m_inf:
+            return other.intersection_point(self)
+        """
+        # calculate the x,y of the intersection based on the known formula, but the point may be anywhere in the grid.
+        problem: this way of calculating is very heavy, it creates 3 Frac objects.
+        so we should find the best optimal formula that is one-time Frac calculation:
+        We want to calculate: (other.b - self.b) / (self.m - other.m).
+        sm,om,sb,ob = self.m,other.m,self.b,other.b
+        """
+        sm, om, sb, ob = self.m, other.m, self.b, other.b
+        top_top = ob.n * sb.d - ob.d * sb.n
+        top_bot = ob.d * sb.d
+        bot_top = sm.n * om.d - om.n * sm.d
+        bot_bot = sm.d * om.d
+        inter_x: Frac = Frac(top_top * bot_bot, top_bot * bot_top)
+        # return True if the point of intersection is exactly on the line cuts that are self and other
+        if self.is_in_x_range(inter_x) and other.is_in_x_range(inter_x):
+            inter_y: float = self.m * inter_x + self.b
+            return Point(inter_x, inter_y)
+        return None
 
 
 @dataclass(init=True, repr=True)
