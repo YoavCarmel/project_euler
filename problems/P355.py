@@ -52,6 +52,8 @@ def ans():
     without messing with nasty combinatorics, so i created thee same process for quads,
     which resulted in 0 improving quads, so i knew that we only need size 2,3 and not more than that.
     The code for quads is still in the solution file but i dont use it because it is a waste of run time.
+    NOTE: running for 2*10**6, i found that there are indeed ~20 numbers that come from quads, so my solution is NOT
+    generic, and who knows, maybe there are even pentas for a very large n value. But this is not the problem here.
 
     Now we have a group of values (the dict values) that we should take a subgroup of it with the biggest sum possible,
     such that there are no two chosen values that their keys share a number.
@@ -65,6 +67,10 @@ def ans():
 
     At the end, combine the result of the LP model with the base value of the max power of each prime,
     and dont forget to add 1 as it is not a part of any prime calculation!
+
+    Optimization result:
+    only 4654 primes out of 17984 used to improve.
+    only 21218 total numbers in LP out of 200000.
     """
     n = 2 * 10 ** 5
     primes: List[int] = sieve_primes(n)
