@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import List, Optional, Set, Dict, Tuple
+from typing import List, Optional, Set, Dict, Tuple, Union
 
 import pytest
 from sortedcontainers import SortedList, SortedDict
@@ -8,21 +8,49 @@ from tqdm import tqdm
 from libs.calculations import power_set
 from objects.geometry import Line, Point, QLine
 
+"""
+tried 3 solution:
+1. using QLine get the exact points
+2. using Line get the intersecting lines and then convert to QLine and calc again for these pairs to remove duplicates
+3. (deleted) using Line get intersection points, remove points that are too close to each other (just does not work)
+
+both 1 and 2 run in about 60 seconds :(
+"""
+
 
 def ans():
-    limit = 5000
+    return solve2(limit=100)
+
+
+def solve(limit=5000):
     tns = get_all_tns(limit * 4)
-    lines = get_lines_list(tns)
-    points = get_intersections(lines)
+    lines = get_lines_list(tns, qline=True)
+    points = get_intersections_minmax_constraints(lines, points=True)
     return len(points)
 
 
-@pytest.mark.parametrize("limit, output", [(100, 1112), (500, 29496), (1000, 113849)])
-def test_ans(limit, output):
+def solve2(limit=5000):
     tns = get_all_tns(limit * 4)
-    lines = get_lines_list(tns)
-    points = get_intersections(lines)
-    assert len(points) == output
+    lines = get_lines_list(tns, qline=False)
+    intersections = get_intersections_minmax_constraints(lines, points=False)
+    lines_q: Dict[Line, QLine] = {line: QLine(Point(line.p1.x, line.p1.y), Point(line.p2.x, line.p2.y))
+                                  for line in lines}
+    final_points: Set[Point] = set()
+    for pair in tqdm(intersections):
+        p = single_true_inter_point(lines_q[pair[0]], lines_q[pair[1]])
+        if p is not None:
+            final_points.add(p)
+    return len(final_points)
+
+
+@pytest.mark.parametrize("limit, output", [(100, 1112), (500, 29496), (1000, 113849)])
+def test1(limit, output):
+    assert solve(limit) == output
+
+
+@pytest.mark.parametrize("limit, output", [(100, 1112), (500, 29496), (1000, 113849)])
+def test2(limit, output):
+    assert solve2(limit) == output
 
 
 def next_sn(curr) -> int:
@@ -54,25 +82,31 @@ def get_all_tns(limit) -> List[int]:
     return result
 
 
-def get_lines_list(tns_list) -> List[QLine]:
+def get_lines_list(tns_list, qline=False) -> List[Line]:
     """
     converts tns list to lines list
     :param tns_list: tns list
     :return: the lines list
     """
-    result: List[QLine] = list()
+    result: List[Line] = list()
     for i in range(0, len(tns_list), 4):
-        result.append(QLine(Point(tns_list[i], tns_list[i + 1]), Point(tns_list[i + 2], tns_list[i + 3])))
+        if qline:
+            result.append(QLine(Point(tns_list[i], tns_list[i + 1]), Point(tns_list[i + 2], tns_list[i + 3])))
+        else:
+            result.append(Line(Point(tns_list[i], tns_list[i + 1]), Point(tns_list[i + 2], tns_list[i + 3])))
     return result
 
 
-def single_true_inter_point(line1: QLine, line2: QLine) -> Optional[Point]:
+def single_true_inter_point(line1: QLine, line2: QLine, is_qline=True) -> Optional[Point]:
     """
     :param line1: input line
     :param line2: input line
     :return: a valid non-end point intersection of the lines. None if does not exist
     """
-    p = line1.intersection_point(line2, possible_parallel=False)
+    if is_qline:
+        p = line1.intersection_point(line2, possible_parallel=False)
+    else:
+        p = line1.intersection_point(line2)
     if p is None:
         return None
     if p in {line1.p1, line1.p2, line2.p1, line2.p2}:
@@ -80,6 +114,7 @@ def single_true_inter_point(line1: QLine, line2: QLine) -> Optional[Point]:
     return p
 
 
+# Naive
 def get_intersections_naive(lines: List[QLine]) -> Set[Point]:
     """
     :param lines: lines to get true intersections of
@@ -94,24 +129,33 @@ def get_intersections_naive(lines: List[QLine]) -> Set[Point]:
     return points
 
 
-def get_intersections(lines: List[QLine]) -> Set[Point]:
+# MinMax constraints
+def get_intersections_minmax_constraints(lines: List[Line], points: bool) -> Union[Set[Point], Set[Tuple[List, List]]]:
     """
+
     :param lines: lines to get true intersections of
-    :return: a set of true intersection points
+    :param points: True if want to return points, False if want to return pairs of intersecting lines
+    :return: a set of results based on points
     """
     m_dict = get_m_dict(lines)
     max_x = SortedList(lines, key=lambda l: -l.max_x)  # The minus sign is so all slices are done the same direction
     min_x = SortedList(lines, key=lambda l: l.min_x)
     max_y = SortedList(lines, key=lambda l: -l.max_y)  # The minus sign is so all slices are done the same direction
     min_y = SortedList(lines, key=lambda l: l.min_y)
-    points: Set[Point] = set()
+    if points:
+        res: Set = set()
+    else:
+        res: Set = set()
     for i1, line1 in tqdm(enumerate(lines)):
         for i2, line2 in enumerate(
                 get_x_fit_lines(line1, lines[i1 + 1:], max_x, min_x, max_y, min_y).difference(m_dict[line1.m])):
-            p = single_true_inter_point(line1, line2)
+            p = single_true_inter_point(line1, line2, is_qline=points)
             if p is not None:
-                points.add(p)
-    return points
+                if points:
+                    res.add(p)
+                else:
+                    res.add((line1, line2))
+    return res
 
 
 def get_x_fit_lines(line, lines_left, max_x, min_x, max_y, min_y):
@@ -131,7 +175,7 @@ def get_x_fit_lines(line, lines_left, max_x, min_x, max_y, min_y):
     return s
 
 
-def get_m_dict(lines: List[QLine]) -> Dict:
+def get_m_dict(lines: List[Line]) -> Dict:
     d = defaultdict(set)
     for line in lines:
         d[line.m].add(line)

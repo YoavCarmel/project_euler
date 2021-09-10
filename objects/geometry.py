@@ -33,6 +33,9 @@ class Point:
     def __hash__(self):
         return self.hash_val
 
+    def to_tuple(self):
+        return self.x, self.y
+
 
 class Line:
     def __init__(self, p1: Point, p2: Point, should_calc_mb=True):
