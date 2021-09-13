@@ -194,3 +194,27 @@ def sieve_primes(n):
         if flags[i]:
             flags[i * i::i] = False
     return list(np.flatnonzero(flags))
+
+
+def sum_first_n(max_n: int):
+    return ((max_n + 1) * max_n) // 2
+
+
+def gcd_extended_euclid(a, b):
+    if a == 0:
+        return b, 0, 1
+
+    gcd, x1, y1 = gcd_extended_euclid(b % a, a)
+
+    x = y1 - (b // a) * x1
+    y = x1
+    return gcd, x, y
+
+
+def inverse_mod(x: int, n: int):
+    """
+    :param x: num to find inverse of
+    :param n: the Z_n
+    :return: y s.t. x*y=gcd(x,n) mod n
+    """
+    return pow(x, -1, n)
