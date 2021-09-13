@@ -30,7 +30,6 @@ def ans():
     looks like results in the next ni.
     try to implement it
     """
-    analyze()
     min_coin = b
     s = 0
     n = 1
