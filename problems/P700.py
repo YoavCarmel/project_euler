@@ -30,6 +30,7 @@ def ans():
     looks like results in the next ni.
     try to implement it
     """
+    analyze()
     min_coin = b
     s = 0
     n = 1
@@ -41,6 +42,24 @@ def ans():
             s += coin
             n, max_n = n - max_n, n
         n += max_n
+    return s
+
+
+def analyze():
+    a = 1504170715041707
+    b = 4503599627370517
+    min_coin = b
+    s = 0
+    n = 1
+    by_now = list()
+    while min_coin > 1:
+        coin = (a * n) % b
+        if coin < min_coin:
+            min_coin = coin
+            s += coin
+            print(list(reversed(get_seq(n, reversed(by_now)))), n, coin, sep="\t")
+            by_now.append(n)
+        n += 1
     return s
 
 
