@@ -218,3 +218,11 @@ def inverse_mod(x: int, n: int):
     :return: y s.t. x*y=gcd(x,n) mod n
     """
     return pow(x, -1, n)
+
+
+def diffs_list(lst: List[int]):
+    """
+    :param lst: a list of numbers
+    :return: a list of the differences between each adjacent pair
+    """
+    return [p2 - p1 for p1, p2 in zip(lst, lst[1:])]
