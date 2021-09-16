@@ -2,7 +2,12 @@ from typing import List, Union
 
 
 def list_to_num(li: List[Union[str, int]]) -> int:
-    return int("".join([str(i) for i in li]))
+    s = 0
+    power10 = 1
+    for num in reversed(li):
+        s += power10 * num
+        power10 *= 10
+    return s
 
 
 def num_to_list(n: int) -> List[int]:
