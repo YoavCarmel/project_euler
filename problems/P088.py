@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import defaultdict, Counter
 
 from sympy import factorint
 from itertools import combinations
@@ -52,12 +52,12 @@ def all_product_subgroups(n: int) -> List[Subgroup]:
     :return: a list of all subgroups for the input number
     """
     pfl_dict: Dict[int, int] = factorint(n)
-    pfl: List[int] = sum([[i] * pfl_dict[i] for i in pfl_dict], [])  # get prime factors of n with repetition
+    pfl: List[int] = [i for i in pfl_dict for _ in range(pfl_dict[i])]  # get prime factors of n with repetition
     """
     dictionary that maps length of list to all Subgroup of this length, that can be made by taking the initial
     prime factors list and multiplying some og the numbers in it to decrease the length of the list
     """
-    lengths: Dict[int, Set[Subgroup]] = dict()
+    lengths: Dict[int, Set[Subgroup]] = defaultdict(set)
     """
     add the first pair in the dictionary, which is the initial prime factors list
     """
@@ -67,39 +67,47 @@ def all_product_subgroups(n: int) -> List[Subgroup]:
     in each iteration, build the next length's lists.
     """
     for t in range(len(pfl), 2, -1):
-        lengths[t - 1]: Set[Subgroup] = set()  # set the new key's value
-        for i in lengths[t]:  # for each subgroup in the current length
-            """
-            we will go over all pairs in the group, and for each pair, remove it's values and add their product.
-            if there is a number duplicated, it will do the same calculations over and over again on the same number,
-            but each time for another instance of it.
-            so in order to prevent it, we will only go over each number once, and take care of duplicated numbers,
-            that the only additional thing we need to do is to add each number's product with itself.
-            """
-            i_duplicates: List[int] = get_duplicates_in_list(list(i.group))  # the duplicates list
-            i_pfs: List[int] = list(set(i.group))  # the unique values list
-            # now take care of our process of taking pairs of numbers and replacing them with their product
-            for pair in set(combinations(i_pfs, 2)):  # for each pair in the list
-                # get the subgroup without the pair
-                i_copy = list(i.group).copy()
-                i_copy.remove(pair[0])
-                i_copy.remove(pair[1])
-                # add the pair's product
-                i_copy.append(pair[0] * pair[1])
-                # add the new subgroup, calculate the new sum in O(1) using given info
-                lengths[t - 1].add(
-                    Subgroup(tuple(sorted(i_copy)), i.sum - pair[0] - pair[1] + pair[0] * pair[1], t - 1))
-            for num in i_duplicates:
-                # get the subgroup without the pair
-                i_copy = list(i.group).copy()
-                i_copy.remove(num)
-                i_copy.remove(num)
-                # add the pair's product
-                i_copy.append(num * num)
-                # add the new subgroup, calculate the new sum in O(1) using given info
-                lengths[t - 1].add(
-                    Subgroup(tuple(sorted(i_copy)), i.sum - 2 * num + num * num, t - 1))
+        lengths[t - 1] = get_next_length_subgroups(lengths[t], t - 1)
     return [sg for k in lengths for sg in lengths[k]]
+
+
+def get_next_length_subgroups(lengths_t, next_t):
+    """
+    :param lengths_t: the previous length's subgroups
+    :param next_t: the new length
+    :return: a set of the subgroups of length next_t
+    """
+    res: Set[Subgroup] = set()
+    """
+    we will go over all pairs in the group, and for each pair, remove its values and add their product.
+    if there is a number duplicated, it will do the same calculations over and over again on the same number,
+    but each time for another instance of it.
+    so in order to prevent it, we will only go over each number once, and take care of duplicated numbers,
+    that the only additional thing we need to do is to add each number's product with itself.
+    """
+    for i in lengths_t:  # for each subgroup in the current length:
+        i_duplicates: List[int] = get_duplicates_in_list(list(i.group))  # the duplicates list
+        i_pfs: Set[int] = set(i.group)  # the unique values
+        # now take care of our process of taking pairs of numbers and replacing them with their product
+        for pair in combinations(i_pfs, 2):  # for each pair in the list
+            # get the subgroup without the pair
+            i_copy = list(i.group).copy()
+            i_copy.remove(pair[0])
+            i_copy.remove(pair[1])
+            # add the pair's product
+            i_copy.append(pair[0] * pair[1])
+            # add the new subgroup, calculate the new sum in O(1) using given info
+            res.add(Subgroup(tuple(sorted(i_copy)), i.sum - pair[0] - pair[1] + pair[0] * pair[1], next_t))
+        for num in i_duplicates:
+            # get the subgroup without the pair
+            i_copy = list(i.group).copy()
+            i_copy.remove(num)
+            i_copy.remove(num)
+            # add the pair's product
+            i_copy.append(num * num)
+            # add the new subgroup, calculate the new sum in O(1) using given info
+            res.add(Subgroup(tuple(sorted(i_copy)), i.sum - 2 * num + num * num, next_t))
+    return res
 
 
 def get_duplicates_in_list(values: List[Any]) -> List[Any]:
@@ -107,7 +115,5 @@ def get_duplicates_in_list(values: List[Any]) -> List[Any]:
     :param values: a list of values
     :return: all values that appear more than once in the input list
     """
-    counts: Dict[Any, int] = defaultdict(int)
-    for i in values:
-        counts[i] += 1
+    counts = Counter(values)
     return [i for i in counts if counts[i] > 1]
