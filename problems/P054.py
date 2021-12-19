@@ -7,10 +7,10 @@ def ans():
     count: int = 0
     f: TextIO = open("files//P054.txt")
     for line in f.readlines():
-        line_splitted: List[str] = line.strip("\n").split(" ")
+        line_split: List[str] = line.strip("\n").split(" ")
         # get players
-        p1: List[Card] = convert_list_to_cards(line_splitted[:5])
-        p2: List[Card] = convert_list_to_cards(line_splitted[5:])
+        p1: List[Card] = convert_list_to_cards(line_split[:5])
+        p2: List[Card] = convert_list_to_cards(line_split[5:])
         # get players powers
         power_p1: int = power(p1)
         power_p2: int = power(p2)
