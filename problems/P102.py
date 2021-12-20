@@ -1,5 +1,5 @@
 from libs.files import get_file_lines
-from objects.geometry import Triangle, Point, Line
+from libs.objects.geometry import Triangle, Point, Line
 from typing import List
 from math import inf as infinity
 

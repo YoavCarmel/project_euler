@@ -5,8 +5,8 @@ import numpy as np
 import sympy
 from itertools import chain, combinations
 
-from objects.frac import Frac
-from objects.frac_with_sqrt import QPair, FracWithSqrt
+from libs.objects.frac import Frac
+from libs.objects.frac_with_sqrt import QPair, FracWithSqrt
 
 
 def multinom(params):

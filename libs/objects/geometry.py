@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from functools import lru_cache
-from typing import Optional, Union, NewType
+from typing import Optional, Union
 from math import inf
 
-from objects.frac import Frac
+from libs.objects.frac import Frac
 
 EPSILON = 1e-6
 

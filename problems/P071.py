@@ -1,4 +1,4 @@
-from objects.frac import Frac
+from libs.objects.frac import Frac
 
 
 def ans():

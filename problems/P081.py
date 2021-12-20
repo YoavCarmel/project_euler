@@ -1,7 +1,7 @@
 from typing import List
 
 from libs.files import create_matrix_from_file
-from objects.graphs.directed_graph import DirectedGraph
+from libs.objects.graphs.directed_graph import DirectedGraph
 
 
 def ans():

@@ -1,7 +1,7 @@
 from typing import List
 
 from libs.files import create_matrix_from_file
-from objects.graphs.undirected_graph import UndirectedGraph
+from libs.objects.graphs.undirected_graph import UndirectedGraph
 
 
 def ans():

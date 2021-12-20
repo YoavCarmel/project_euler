@@ -1,6 +1,6 @@
 from typing import Union
 
-from objects.graphs.graph import Graph
+from libs.objects.graphs.graph import Graph
 
 
 class DirectedGraph(Graph):

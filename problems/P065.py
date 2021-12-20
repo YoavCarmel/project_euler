@@ -1,6 +1,6 @@
 from typing import List
 
-from objects.frac import Frac
+from libs.objects.frac import Frac
 from libs.numbers_properties import digits_sum
 
 

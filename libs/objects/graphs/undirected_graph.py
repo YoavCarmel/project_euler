@@ -5,8 +5,8 @@ import random
 from math import inf
 from typing import Union, List, Set, Dict, Optional
 
-from objects.graphs.graph import Graph
-from objects.graphs.node import Node
+from libs.objects.graphs.graph import Graph
+from libs.objects.graphs.node import Node
 
 
 class UndirectedGraph(Graph):

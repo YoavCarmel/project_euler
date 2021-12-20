@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 import heapq
 from typing import Dict, List, Set, NamedTuple, Tuple, Union, Optional
 
-from objects.graphs.node import Node
+from libs.objects.graphs.node import Node
 
 
 class Graph(ABC):

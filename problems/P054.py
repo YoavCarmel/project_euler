@@ -1,6 +1,6 @@
 from typing import TextIO, List
 
-from objects.card import Card
+from libs.objects.card import Card
 
 
 def ans():

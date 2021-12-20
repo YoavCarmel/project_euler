@@ -2,11 +2,10 @@ from collections import defaultdict
 from typing import List, Optional, Set, Dict, Tuple, Union
 
 import pytest
-from sortedcontainers import SortedList, SortedDict
+from sortedcontainers import SortedList
 from tqdm import tqdm
 
-from libs.calculations import power_set
-from objects.geometry import Line, Point, QLine
+from libs.objects.geometry import Line, Point, QLine
 
 """
 tried 3 solution:
