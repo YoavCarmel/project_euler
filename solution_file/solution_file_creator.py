@@ -25,18 +25,16 @@ def add_problem_solution(problem_number, override=False):
         return
     s = "from problems import P" + get_file_number(problem_number)
     exec(s)
-    start_time = int(round(time.time() * 1000))
+    start_time = time.time()
     answer = eval(f"P{get_file_number(problem_number)}.ans()")
-    end_time = int(round(time.time() * 1000))
-    runtime = (end_time - start_time) / 1000
+    end_time = time.time()
+    runtime = round(end_time - start_time, 3)
     # add to file
+    new_line = [problem_number, answer, runtime, get_grade(runtime)]
     if override and problem_number in df[PROBLEM_NUM].values:
-        index = df.index[df[PROBLEM_NUM] == problem_number][0]
-        df.at[index, SOLUTION] = answer
-        df.at[index, RUNTIME] = runtime
-        df.at[index, GRADE] = get_grade(runtime)
+        df[df[PROBLEM_NUM] == problem_number] = new_line
     else:
-        df.loc[-1] = [problem_number, answer, runtime, get_grade(runtime)]
+        df.loc[-1] = new_line
         df.sort_values(by=[PROBLEM_NUM], inplace=True)
     df.to_csv(FILE_PATH, index=False)
 
