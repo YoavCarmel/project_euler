@@ -1,8 +1,6 @@
-from itertools import product
 from typing import List, Set, Dict, Tuple
 
 from libs.calculations.general import power_set
-from libs.types_converting import list_to_num
 
 
 def is_special_sum_set(curr_nums: List[int], subsets_sums: Set[int] = None, is_sorted_big_to_small=False) -> bool:
@@ -37,20 +35,15 @@ def is_special_sum_set(curr_nums: List[int], subsets_sums: Set[int] = None, is_s
 
 
 def all_palindromes_n_digits(n: int) -> List[int]:
-    res = list()
-    if n % 2 == 0:
-        for p in product(range(1, 10), product(range(10), repeat=n // 2 - 1)):
-            p = [p[0]] + list(p[1])
-            res.append(list_to_num(p + list(reversed(p))))
+    if n % 2 == 1:
+        if n == 1:  # special case
+            return list(range(1, 10))
+        # e.g. for n=7 do all "abcd"+"cba"
+        return [int(str(num) + str(num // 10)[::-1]) for num in range(10 ** (n // 2), 10 ** (n // 2 + 1))]
     else:
-        for p in product(range(1, 10), product(range(10), repeat=n // 2)):
-            p = [p[0]] + list(p[1])
-            res.append(list_to_num(p[:-1] + [p[-1]] + list(reversed(p[:-1]))))
-    return res
+        # e.g. for n=6 do all "abc"+"cba"
+        return [int(str(num) + str(num)[::-1]) for num in range(10 ** (n // 2 - 1), 10 ** (n // 2))]
 
 
 def all_palindromes_up_to_n_digits(n: int) -> List[int]:
-    res = list()
-    for i in range(1, n + 1):
-        res += all_palindromes_n_digits(i)
-    return res
+    return [num for d in range(1, n + 1) for num in all_palindromes_n_digits(d)]
