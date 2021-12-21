@@ -5,7 +5,7 @@ from libs.objects.graphs.undirected_graph import UndirectedGraph
 
 
 def ans():
-    g = get_graph_from_matrix(create_matrix_from_file("files//P107.txt", ",", False))
+    g = get_graph_from_matrix(create_matrix_from_file("P107", to_int=False))
     mst_g = g.mst()
     return g.weight() - mst_g.weight()
 

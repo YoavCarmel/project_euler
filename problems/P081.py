@@ -5,7 +5,7 @@ from libs.objects.graphs.directed_graph import DirectedGraph
 
 
 def ans():
-    mat: List[List[int]] = create_matrix_from_file("files//P081.txt", ",")
+    mat: List[List[int]] = create_matrix_from_file("P081")
     g, source, target = create_graph_from_matrix(mat)
     return DirectedGraph.shortest_distance(source, target)[0] + g.get_node(0).get_value()
 
