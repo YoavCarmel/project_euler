@@ -6,7 +6,7 @@ from libs.calculations.general import divisors_sum
 def ans():
     max_chain = []
     million = 10 ** 6
-    divs_sums: List[int] = divisors_sum(million + 1, including_i=False)  # this gives a massive improvement
+    divs_sums: List[int] = divisors_sum(million + 1, including_itself=False)  # this gives a massive improvement
     checked: Set[int] = set()
     for i in range(1, million + 1):
         # if we already saw i, dont calculate again
