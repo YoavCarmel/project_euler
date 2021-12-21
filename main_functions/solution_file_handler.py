@@ -35,6 +35,8 @@ def add_solution_to_file(problem_number, override=False):
         df.loc[-1] = new_line
         df = df.sort_values(by=PROBLEM_NUM)
     df.to_csv(FILE_PATH, index=False)
+    # lastly, update readme
+    update_readme(df[PROBLEM_NUM])
 
 
 def _get_grade(t):
@@ -49,3 +51,26 @@ def _get_grade(t):
     if t < 300:
         return "E"
     return "F"
+
+
+def update_readme(problems_solved: pd.Series):
+    with open("README.md", "r") as f:
+        lines = f.readlines()
+    header_line = "## Solved problems:\n"
+    problems_line = str(sorted(problems_solved)) + "\n"
+    if header_line in lines:
+        index = lines.index(header_line)
+        if len(lines) == index + 1:
+            # this is the last line, add a new one
+            lines.append(problems_line)
+        else:
+            problems_index = None
+            for i, line in enumerate(lines[index + 1:]):
+                if line.strip() != "":
+                    problems_index = i + index+1
+            lines[problems_index] = problems_line
+    else:  # if no record in file:
+        lines.append(header_line)
+        lines.append(problems_line)
+    with open("README.md", "w") as f:
+        f.writelines(lines)

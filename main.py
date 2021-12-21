@@ -4,6 +4,8 @@ from main_functions.solution_file_handler import add_solution_to_file
 if __name__ == '__main__':
     """
     Use run() to run the solution and get the answer and runtime
-    Use add_solution_to_file() to run the solution and save it to solution_file.csv
+    Use add_solution_to_file() to run the solution and save it to solution_file.csv.
+        use override=True to edit existing solution
     """
     run(1)
+    add_solution_to_file(1, override=True)
