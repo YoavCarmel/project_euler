@@ -1,6 +1,8 @@
 import time
+from typing import List, Union
 
 import pandas as pd
+from tqdm import tqdm
 
 from main_functions.runs_helper import get_import_line, get_run_line, get_run_time
 
@@ -17,7 +19,7 @@ def create_file():
     df.to_csv(SOLUTION_FILE_PATH, index=False)
 
 
-def add_solution_to_file(problem_number, override=False):
+def add_solution_to_file(problem_number, override=False, should_update_readme=True):
     df = pd.read_csv(SOLUTION_FILE_PATH)
     if not override and problem_number in df[PROBLEM_NUM].values:
         return
@@ -36,7 +38,8 @@ def add_solution_to_file(problem_number, override=False):
         df = df.sort_values(by=PROBLEM_NUM)
     df.to_csv(SOLUTION_FILE_PATH, index=False)
     # lastly, update readme
-    update_readme(df[PROBLEM_NUM])
+    if should_update_readme:
+        update_readme(df[PROBLEM_NUM])
 
 
 def _get_grade(t):
@@ -53,7 +56,7 @@ def _get_grade(t):
     return "F"
 
 
-def update_readme(problems_solved: pd.Series):
+def update_readme(problems_solved: Union[pd.Series, List[int]]):
     with open("README.md", "r") as f:
         lines = f.readlines()
     header_line = "## Solved problems:\n"
@@ -79,3 +82,9 @@ def update_readme(problems_solved: pd.Series):
 def get_all_problems():
     df = pd.read_csv(SOLUTION_FILE_PATH)
     return list(df[PROBLEM_NUM].sort_values())
+
+
+def update_all_problems():
+    # no need to update readme because these are all the problems that are already monitored
+    for problem_num in tqdm(get_all_problems()):
+        add_solution_to_file(problem_num, override=True, should_update_readme=False)

@@ -1,5 +1,5 @@
 from main_functions.problem_runner import run
-from main_functions.solution_file_handler import add_solution_to_file
+from main_functions.solution_file_handler import add_solution_to_file, update_all_problems
 
 if __name__ == '__main__':
     """
@@ -7,6 +7,6 @@ if __name__ == '__main__':
     Use add_solution_to_file() to run the solution and save it to solution_file.csv.
         use override=True to edit existing solution
     """
-    problem_num = 72
+    problem_num = 1
     run(problem_num)
     # add_solution_to_file(problem_num, override=True)

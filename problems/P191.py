@@ -6,7 +6,7 @@ def ans():
     """
     we will build the strings iteratively
     """
-    n = 500
+    n = 30
     days: Dict[int, Dict[int, Dict[int, int]]] = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
     days[0][0][0] = 1
     for day in range(1, n + 1):

@@ -18,7 +18,7 @@ both 1 and 2 run in about 60 seconds :(
 
 
 def ans():
-    return solve2(limit=100)
+    return solve2()
 
 
 def solve(limit=5000):
