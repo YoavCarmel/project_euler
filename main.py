@@ -7,6 +7,6 @@ if __name__ == '__main__':
     Use add_solution_to_file() to run the solution and save it to solution_file.csv.
         use override=True to edit existing solution
     """
-    problem_num = 104
+    problem_num = 72
     run(problem_num)
     # add_solution_to_file(problem_num, override=True)

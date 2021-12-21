@@ -1,5 +1,5 @@
 import math
-from typing import List
+from typing import List, Dict
 
 import numpy as np
 import sympy
@@ -19,17 +19,18 @@ def totient_euler(n: int) -> int:
     return int(result)
 
 
-def totient_euler_range(n: int) -> List[int]:
+def totient_euler_range(n: int) -> np.ndarray:
     """
     calculate simultaneously the phi() of all numbers from 0 to n-1
     :param n: the highest number to get phi() of
     :return: a list of the results of phi() of all numbers from 0 to n-1
     """
-    results = np.array(range(n), dtype='float64')  # init an array
+    results = np.array(range(n), dtype="float64")  # init an array
     for p in sympy.primerange(1, n + 1):
         # for each prime, multiply all numbers it divides by the known formula
         results[p::p] *= (1 - 1 / p)
-    return [int(i) for i in results]
+    # return [int(i) for i in results]
+    return results.astype("int64")
 
 
 def lcm(a, b):
@@ -37,7 +38,10 @@ def lcm(a, b):
 
 
 def lcm_list(nums: List[int]) -> int:
-    factors = dict()
+    """
+    calculate the lcm of the input list
+    """
+    factors: Dict[int, int] = dict()
     for i in nums:
         i_factors = factorint(i)
         for k in i_factors:
@@ -52,6 +56,9 @@ def lcm_list(nums: List[int]) -> int:
 
 
 def gcd_extended_euclid(a, b):
+    """
+    returns gcd, x, y such that x*a+b*y=gcd
+    """
     if a == 0:
         return b, 0, 1
 
@@ -71,13 +78,18 @@ def inverse_mod(x: int, n: int):
     return pow(x, -1, n)
 
 
-def sieve_primes(n):
+def sieve_primes(n) -> np.ndarray:
     flags = np.ones(n, dtype=bool)
     flags[0] = flags[1] = False
     for i in range(2, int(math.sqrt(n) + 1)):
         if flags[i]:
+            """
+            you may think we should start at i instead of i*i and we are skipping nums this way,
+            but notice that we are skipping nums like 2i, 3i, ..., ki
+            with k<i so that has already been taken care of with k
+            """
             flags[i * i::i] = False
-    return list(np.flatnonzero(flags))
+    return np.flatnonzero(flags)
 
 
 def co_primes(a: int, b: int) -> bool:
@@ -85,16 +97,17 @@ def co_primes(a: int, b: int) -> bool:
 
 
 def coprime_to_list(num: int, nums_list: List[int]):
-    return co_primes(num, lcm_list(nums_list))
+    return all(co_primes(num, x) for x in nums_list)
 
 
-def get_co_primes(n: int) -> List[int]:
+def get_co_primes(n: int) -> np.ndarray:
     """
     :param n: an input number
     :return: a list of all numbers from 1 to n-1 that are co primes with n
     """
-    results = np.array(range(n), dtype='bool')  # init an array
+    results = np.ones(n, dtype=bool)  # init an array
+    results[0] = False
     for p in sympy.primefactors(n):
         # for each prime, set all numbers it divides to false
         results[p::p] = False
-    return [i for i, is_co_prime in enumerate(results) if is_co_prime]
+    return np.flatnonzero(results)
