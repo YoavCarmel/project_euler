@@ -16,13 +16,13 @@ def is_polygonal_number(num: int, shape: int) -> bool:
     return is_int(n)
 
 
-def is_any_polygon_number(num: int, polygons: List) -> bool:
+def is_any_polygon_number(num: int, polygons: List[int]) -> bool:
     return len(all_polygons_fit_to_number(num, polygons)) != 0
 
 
-def all_polygons_fit_to_number(num: int, polygons: List) -> List:
+def all_polygons_fit_to_number(num: int, polygons: List[int]) -> List[int]:
     return [i for i in polygons if is_polygonal_number(num, i)]
 
 
-def all_polygons_of_number(num: int, polygons: List) -> List:
+def all_polygons_of_number(num: int, polygons: List[int]) -> List[int]:
     return [polygonal_number(num, i) for i in polygons]
