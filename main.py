@@ -1,8 +1,9 @@
-import time
+from main_functions.problem_runner import run
+from main_functions.solution_file_handler import add_solution_to_file
 
-from problems.P088 import ans
-from solution_file.solution_file_creator import add_problem_solution
-
-# start_time = time.time()
-# print(ans())
-# print(round(time.time() - start_time, 3), "seconds")
+if __name__ == '__main__':
+    """
+    Use run() to run the solution and get the answer and runtime
+    Use add_solution_to_file() to run the solution and save it to solution_file.csv
+    """
+    run(1)
