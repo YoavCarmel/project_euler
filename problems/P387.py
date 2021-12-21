@@ -2,7 +2,7 @@ from typing import Set, Dict
 from collections import defaultdict
 
 from sympy import isprime
-from libs.numbers_properties import digits_sum
+from libs.calculations.numbers_properties import digits_sum
 
 
 def ans():

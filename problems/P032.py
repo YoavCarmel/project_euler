@@ -1,7 +1,7 @@
 from itertools import permutations
 from typing import Set, List
 
-from libs.numbers_properties import is_pandigital
+from libs.calculations.numbers_properties import is_pandigital
 from libs.types_converting import list_to_num
 
 

@@ -2,7 +2,7 @@ from math import sqrt
 
 from tqdm import tqdm
 
-from libs.calculations import sieve_primes
+from libs.calculations.numbers_theory import sieve_primes
 
 
 def ans():

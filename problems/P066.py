@@ -1,5 +1,5 @@
 from math import sqrt
-from libs.numbers_properties import is_square
+from libs.calculations.numbers_properties import is_square
 
 
 # algorithm is copied from the internet, because i could not find any place to learn about pell equations from

@@ -2,8 +2,8 @@ from typing import Dict, List
 
 from sympy import isprime
 
-from libs.numbers_operations import replace_digits
-from libs.numbers_properties import num_size
+from libs.calculations.numbers_operations import replace_digits
+from libs.calculations.numbers_properties import num_size
 from libs.types_converting import num_to_list
 
 

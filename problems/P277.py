@@ -1,6 +1,6 @@
 from typing import Optional
 
-from libs.numbers_properties import is_int
+from libs.calculations.numbers_properties import is_int
 
 
 def ans():

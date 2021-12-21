@@ -2,7 +2,7 @@ from collections import defaultdict
 from math import sqrt
 from typing import Dict
 
-from libs.numbers_properties import is_int
+from libs.calculations.numbers_properties import is_int
 
 
 def ans():

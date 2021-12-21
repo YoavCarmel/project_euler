@@ -4,7 +4,7 @@ from typing import List, Dict, Set
 
 from libs.files import get_file_lines
 from itertools import combinations
-from libs.numbers_properties import is_square
+from libs.calculations.numbers_properties import is_square
 from libs.types_converting import list_to_string, string_to_list, num_to_list, list_to_num
 
 

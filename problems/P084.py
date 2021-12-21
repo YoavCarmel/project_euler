@@ -1,7 +1,7 @@
 import random
 from typing import List, Any, Union
 
-from libs.numbers_properties import num_size
+from libs.calculations.numbers_properties import num_size
 
 
 def ans():

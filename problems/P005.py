@@ -1,4 +1,4 @@
-from libs.numbers_properties import lcm_list
+from libs.calculations.numbers_theory import lcm_list
 
 
 def ans():

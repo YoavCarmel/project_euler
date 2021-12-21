@@ -1,6 +1,3 @@
-from libs.calculations import inverse_mod
-
-
 def ans():
     a = 1504170715041707
     b = 4503599627370517

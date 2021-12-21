@@ -1,7 +1,7 @@
 from collections import defaultdict
 from typing import List, Dict
 
-from libs.numbers_properties import digs_count
+from libs.calculations.numbers_properties import digs_count
 
 
 def ans():

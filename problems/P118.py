@@ -2,7 +2,7 @@ from itertools import permutations, combinations
 from typing import Set, FrozenSet, List, Dict
 
 from libs.types_converting import list_to_num
-from libs.numbers_properties import num_size
+from libs.calculations.numbers_properties import num_size
 
 from sympy import isprime
 

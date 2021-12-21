@@ -2,7 +2,7 @@ from typing import List
 
 from sympy import primefactors
 from dataclasses import dataclass
-from libs.calculations import list_product
+from libs.calculations.general import list_product
 
 
 @dataclass(init=True, repr=True, order=True, frozen=True)

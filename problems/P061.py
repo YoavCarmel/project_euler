@@ -1,7 +1,7 @@
 from collections import defaultdict
 from typing import Dict, Set, NamedTuple, List
 
-from libs.polygon_numbers import polygonal_number
+from libs.calculations.polygon_numbers import polygonal_number
 
 
 class Chain(NamedTuple):

@@ -1,4 +1,4 @@
-from libs.calculations import continued_fraction_of_sqrt
+from libs.calculations.general import continued_fraction_of_sqrt
 
 
 def ans():

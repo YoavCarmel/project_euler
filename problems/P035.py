@@ -1,6 +1,6 @@
 from typing import List
 
-from libs.numbers_properties import num_size
+from libs.calculations.numbers_properties import num_size
 from sympy import isprime
 
 

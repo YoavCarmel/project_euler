@@ -2,7 +2,7 @@ from typing import List
 
 from sympy import isprime, nextprime
 
-from libs.numbers_properties import is_square
+from libs.calculations.numbers_properties import is_square
 
 
 def ans():

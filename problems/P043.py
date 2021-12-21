@@ -1,6 +1,6 @@
 from typing import Set, List
 
-from libs.numbers_properties import num_size
+from libs.calculations.numbers_properties import num_size
 from libs.types_converting import num_to_list
 
 

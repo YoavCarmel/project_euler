@@ -1,7 +1,7 @@
 import math
 from typing import List
 
-from libs.numbers_properties import is_int
+from libs.calculations.numbers_properties import is_int
 
 
 def polygonal_number(num: int, shape: int) -> int:

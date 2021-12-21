@@ -1,6 +1,6 @@
 from typing import List
 
-from libs.polygon_numbers import is_polygonal_number
+from libs.calculations.polygon_numbers import is_polygonal_number
 
 
 def ans():

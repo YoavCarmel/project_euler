@@ -1,4 +1,4 @@
-from libs.numbers_properties import digits_sum, is_square
+from libs.calculations.numbers_properties import digits_sum, is_square
 from math import sqrt
 
 

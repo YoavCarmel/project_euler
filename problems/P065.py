@@ -1,7 +1,7 @@
 from typing import List
 
 from libs.objects.frac import Frac
-from libs.numbers_properties import digits_sum
+from libs.calculations.numbers_properties import digits_sum
 
 
 def ans():

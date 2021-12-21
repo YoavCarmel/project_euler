@@ -1,6 +1,6 @@
 from typing import List, Set
 
-from libs.numbers_properties import is_palindrome
+from libs.calculations.numbers_properties import is_palindrome
 from math import sqrt
 
 

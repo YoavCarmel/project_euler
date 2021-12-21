@@ -1,8 +1,6 @@
-import sys
-
-import pandas as pd
 import time
 
+import pandas as pd
 from tqdm import tqdm
 
 from main_functions.runs_helper import get_import_line, get_run_line, get_run_time

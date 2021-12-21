@@ -1,6 +1,6 @@
 from typing import List, Set, Dict, Tuple
 from itertools import product
-from libs.calculations import power_set
+from libs.calculations.general import power_set
 from libs.types_converting import list_to_num
 
 

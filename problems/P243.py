@@ -1,4 +1,4 @@
-from libs.calculations import totient_euler
+from libs.calculations.numbers_theory import totient_euler
 from sympy import nextprime, primerange
 
 

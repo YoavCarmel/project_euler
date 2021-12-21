@@ -1,8 +1,8 @@
 from itertools import combinations_with_replacement
 
-from libs.calculations import multinom
-from libs.numbers_operations import list_to_num
-from libs.numbers_properties import digs_count, num_size
+from libs.calculations.general import multinom
+from libs.calculations.numbers_operations import list_to_num
+from libs.calculations.numbers_properties import digs_count, num_size
 
 
 def ans():

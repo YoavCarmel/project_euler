@@ -1,6 +1,6 @@
 from typing import List, Set
 
-from libs.calculations import divisors_sum
+from libs.calculations.general import divisors_sum
 
 
 def ans():

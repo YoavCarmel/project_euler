@@ -9,5 +9,5 @@ if __name__ == '__main__':
         use override=True to edit existing solution
     """
     problem_num = 1
-    run(problem_num)
+    # run(problem_num)
     # add_solution_to_file(problem_num, override=True)

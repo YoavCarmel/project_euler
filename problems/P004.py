@@ -1,4 +1,4 @@
-from libs.numbers_properties import is_palindrome
+from libs.calculations.numbers_properties import is_palindrome
 
 
 def ans():

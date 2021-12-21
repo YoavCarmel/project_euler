@@ -7,7 +7,7 @@ import pytest
 from pulp import LpProblem, lpSum, LpVariable, LpMaximize
 from sympy import primefactors
 
-from libs.calculations import sieve_primes
+from libs.calculations.numbers_theory import sieve_primes
 
 IntsTuple = Tuple[int, ...]
 

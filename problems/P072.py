@@ -1,4 +1,4 @@
-from libs.calculations import totient_euler_range
+from libs.calculations.numbers_theory import totient_euler_range
 
 
 def ans():

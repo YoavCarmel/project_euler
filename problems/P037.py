@@ -1,4 +1,4 @@
-from libs.numbers_properties import contains_digits, num_size
+from libs.calculations.numbers_properties import contains_digits, num_size
 from sympy import isprime
 
 

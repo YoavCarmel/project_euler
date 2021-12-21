@@ -3,7 +3,7 @@ from typing import List
 
 from sympy import primerange
 
-from libs.numbers_properties import same_digits
+from libs.calculations.numbers_properties import same_digits
 
 
 def ans():

@@ -1,4 +1,4 @@
-from libs.numbers_properties import co_primes
+from libs.calculations.numbers_theory import co_primes
 
 
 def ans():
