@@ -7,23 +7,27 @@ from libs.chars import is_any_case_letter, is_number_char
 
 def ans():
     nums = np.array(load_file())
-    # go over indices indices in jumps of 3
-    possibles1 = get_only_possible_value(nums[0::3])
-    possibles2 = get_only_possible_value(nums[1::3])
-    possibles3 = get_only_possible_value(nums[2::3])
-    # now there should only be 1 possible value for each of them
-    nums[0::3] = np.bitwise_xor(nums[0::3], possibles1)
-    nums[1::3] = np.bitwise_xor(nums[1::3], possibles2)
-    nums[2::3] = np.bitwise_xor(nums[2::3], possibles3)
-    return np.sum(nums)
+    return get_sum_for_solution_of_array(nums[0::3]) \
+           + get_sum_for_solution_of_array(nums[1::3]) \
+           + get_sum_for_solution_of_array(nums[2::3])
 
 
-def load_file() -> List[int]:
+def get_sum_for_solution_of_array(nums: np.ndarray) -> int:
     """
-    :return: input file split by commas, values converted to ints
+    calculate the sum of the correct result for the input array
     """
-    with open("files//P059.txt") as f:
-        return [int(i) for i in f.read().split(",")]
+    return int(np.sum(get_only_possible_value(nums)))
+
+
+def get_only_possible_value(nums: np.ndarray) -> np.ndarray:
+    """
+    loop over the possible c keys, if found a valid xor result, return it
+    """
+    for c in range(ord('a'), ord('z') + 1):
+        temp = np.bitwise_xor(nums, c)
+        if check_all_letters(temp):
+            return temp
+    raise Exception("Something is wrong with the keys")
 
 
 def check_all_letters(nums: List[int]) -> bool:
@@ -31,10 +35,7 @@ def check_all_letters(nums: List[int]) -> bool:
     :param nums: a list of numbers
     :return: True if all chars are valid
     """
-    for c in nums:
-        if not is_wanted_char(chr(c)):
-            return False
-    return True
+    return all(is_wanted_char(chr(c)) for c in nums)
 
 
 def is_wanted_char(c: chr) -> bool:
@@ -43,12 +44,12 @@ def is_wanted_char(c: chr) -> bool:
     :return: True if this char is valid
     """
     return is_any_case_letter(c) or is_number_char(c) or c in {" ", ".", ",", "(", ")", "'", '"', ";", "!", "?", "[",
-                                                               "]", "/", "+", ":"}
+                                                               "]", "/", "+", ":", "{", "}", "="}
 
 
-def get_only_possible_value(nums: np.ndarray) -> int:
-    for c in range(ord('a'), ord('z') + 1):
-        # apply the XOR
-        temp = np.bitwise_xor(np.copy(nums), c)
-        if check_all_letters(temp):
-            return c
+def load_file() -> List[int]:
+    """
+    :return: input file split by commas, values converted to ints
+    """
+    with open("files//P059.txt") as f:
+        return [int(i) for i in f.read().split(",")]
