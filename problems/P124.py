@@ -15,5 +15,5 @@ class RadNum:
 def ans():
     n = 10 ** 5
     res_index = 10 ** 4
-    rad_nums: List[RadNum] = list(sorted(RadNum(list_product(primefactors(i)), i) for i in range(1, n + 1)))
+    rad_nums: List[RadNum] = sorted(RadNum(list_product(primefactors(i)), i) for i in range(1, n + 1))
     return rad_nums[res_index - 1].num

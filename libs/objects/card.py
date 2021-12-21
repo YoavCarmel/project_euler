@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections import defaultdict
+from collections import defaultdict, Counter
 from typing import List, Dict, Union
 
 
@@ -23,7 +23,7 @@ class Card:
         self.shape = shape
 
     def __str__(self):
-        return str(self.number) + "," + self.shape
+        return f"{self.number},{self.shape}"
 
     @staticmethod
     def sort_by_number(cards: List[Card]) -> List[Card]:
@@ -31,7 +31,7 @@ class Card:
         :param cards: cards list
         :return: the input list of cards sorted by number
         """
-        return list(sorted(cards, key=lambda c: c.number))
+        return sorted(cards, key=lambda c: c.number)
 
     @staticmethod
     def shapes_count(cards: List[Card]) -> Dict[str, int]:
@@ -39,10 +39,7 @@ class Card:
         :param cards: cards list
         :return: dict of counts for each shape
         """
-        shapes: Dict[str, int] = defaultdict(int)
-        for c in cards:
-            shapes[c.shape] += 1
-        return shapes
+        return Counter([c.shape for c in cards])
 
     @staticmethod
     def numbers_count(cards: List[Card]) -> Dict[int, int]:
@@ -50,7 +47,4 @@ class Card:
         :param cards: cards list
         :return: dict of counts for each number
         """
-        numbers: Dict[int, int] = defaultdict(int)
-        for c in cards:
-            numbers[c.number] += 1
-        return numbers
+        return Counter([c.number for c in cards])
