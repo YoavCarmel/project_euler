@@ -25,11 +25,11 @@ def is_possible(n: int, primes: List[int]) -> bool:
         return True
     for p in primes:  # already found primes
         # p+2*s*s=n so s*s=(n-p)/2
-        if is_square((n - p) / 2):
+        if is_square((n - p) // 2):
             return True
     while p < n:  # new primes
         # p+2*s*s=n so s*s=(n-p)/2
-        if is_square((n - p) / 2):
+        if is_square((n - p) // 2):
             return True
         p = nextprime(p)
         primes.append(p)

@@ -1,7 +1,10 @@
 import math
-from collections import defaultdict
+from collections import defaultdict, Counter
 from typing import Union, Dict, Collection
 
+import gmpy2 as gmpy2
+
+from libs.calculations.numbers_operations import reverse_num
 from libs.types_converting import num_to_list
 
 
@@ -11,11 +14,11 @@ def is_palindrome(x: int) -> bool:
 
 
 def is_int(x: Union[int, float]) -> bool:
-    return type(x) is int or (type(x) is float and float(x).is_integer())
+    return isinstance(x, int) or (isinstance(x, float) and x.is_integer())
 
 
-def is_square(x: Union[int, float]) -> bool:
-    return math.sqrt(x).is_integer()
+def is_square(x: int) -> bool:
+    return gmpy2.is_square(x)
 
 
 def num_size(x: int) -> int:
@@ -33,43 +36,28 @@ def digits_sum(x: int) -> int:
 def is_pandigital(x: int, digits: int) -> bool:
     if num_size(x) != digits:
         return False
-    digits = set([i for i in range(1, digits + 1)])
+    digits_set = set(range(1, digits + 1))
     if digits == 10:
-        digits.remove(10)
-        digits.add(0)
-    return set(num_to_list(x)) == digits
+        digits_set.remove(10)
+        digits_set.add(0)
+    return set(num_to_list(x)) == digits_set
 
 
 def all_same_digits(x: int):
-    num_list = num_to_list(x)
-    for d in num_list:
-        if d != num_list[0]:
-            return False
-    return True
+    return len(set(num_to_list(x))) == 1
 
 
-def contains_digits(x: int, digits: Collection) -> bool:
+def contains_any_of_digits(x: int, digits: Collection) -> bool:
     return len(set(num_to_list(x)).intersection(digits)) != 0
 
 
+def contains_all_of_digits(x: int, digits: Collection) -> bool:
+    return set(digits) <= set(num_to_list(x))
+
+
 def digs_count(x: int) -> Dict[int, int]:
-    x_dict = defaultdict(int)
-    for d in num_to_list(x):
-        x_dict[d] += 1
-    return x_dict
+    return Counter(num_to_list(x))
 
 
 def same_digits(x: int, y: int) -> bool:
-    x = str(x)
-    y = str(y)
-    if len(x) != len(y):
-        return False
-    x_dict = defaultdict(int)
-    y_dict = defaultdict(int)
-    for i in x:
-        x_dict[i] += 1
-    for i in y:
-        if i not in x_dict:
-            return False
-        y_dict[i] += 1
-    return x_dict == y_dict
+    return digs_count(x) == digs_count(y)

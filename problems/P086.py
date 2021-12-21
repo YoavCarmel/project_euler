@@ -15,5 +15,5 @@ def ans():
         for bc in range(2, 2 * a + 1):
             x = bc ** 2 + a ** 2
             if is_square(x):
-                count += int(bc / 2) - max(bc - a - 1, 0)  # add all pairs (b,c) such that b+c=bs, a>=b>=c>=1
+                count += bc // 2 - max(bc - a - 1, 0)  # add all pairs (b,c) such that b+c=bs, a>=b>=c>=1
     return big_m

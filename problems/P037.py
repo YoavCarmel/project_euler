@@ -1,6 +1,6 @@
 from sympy import isprime
 
-from libs.calculations.numbers_properties import contains_digits, num_size
+from libs.calculations.numbers_properties import contains_any_of_digits, num_size
 
 
 def ans():
@@ -8,7 +8,7 @@ def ans():
     i = 9
     s = 0
     while count < 11:
-        if not contains_digits(i, [4, 6, 8, 0]):
+        if not contains_any_of_digits(i, [4, 6, 8, 0]):
             if both_sides_prime(i):
                 count += 1
                 s += i
