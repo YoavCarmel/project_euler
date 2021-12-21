@@ -1,22 +1,20 @@
 from typing import List, Union
 
+import numpy as np
 
-def list_to_num(li: List[Union[str, int]]) -> int:
-    s = 0
-    power10 = 1
-    for num in reversed(li):
-        s += power10 * num
-        power10 *= 10
-    return s
+
+def list_to_num(li: List[int]) -> int:
+    powers = np.power(10, np.arange(len(li), dtype="int64")[::-1])
+    return int(np.dot(powers, li))
 
 
 def num_to_list(n: int) -> List[int]:
-    return list([int(i) for i in str(n)])
+    return list(int(i) for i in str(n))
 
 
-def string_to_list(s: str) -> List:
-    return [i for i in s]
+def string_to_list(s: str) -> List[str]:
+    return list(s)
 
 
 def list_to_string(li: List) -> str:
-    return "".join([str(i) for i in li])
+    return "".join(str(i) for i in li)
