@@ -1,5 +1,6 @@
 from main_functions.problem_runner import run
 from main_functions.solution_file_handler import add_solution_to_file
+from main_functions.solutions_analysis import worst_solutions
 
 if __name__ == '__main__':
     """

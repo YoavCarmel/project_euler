@@ -4,7 +4,7 @@ import pandas as pd
 
 from main_functions.runs_helper import get_import_line, get_run_line, get_run_time
 
-FILE_PATH = "solution_file.csv"
+SOLUTION_FILE_PATH = "solution_file.csv"
 
 PROBLEM_NUM = "ProblemNumber"
 SOLUTION = "Solution"
@@ -14,11 +14,11 @@ GRADE = "Grade"
 
 def create_file():
     df = pd.DataFrame(columns=[PROBLEM_NUM, SOLUTION, RUNTIME, GRADE])
-    df.to_csv(FILE_PATH, index=False)
+    df.to_csv(SOLUTION_FILE_PATH, index=False)
 
 
 def add_solution_to_file(problem_number, override=False):
-    df = pd.read_csv(FILE_PATH)
+    df = pd.read_csv(SOLUTION_FILE_PATH)
     if not override and problem_number in df[PROBLEM_NUM].values:
         return
     # run the solution
@@ -34,7 +34,7 @@ def add_solution_to_file(problem_number, override=False):
     else:
         df.loc[-1] = new_line
         df = df.sort_values(by=PROBLEM_NUM)
-    df.to_csv(FILE_PATH, index=False)
+    df.to_csv(SOLUTION_FILE_PATH, index=False)
     # lastly, update readme
     update_readme(df[PROBLEM_NUM])
 
