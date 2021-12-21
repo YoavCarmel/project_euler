@@ -1,7 +1,7 @@
+from itertools import combinations_with_replacement
 from typing import List, Set
 
 from sympy import divisors
-from itertools import combinations_with_replacement
 
 
 def ans():

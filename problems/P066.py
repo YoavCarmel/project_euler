@@ -1,4 +1,5 @@
 from math import sqrt
+
 from libs.calculations.numbers_properties import is_square
 
 

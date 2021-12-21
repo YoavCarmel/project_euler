@@ -1,5 +1,6 @@
-from libs.calculations.numbers_properties import contains_digits, num_size
 from sympy import isprime
+
+from libs.calculations.numbers_properties import contains_digits, num_size
 
 
 def ans():

@@ -1,5 +1,6 @@
-from libs.calculations.numbers_properties import digits_sum
 from math import factorial
+
+from libs.calculations.numbers_properties import digits_sum
 
 
 def ans():

@@ -1,7 +1,8 @@
 from typing import List
 
-from libs.calculations.numbers_properties import num_size
 from sympy import isprime
+
+from libs.calculations.numbers_properties import num_size
 
 
 def ans():

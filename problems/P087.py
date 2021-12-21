@@ -1,5 +1,6 @@
-from sympy import primerange
 from math import pow, sqrt
+
+from sympy import primerange
 
 
 def ans():

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
 import heapq
+from abc import ABC, abstractmethod
 from typing import Dict, List, Set, NamedTuple, Tuple, Union, Optional
 
 from libs.objects.graphs.node import Node

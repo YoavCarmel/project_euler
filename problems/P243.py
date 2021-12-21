@@ -1,5 +1,6 @@
-from libs.calculations.numbers_theory import totient_euler
 from sympy import nextprime, primerange
+
+from libs.calculations.numbers_theory import totient_euler
 
 
 def ans():

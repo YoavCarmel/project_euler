@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional, Union
 from math import inf
+from typing import Optional, Union
 
 from libs.objects.frac import Frac
 

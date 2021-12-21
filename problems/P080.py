@@ -1,5 +1,6 @@
-from libs.calculations.numbers_properties import digits_sum, is_square
 from math import sqrt
+
+from libs.calculations.numbers_properties import digits_sum, is_square
 
 
 def ans():

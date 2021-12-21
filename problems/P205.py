@@ -1,5 +1,5 @@
-from itertools import product
 from collections import defaultdict
+from itertools import product
 from typing import Dict
 
 

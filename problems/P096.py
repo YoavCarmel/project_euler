@@ -1,7 +1,7 @@
 from typing import List
 
-from libs.files import get_file_lines
 from libs.calculations.numbers_operations import list_to_num
+from libs.files import get_file_lines
 
 
 def ans():

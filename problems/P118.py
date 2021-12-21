@@ -1,10 +1,10 @@
 from itertools import permutations, combinations
 from typing import Set, FrozenSet, List, Dict
 
-from libs.types_converting import list_to_num
-from libs.calculations.numbers_properties import num_size
-
 from sympy import isprime
+
+from libs.calculations.numbers_properties import num_size
+from libs.types_converting import list_to_num
 
 
 def ans():

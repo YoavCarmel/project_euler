@@ -1,5 +1,5 @@
-from libs.calculations.numbers_properties import is_pandigital
 from libs.calculations.general import fibonacci_number_by_index
+from libs.calculations.numbers_properties import is_pandigital
 
 
 def ans():

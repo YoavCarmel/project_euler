@@ -1,8 +1,8 @@
 from collections import defaultdict, Counter
-
-from sympy import factorint
 from itertools import combinations
 from typing import Set, List, Tuple, Dict, NamedTuple, Any
+
+from sympy import factorint
 
 
 class Subgroup(NamedTuple):

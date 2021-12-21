@@ -74,3 +74,8 @@ def update_readme(problems_solved: pd.Series):
         lines.append(problems_line)
     with open("README.md", "w") as f:
         f.writelines(lines)
+
+
+def get_all_problems():
+    df = pd.read_csv(SOLUTION_FILE_PATH)
+    return list(df[PROBLEM_NUM].sort_values())

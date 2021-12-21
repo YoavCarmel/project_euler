@@ -1,10 +1,10 @@
 from collections import defaultdict
+from itertools import combinations
 from math import sqrt
 from typing import List, Dict, Set
 
-from libs.files import get_file_lines
-from itertools import combinations
 from libs.calculations.numbers_properties import is_square
+from libs.files import get_file_lines
 from libs.types_converting import list_to_string, string_to_list, num_to_list, list_to_num
 
 

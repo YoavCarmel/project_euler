@@ -1,7 +1,8 @@
-from libs.types_converting import list_to_num
+from itertools import permutations
+
 from sympy import isprime
 
-from itertools import permutations
+from libs.types_converting import list_to_num
 
 
 def ans():

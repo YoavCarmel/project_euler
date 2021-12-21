@@ -1,6 +1,7 @@
+from math import sqrt
+
 from libs.calculations.numbers_properties import is_int
 from libs.calculations.polygon_numbers import polygonal_number
-from math import sqrt
 
 
 def ans():

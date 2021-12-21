@@ -14,6 +14,9 @@ class QPair:
     whole: int
     rem: FracWithSqrt
 
+    def __hash__(self):
+        return hash(self.whole) ^ hash(self.rem)
+
 
 class FracWithSqrt:
     """

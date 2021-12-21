@@ -1,7 +1,8 @@
+from dataclasses import dataclass
 from typing import List
 
 from sympy import primefactors
-from dataclasses import dataclass
+
 from libs.calculations.general import list_product
 
 

@@ -1,7 +1,8 @@
 from typing import Dict, Set, List
 
-from libs.calculations.numbers_operations import concat_nums
 from sympy import isprime, nextprime
+
+from libs.calculations.numbers_operations import concat_nums
 
 
 def ans():

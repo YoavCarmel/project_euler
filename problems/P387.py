@@ -1,7 +1,8 @@
-from typing import Set, Dict
 from collections import defaultdict
+from typing import Set, Dict
 
 from sympy import isprime
+
 from libs.calculations.numbers_properties import digits_sum
 
 

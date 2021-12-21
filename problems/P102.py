@@ -1,7 +1,8 @@
+from math import inf as infinity
+from typing import List
+
 from libs.files import get_file_lines
 from libs.objects.geometry import Triangle, Point, Line
-from typing import List
-from math import inf as infinity
 
 
 def ans():
