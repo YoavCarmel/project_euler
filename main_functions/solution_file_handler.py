@@ -2,7 +2,7 @@ import time
 
 import pandas as pd
 
-from main_functions.runs_helper import get_import_line, get_run_line
+from main_functions.runs_helper import get_import_line, get_run_line, get_run_time
 
 FILE_PATH = "solution_file.csv"
 
@@ -26,7 +26,7 @@ def add_solution_to_file(problem_number, override=False):
     start_time = time.time()
     answer = eval(get_run_line(problem_number))
     end_time = time.time()
-    runtime = round(end_time - start_time, 3)
+    runtime = get_run_time(start_time, end_time)
     # add to file
     new_line = [problem_number, answer, runtime, _get_grade(runtime)]
     if override and problem_number in df[PROBLEM_NUM].values:
@@ -67,7 +67,7 @@ def update_readme(problems_solved: pd.Series):
             problems_index = None
             for i, line in enumerate(lines[index + 1:]):
                 if line.strip() != "":
-                    problems_index = i + index+1
+                    problems_index = i + index + 1
             lines[problems_index] = problems_line
     else:  # if no record in file:
         lines.append(header_line)

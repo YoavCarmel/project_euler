@@ -1,3 +1,5 @@
+import time
+
 from libs.numbers_properties import num_size
 
 
@@ -11,3 +13,9 @@ def get_import_line(problem_number):
 
 def get_run_line(problem_number):
     return f"P{get_file_number(problem_number)}.ans()"
+
+
+def get_run_time(start, end=None):
+    if end is None:
+        end = time.time()
+    return round(end - start, 3)
