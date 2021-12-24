@@ -7,8 +7,9 @@ if __name__ == '__main__':
     Use run() to run the solution and get the answer and runtime
     Use add_solution_to_file() to run the solution and save it to solution_file.csv.
         use override=True to edit existing solution
+    Use worst_solution() to get the worst solutions runtime-wise
     """
+    problem_num = 165
+    run(problem_num)
+    # add_solution_to_file(problem_num, override=True)
     # worst_solutions()
-    problem_num = 719
-    # run(problem_num)
-    add_solution_to_file(problem_num, override=True)

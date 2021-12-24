@@ -1,55 +1,23 @@
-from collections import defaultdict
-from typing import List, Optional, Set, Dict, Tuple, Union
+from typing import Tuple, Set
 
-import pytest
-from sortedcontainers import SortedList
-from tqdm import tqdm
+import numpy as np
 
-from libs.objects.geometry import Line, Point, QLine
+FractionArray = Tuple[np.ndarray, np.ndarray]
+FractionPointsArray = Tuple[FractionArray, FractionArray]
+FractionPointFlat = Tuple[int, int, int, int]
 
-"""
-tried 3 solution:
-1. using QLine get the exact points
-2. using Line get the intersecting lines and then convert to QLine and calc again for these pairs to remove duplicates
-3. (deleted) using Line get intersection points, remove points that are too close to each other (just does not work)
 
-both 1 and 2 run in about 60 seconds :(
-"""
-
+# 2868868
 
 def ans():
-    return solve2()
-
-
-def solve(limit=5000):
-    tns = get_all_tns(limit * 4)
-    lines = get_lines_list(tns, qline=True)
-    points = get_intersections_minmax_constraints(lines, points=True)
-    return len(points)
-
-
-def solve2(limit=5000):
-    tns = get_all_tns(limit * 4)
-    lines = get_lines_list(tns, qline=False)
-    intersections = get_intersections_minmax_constraints(lines, points=False)
-    lines_q: Dict[Line, QLine] = {line: QLine(Point(line.p1.x, line.p1.y), Point(line.p2.x, line.p2.y))
-                                  for line in lines}
-    final_points: Set[Point] = set()
-    for pair in tqdm(intersections):
-        p = single_true_inter_point(lines_q[pair[0]], lines_q[pair[1]])
-        if p is not None:
-            final_points.add(p)
-    return len(final_points)
-
-
-@pytest.mark.parametrize("limit, output", [(100, 1112), (500, 29496), (1000, 113849)])
-def test1(limit, output):
-    assert solve(limit) == output
-
-
-@pytest.mark.parametrize("limit, output", [(100, 1112), (500, 29496), (1000, 113849)])
-def test2(limit, output):
-    assert solve2(limit) == output
+    lines_count = 5000
+    quads = get_all_quads(get_all_tns(lines_count * 4))
+    slopes = get_slopes(quads)
+    consts = get_consts(quads, slopes)
+    regular_inters = regular_intersect_all_lines(slopes, consts, quads)
+    inf_slope_inters = inf_slope_intersect_all_lines(slopes, consts, quads)
+    res = to_set(regular_inters, inf_slope_inters)
+    return len(res)
 
 
 def next_sn(curr) -> int:
@@ -68,114 +36,161 @@ def tn(sn) -> int:
     return sn % 500
 
 
-def get_all_tns(limit) -> List[int]:
+def get_all_tns(limit) -> np.ndarray:
     """
     :param limit: max n value
     :return: a list of tn values
     """
-    result: List[int] = list()
+    result: np.ndarray = np.zeros(limit, dtype="int64")
     sn = 290797
     for i in range(limit):
         sn = next_sn(sn)
-        result.append(tn(sn))
+        result[i] = tn(sn)
     return result
 
 
-def get_lines_list(tns_list, qline=False) -> List[Line]:
-    """
-    converts tns list to lines list
-    :param tns_list: tns list
-    :return: the lines list
-    """
-    result: List[Line] = list()
-    for i in range(0, len(tns_list), 4):
-        if qline:
-            result.append(QLine(Point(tns_list[i], tns_list[i + 1]), Point(tns_list[i + 2], tns_list[i + 3])))
-        else:
-            result.append(Line(Point(tns_list[i], tns_list[i + 1]), Point(tns_list[i + 2], tns_list[i + 3])))
-    return result
+def get_all_quads(all_nums: np.ndarray) -> np.ndarray:
+    # list of pairs of pairs of (x,y)
+    return all_nums.reshape((-1, 2, 2))
 
 
-def single_true_inter_point(line1: QLine, line2: QLine, is_qline=True) -> Optional[Point]:
-    """
-    :param line1: input line
-    :param line2: input line
-    :return: a valid non-end point intersection of the lines. None if does not exist
-    """
-    if is_qline:
-        p = line1.intersection_point(line2, possible_parallel=False)
-    else:
-        p = line1.intersection_point(line2)
-    if p is None:
-        return None
-    if p in {line1.p1, line1.p2, line2.p1, line2.p2}:
-        return None
-    return p
+def simplify_fraction_array(arr: FractionArray) -> FractionArray:
+    n, d = arr
+    gcd = np.gcd(n, d)
+    both_neg = ((n < 0) & (d < 0))
+    gcd[both_neg] = -gcd[both_neg]
+    return n // gcd, d // gcd
 
 
-# Naive
-def get_intersections_naive(lines: List[QLine]) -> Set[Point]:
-    """
-    :param lines: lines to get true intersections of
-    :return: a set of true intersection points
-    """
-    points: Set[Point] = set()
-    for i1, line1 in tqdm(enumerate(lines)):
-        for i2, line2 in enumerate(lines[i1 + 1:]):
-            p = single_true_inter_point(line1, line2)
-            if p is not None:
-                points.add(p)
-    return points
+def get_slopes(quads: np.ndarray) -> FractionArray:
+    # m_n = y2 - y1, m_d = x2 - x1
+    slopes = (quads[:, 0, :] - quads[:, 1, :])[:, ::-1]
+    return simplify_fraction_array((slopes[:, 0], slopes[:, 1]))
 
 
-# MinMax constraints
-def get_intersections_minmax_constraints(lines: List[Line], points: bool) -> Union[Set[Point], Set[Tuple[List, List]]]:
-    """
-
-    :param lines: lines to get true intersections of
-    :param points: True if want to return points, False if want to return pairs of intersecting lines
-    :return: a set of results based on points
-    """
-    m_dict = get_m_dict(lines)
-    max_x = SortedList(lines, key=lambda l: -l.max_x)  # The minus sign is so all slices are done the same direction
-    min_x = SortedList(lines, key=lambda l: l.min_x)
-    max_y = SortedList(lines, key=lambda l: -l.max_y)  # The minus sign is so all slices are done the same direction
-    min_y = SortedList(lines, key=lambda l: l.min_y)
-    if points:
-        res: Set = set()
-    else:
-        res: Set = set()
-    for i1, line1 in tqdm(enumerate(lines)):
-        for i2, line2 in enumerate(
-                get_x_fit_lines(line1, lines[i1 + 1:], max_x, min_x, max_y, min_y).difference(m_dict[line1.m])):
-            p = single_true_inter_point(line1, line2, is_qline=points)
-            if p is not None:
-                if points:
-                    res.add(p)
-                else:
-                    res.add((line1, line2))
-    return res
+def get_consts(quads: np.ndarray, slopes: FractionArray) -> FractionArray:
+    # c_n = y1 * m_d - x1 * m_n, c_d = m_d
+    slopes_n, slopes_d = slopes
+    c_n = quads[:, 0, 1] * slopes_d - quads[:, 0, 0] * slopes_n
+    c_d = slopes_d
+    return simplify_fraction_array((c_n, c_d))
 
 
-def get_x_fit_lines(line, lines_left, max_x, min_x, max_y, min_y):
-    max_bigger_than_my_min = QLine(Point(0, 0), Point(line.min_x, line.min_y))  # its max is my min
-    min_smaller_than_my_max = QLine(Point(line.max_x, line.max_y), Point(500, 500))  # its min is my max
-    l_max_x = max_x[:max_x.bisect_right(max_bigger_than_my_min)]
-    l_min_x = min_x[:min_x.bisect_right(min_smaller_than_my_max)]
-    l_max_y = max_y[:max_y.bisect_right(max_bigger_than_my_min)]
-    l_min_y = min_y[:min_y.bisect_right(min_smaller_than_my_max)]
-    # dont use all of the 4. the last 2 remove about 5 lines, better to just calc intersections for them
-    # but do use lines_left to prevent repeated calculations!
-    groups: List = sorted([l_max_x, l_min_x, l_max_y, l_min_y], key=len)[:2]
-    groups.append(lines_left)
-    groups.sort(key=len)
-    groups[0] = set(groups[0])
-    s = set.intersection(*groups)
-    return s
+def regular_intersect_all_lines(slopes: FractionArray, consts: FractionArray, quads: np.ndarray) -> FractionPointsArray:
+    x = calc_inters_x(slopes, consts)
+    x = get_in_range(quads, x)
+    y = calc_inters_y(slopes, consts, x)
+    x, y = apply_abs(x, y)
+    x, y = apply_tril(x, y)
+    x_n_a, x_d_a = x
+    y_n_a, y_d_a = y
+    not_zero = (x_n_a != 0) & (x_d_a != 0) & (y_n_a != 0) & (y_d_a != 0)
+    x_n_a = x_n_a[not_zero]
+    x_d_a = x_d_a[not_zero]
+    y_n_a = y_n_a[not_zero]
+    y_d_a = y_d_a[not_zero]
+    return (x_n_a, x_d_a), (y_n_a, y_d_a)
 
 
-def get_m_dict(lines: List[Line]) -> Dict:
-    d = defaultdict(set)
-    for line in lines:
-        d[line.m].add(line)
-    return d
+def calc_inters_x(slopes: FractionArray, consts: FractionArray) -> FractionArray:
+    # unpack
+    m_n, m_d = slopes
+    c_n, c_d = consts
+    # preps
+    m1_d_t_m2_d = m_d * (m_d.reshape((-1, 1)))
+    c1_d_t_c2_d = c_d * (c_d.reshape((-1, 1)))
+    m1_d_t_m2_n = m_d * (m_n.reshape((-1, 1)))
+    m1_n_t_m2_d = m_n * (m_d.reshape((-1, 1)))
+    c1_d_t_c2_n = c_d * (c_n.reshape((-1, 1)))
+    c1_n_t_c2_d = c_n * (c_d.reshape((-1, 1)))
+    # calculate
+    x_n = m1_d_t_m2_d * (c1_d_t_c2_n - c1_n_t_c2_d)
+    x_d = c1_d_t_c2_d * (m1_n_t_m2_d - m1_d_t_m2_n)
+    x_n, x_d = simplify_fraction_array((x_n, x_d))
+    return x_n, x_d
+
+
+def get_in_range(quads: np.ndarray, x: FractionArray) -> FractionArray:
+    # unpack
+    x_n, x_d = x
+    # preps
+    quads_x = quads[:, :, 0]
+    min_x_quads = np.min(quads_x, axis=1)
+    max_x_quads = np.max(quads_x, axis=1)
+    # bools
+    min_x = (x_n > x_d * min_x_quads)
+    max_x = (x_n < x_d * max_x_quads)
+    x_in_range = min_x & max_x
+    x_in_range_sym = x_in_range & x_in_range.T
+    # apply
+    x_n[~x_in_range_sym] = 0
+    x_d[~x_in_range_sym] = 0
+    return x
+
+
+def calc_inters_y(slopes: FractionArray, consts: FractionArray, x: FractionArray) -> FractionArray:
+    # unpack
+    m_n, m_d = slopes
+    c_n, c_d = consts
+    x_n, x_d = x
+    # calculate
+    y_n = np.abs(x_n * (m_n * c_d) + x_d * (m_d * c_n))
+    y_d = np.abs(x_d * (m_d * c_d))
+    y_n, y_d = simplify_fraction_array((y_n, y_d))
+    return y_n, y_d
+
+
+def apply_abs(x: FractionArray, y: FractionArray) -> Tuple[FractionArray, FractionArray]:
+    x = (np.abs(x[0]), np.abs(x[1]))
+    y = (np.abs(y[0]), np.abs(y[1]))
+    return x, y
+
+
+def apply_tril(x: FractionArray, y: FractionArray) -> Tuple[FractionArray, FractionArray]:
+    # unpack
+    x_n, x_d = x
+    y_n, y_d = y
+    return (np.tril(x_n), np.tril(x_d)), (np.tril(y_n), np.tril(y_d))
+
+
+def inf_slope_intersect_all_lines(slopes: FractionArray, consts: FractionArray, quads: np.ndarray) \
+        -> FractionPointsArray:
+    # unpack
+    m_n, m_d = slopes
+    c_n, c_d = consts
+    # calc x values of inf slope lines
+    inf_slope_indices = slopes[1] == 0
+    inf_slope_quads = quads[inf_slope_indices]
+    inf_slope_x_values = inf_slope_quads[:, 0, 0]  # x of the first point, equals the x of other point so doesnt matter
+    # now simulate x
+    x_n = np.ones((len(inf_slope_x_values), len(quads)), dtype="int64") * inf_slope_x_values.reshape((-1, 1))
+    x_d = np.ones((len(inf_slope_x_values), len(quads)), dtype="int64")
+    # calc the y values of all lines in these x values
+    y_n = ((m_n * c_d) * inf_slope_x_values.reshape((-1, 1))) + (c_n * m_d)
+    y_d = (m_d * c_d)
+    y_n, y_d = simplify_fraction_array((y_n, y_d))
+    # calc min_y, max_y of the inf slope lines
+    inf_slope_y_values = inf_slope_quads[:, :, 1]
+    inf_slope_min_y = np.min(inf_slope_y_values, axis=1)
+    inf_slope_max_y = np.max(inf_slope_y_values, axis=1)
+    # calc in_range bools:
+    # inf slope min_max range
+    all_lines_x_values = quads[:, :, 0]
+    all_lines_in_x_range = (x_n > np.min(all_lines_x_values, axis=1)) & (x_n < np.max(all_lines_x_values, axis=1))
+    min_y = y_n > (y_d * inf_slope_min_y.reshape((-1, 1)))
+    max_y = y_n < (y_d * inf_slope_max_y.reshape((-1, 1)))
+    together = min_y & max_y & all_lines_in_x_range
+    # now convert to flat array of only wanted values
+    x_n_a = x_n[together]
+    x_d_a = x_d[together]
+    y_n_a = y_n[together]
+    y_d_a = y_d[together]
+    return (x_n_a, x_d_a), (y_n_a, y_d_a)
+
+
+def to_set(a1: FractionPointsArray, a2: FractionPointsArray) -> Set[FractionPointFlat]:
+    x_n_a = np.concatenate((a1[0][0], a2[0][0]))
+    x_d_a = np.concatenate((a1[0][1], a2[0][1]))
+    y_n_a = np.concatenate((a1[1][0], a2[1][0]))
+    y_d_a = np.concatenate((a1[1][1], a2[1][1]))
+    return {quad_point for quad_point in zip(x_n_a, x_d_a, y_n_a, y_d_a)}
