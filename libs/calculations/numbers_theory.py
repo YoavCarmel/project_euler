@@ -111,3 +111,22 @@ def get_co_primes(n: int) -> np.ndarray:
         # for each prime, set all numbers it divides to false
         results[p::p] = False
     return np.flatnonzero(results)
+
+
+def sieve_primes_3mod4(n) -> np.ndarray:
+    """
+    like sieve_prime() but only primes s.t. p%4=3
+    """
+    flags = np.ones(n, dtype=bool)
+    flags[0] = flags[1] = False
+    for i in range(2, int(math.sqrt(n) + 1)):
+        if flags[i]:
+            """
+            you may think we should start at i instead of i*i and we are skipping nums this way,
+            but notice that we are skipping nums like 2i, 3i, ..., ki
+            with k<i so that has already been taken care of with k
+            """
+            flags[i * i::i] = False
+    flags[1::4] = False
+    flags[2] = False
+    return np.flatnonzero(flags)
