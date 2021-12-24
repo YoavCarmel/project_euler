@@ -16,33 +16,28 @@ def ans():
     that means, that num//2 must be odd, so we get that num%4=2, so prime%4=3.
     we should remember to add 1 to the final sum
     
-    all of the prime factors of num should be of power 1, unless p is both in div and num//div so their sum
+    all of the prime factors of num should be of power 1, otherwise p is both in div and num//div so their sum
     is divisible by p and num is invalid.
     """
-    primes, primes_3mod4 = primes_and_primes3mod4(max_n)
+    primes, possibles = primes_and_possible_numbers(max_n)
     primes = primes[primes < max_n // 2 + 2]
     primes = set(primes)
     # ((p - 1) // 2 + 2) = num // 2 + 2 which should be in primes
-    primes_3mod4_transformation = (primes_3mod4 - 1) // 2 + 2
-    primes_to_iterate = [p for p, p_t in zip(primes_3mod4, primes_3mod4_transformation) if p_t in primes]
-    for num_p1 in tqdm(primes_to_iterate):
+    possibles_transformation = (possibles - 1) // 2 + 2
+    possibles_to_iterate = [p for p, p_t in zip(possibles, possibles_transformation) if p_t in primes]
+    for num_p1 in tqdm(possibles_to_iterate):
         num = num_p1 - 1
         divs = divisors(num)
         if set(divs + num // divs) <= primes:
             s += num
     return s + 1
-    # arr = np.zeros((len(primes_to_iterate), 10 ** 4), dtype="bool")
-    # for num_p1 in tqdm(primes_to_iterate):
-    #     num = num_p1 - 1  # because n+1 must be a prime
-    #     if check_for_num2(num, primes):
-    #         s += num
-    # return s + 1
 
 
-def primes_and_primes3mod4(n) -> (np.ndarray, np.ndarray):
+def primes_and_possible_numbers(n) -> (np.ndarray, np.ndarray):
     """
-    like sieve_prime(),
-    but returns both a list of all primes and a list of just the primes s.t. p%4=3.
+    returns:
+    a list of all primes
+    a list of numbers that may be valid using the conditions i found.
     """
     flags = np.ones(n, dtype=bool)
     flags[0] = flags[1] = False
@@ -55,14 +50,15 @@ def primes_and_primes3mod4(n) -> (np.ndarray, np.ndarray):
             """
             flags[i * i::i] = False
     all_primes = np.flatnonzero(flags)
-    # calculate the primes that p%4=3
-    for i in range(2, int(math.sqrt(n) + 1)):
-        # also, eliminate primes s.t p-1 has a prime factors with a power>1
-        flags[i * i + 1::i * i] = False
+    # calculate the possible numbers
+    # p%3=4
     flags[1::4] = False
     flags[2] = False
-    primes_3mod4 = np.flatnonzero(flags)
-    return all_primes, primes_3mod4
+    # also, eliminate primes s.t p-1 has a prime factor with a power>1
+    for i in range(2, int(math.sqrt(n) + 1)):
+        flags[i * i + 1::i * i] = False
+    possibles = np.flatnonzero(flags)
+    return all_primes, possibles
 
 
 def divisors(n):
