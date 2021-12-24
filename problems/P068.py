@@ -1,30 +1,27 @@
-from itertools import permutations
-from typing import FrozenSet, Set, Tuple, List
+from itertools import permutations, combinations, product
+from typing import FrozenSet, Set, Tuple, List, Iterable
 
 
 def ans():
     magic: Set[FrozenSet[Tuple[int, int, int]]] = set()
+    all_nums = {i for i in range(1, 10 + 1)}
     # get all permutations, find valid n-gons
-    for i in permutations(range(1, 10 + 1)):
-        if handle_perm(i) is not None:
-            magic.add(handle_perm(i))
+    for c in combinations(range(1, 10), 5):
+        for inside, outside in product(permutations(c), permutations(all_nums - set(c))):
+            hp = handle_perm(inside, outside)
+            if hp is not None:
+                magic.add(hp)
     # get the strings of the valid
     magic_strings: List[str] = [magic_to_string(i) for i in magic]
-    magic_strings = [s for s in magic_strings if len(s) == 16]
     return max(magic_strings)
 
 
-def handle_perm(perm: Tuple[int, ...]):
+def handle_perm(i: Tuple[int, ...], o: Tuple[int, ...]):
     """
-    :param perm: a permutations
+    :param i: a permutation of the inside
+    :param o: a permutation of the outside
     :return: frozenset of the lines of the valid n-gon, None if not valid
     """
-    # split to outer half and inner half
-    o = perm[:len(perm) // 2]
-    i = perm[len(perm) // 2:]
-    # 10 must be outside, because the request is for only 16 digit result, not 17
-    if 10 in i:
-        return None
     # now calc each line in the shape
     lines = [(o[k], i[k], i[(k + 1) % len(i)]) for k in range(len(i))]
     if is_magic(lines):
