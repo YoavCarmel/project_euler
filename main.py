@@ -10,6 +10,6 @@ if __name__ == '__main__':
     Use worst_solution() to get the worst solutions runtime-wise
     """
     problem_num = 93
-    run(problem_num)
-    # add_solution_to_file(problem_num, override=True)
+    # run(problem_num)
+    add_solution_to_file(problem_num, override=True)
     # worst_solutions()
