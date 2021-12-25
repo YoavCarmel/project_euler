@@ -1,3 +1,4 @@
+from functools import lru_cache
 from itertools import permutations, combinations
 from typing import Set, FrozenSet, List, Dict
 
@@ -9,15 +10,13 @@ from libs.types_converting import list_to_num
 
 def ans():
     s: Set[FrozenSet[int]] = set()
-    rec(set(range(1, 9 + 1)), dict(), list(), s)
+    rec(set(range(1, 9 + 1)), list(), s)
     return len(s)
 
 
-def rec(digs_left: Set[int], primes: Dict[FrozenSet[int], Set[int]], current_solution: List[int],
-        all_solutions: Set[FrozenSet[int]]):
+def rec(digs_left: Set[int], current_solution: List[int], all_solutions: Set[FrozenSet[int]]):
     """
     :param digs_left: the digits left to handle in set
-    :param primes: primes from digits sets, that already calculated
     :param current_solution: the current "set"
     :param all_solutions: all calculated solutions
     """
@@ -27,21 +26,20 @@ def rec(digs_left: Set[int], primes: Dict[FrozenSet[int], Set[int]], current_sol
     for i in range(start, len(digs_left) + 1):
         for c in combinations(digs_left, i):
             fs_c = frozenset(c)
-            if fs_c not in primes:
-                primes[fs_c] = get_primes_from_digits(fs_c)
-            for p in primes[fs_c]:
-                rec(digs_left.difference(c), primes, current_solution + [p], all_solutions)
+            for p in get_primes_from_digits(fs_c):
+                rec(digs_left.difference(c), current_solution + [p], all_solutions)
 
 
-def get_primes_from_digits(digs) -> Set[int]:
+@lru_cache(maxsize=None)
+def get_primes_from_digits(digs: FrozenSet[int]) -> Set[int]:
     """
     :param digs: digits to handle
     :return: all primes that can be created from these digits
     """
     if len(digs) == 1:
-        return {2, 3, 5, 7}.intersection(digs)
+        return {2, 3, 5, 7} & digs
     # else, only the digits [1,3,7,9] can be the units digit
-    units_digits = {1, 3, 7, 9}.intersection(digs)
+    units_digits = {1, 3, 7, 9} & digs
     if len(units_digits) == 0:
         # no possible solution
         return set()
