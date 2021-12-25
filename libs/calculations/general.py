@@ -152,3 +152,14 @@ def diffs_list(lst: List[int]) -> List[int]:
     """
     lst_np = np.array(lst)
     return list(lst_np[:-1] - lst_np[1:])
+
+
+def pascal_triangle(n_rows: int, mod: int = None) -> np.ndarray:
+    tri = np.zeros((n_rows, n_rows), dtype="uint64")
+    tri[0][0] = 1
+    for r in range(1, n_rows):
+        tri[r] = tri[r - 1]
+        tri[r, 1:] += tri[r - 1, :-1]
+        if mod is not None:
+            tri[r] %= mod
+    return tri
