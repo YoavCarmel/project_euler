@@ -1,5 +1,9 @@
 from typing import FrozenSet, Tuple, Set
 
+from tqdm import trange
+
+Point = Tuple[int,int]
+
 
 def ans():
     n = 50
@@ -7,15 +11,16 @@ def ans():
 
 
 def naive(n):
-    sols: Set[FrozenSet[Tuple[int, int]]] = set()
-    for x1 in range(0, n + 1):
-        for x2 in range(1, n + 1):
+    sols: Set[Tuple[Point, Point]] = set()
+    for x1 in trange(0, n + 1):
+        # set x2>=x1, without loss of generality
+        for x2 in range(x1, n + 1):
             for y1 in range(1, n + 1):
                 # can be improved as there are only 4 y2 possible values for each (x1,y1,x2)
                 # but i dont want to spend time on this
                 for y2 in range(0, n + 1):
                     if right_angle(x1, y1, x2, y2):
-                        sols.add(frozenset([(x1, y1), (x2, y2)]))
+                        sols.add(((x1, y1), (x2, y2)))
     return len(sols)
 
 
