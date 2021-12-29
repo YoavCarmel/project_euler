@@ -10,7 +10,7 @@ if __name__ == '__main__':
         use override=True to edit existing solution
     Use worst_solution() to get the worst solutions runtime-wise
     """
-    problem_num = 187
+    problem_num = 329
     run(problem_num)
     # add_solution_to_file(problem_num, override=True)
     # worst_solutions()
