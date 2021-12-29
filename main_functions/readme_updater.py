@@ -1,0 +1,26 @@
+from typing import List, Union
+
+import pandas as pd
+
+
+def update_readme(problems_solved: Union[pd.Series, List[int]]):
+    with open("README.md", "r") as f:
+        lines = f.readlines()
+    header_line = f"## Solved problems (total {len(problems_solved)}):\n"
+    problems_line = str(sorted(problems_solved)) + "\n"
+    if header_line in lines:
+        index = lines.index(header_line)
+        if len(lines) == index + 1:
+            # this is the last line, add a new one
+            lines.append(problems_line)
+        else:
+            problems_index = None
+            for i, line in enumerate(lines[index + 1:]):
+                if line.strip() != "":
+                    problems_index = i + index + 1
+            lines[problems_index] = problems_line
+    else:  # if no record in file:
+        lines.append(header_line)
+        lines.append(problems_line)
+    with open("README.md", "w") as f:
+        f.writelines(lines)
