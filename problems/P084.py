@@ -1,5 +1,6 @@
 import random
 from typing import List, Any, Union
+from bisect import bisect_left
 
 from libs.calculations.numbers_properties import num_size
 
@@ -12,12 +13,15 @@ def ans():
     number_of_iterations = 10 ** 5
     # special squares
     cc_squares = [2, 17, 33]
+    cc_squares_set = set(cc_squares)
     ch_squares = [7, 22, 36]
+    ch_squares_set = set(ch_squares)
     r_squares = [5, 15, 25, 35]
     u_squares = [12, 28]
     g2j_squares = [30]
     jail_location = 10
     go_location = 0
+    special_locations = set().union(cc_squares, ch_squares, g2j_squares)
     # card piles:
     cc_pile: List[Any] = [go_location, jail_location]
     cc_pile += [None] * (16 - len(cc_pile))
@@ -39,21 +43,21 @@ def ans():
         """
         if card is None:
             return curr_player_location
-        if card == "R":
-            r_squares.append(curr_player_location)
-            r_squares.sort()
-            next_loc = r_squares[(r_squares.index(curr_player_location) + 1) % len(r_squares)]
-            r_squares.remove(curr_player_location)
-            return next_loc
-        if card == "U":
-            u_squares.append(curr_player_location)
-            u_squares.sort()
-            next_loc = u_squares[(u_squares.index(curr_player_location) + 1) % len(u_squares)]
-            u_squares.remove(curr_player_location)
-            return next_loc
-        if card == "M3":
-            return (board_size + curr_player_location - 3) % board_size
-        if type(card) is int:
+        if isinstance(card, str):
+            if card == "R":
+                next_loc = bisect_left(r_squares, curr_player_location) % len(r_squares)
+                if r_squares[next_loc] == curr_player_location:
+                    next_loc = (next_loc + 1) % len(r_squares)
+                return r_squares[next_loc]
+            if card == "U":
+                next_loc = bisect_left(u_squares, curr_player_location) % len(u_squares)
+                if u_squares[next_loc] == curr_player_location:
+                    next_loc = (next_loc + 1) % len(u_squares)
+                return u_squares[next_loc]
+            if card == "M3":
+                return (board_size + curr_player_location - 3) % board_size
+            raise Exception("got an unknown card:", card)
+        if isinstance(card, int):
             return card
         raise Exception("got an unknown card:", card)
 
@@ -62,8 +66,7 @@ def ans():
         :param curr_player_location: current location
         :return: True if current location is a special location
         """
-        return curr_player_location in g2j_squares or \
-            curr_player_location in cc_squares or curr_player_location in ch_squares
+        return curr_player_location in special_locations
 
     def next_location_after_special_location(curr_player_location: int) -> int:
         """
@@ -72,7 +75,7 @@ def ans():
         """
         if curr_player_location in g2j_squares:
             return jail_location
-        if curr_player_location in cc_squares:
+        if curr_player_location in cc_squares_set:
             # take one card
             card = cc_pile[0]
             # put it back at the end of the pile
@@ -80,7 +83,7 @@ def ans():
             cc_pile.append(card)
             # do what the card says:
             return next_location(card, curr_player_location)
-        if curr_player_location in ch_squares:
+        if curr_player_location in ch_squares_set:
             # take one card
             card = ch_pile[0]
             # put it back at the end of the pile
@@ -102,8 +105,7 @@ def ans():
         player_location += d1 + d2
         player_location %= board_size
         prev_location = -1
-        while is_in_special_location(
-                player_location) and player_location != prev_location:
+        while is_in_special_location(player_location) and player_location != prev_location:
             # may pull M3 card and go back to another special location
             prev_location = player_location
             player_location = next_location_after_special_location(player_location)
