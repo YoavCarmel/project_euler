@@ -8,8 +8,9 @@ def update_readme(problems_solved: Union[pd.Series, List[int]]):
         lines = f.readlines()
     header_line = f"## Solved problems (total {len(problems_solved)}):\n"
     problems_line = str(sorted(problems_solved)) + "\n"
-    header_index = _get_header_index(lines,"## Solved problems")
+    header_index = _get_header_index(lines, "## Solved problems")
     if header_index is not None:
+        lines[header_index] = header_line
         if len(lines) == header_index + 1:
             # this is the last line, add a new one
             lines.append(problems_line)
