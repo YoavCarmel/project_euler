@@ -10,4 +10,4 @@ solutions = pd.read_csv(SOLUTION_FILE_PATH)
 @pytest.mark.parametrize("problem_num", get_all_problems())
 def test_run_all(problem_num):
     result = run(problem_num)
-    assert float(result) == solutions[solutions[PROBLEM_NUM] == problem_num][SOLUTION].values[0]
+    assert str(result) == solutions[solutions[PROBLEM_NUM] == problem_num][SOLUTION].values[0]

@@ -21,7 +21,7 @@ def create_file():
 
 
 def add_solution_to_file(problem_number, override=False, should_update_readme=True):
-    df = pd.read_csv(SOLUTION_FILE_PATH)
+    df = pd.read_csv(SOLUTION_FILE_PATH).astype({SOLUTION: "object"})
     if not override and problem_number in df[PROBLEM_NUM].values:
         return
     # run the solution
