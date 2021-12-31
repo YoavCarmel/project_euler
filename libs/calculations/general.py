@@ -102,6 +102,25 @@ def divisors_sum(n: int, including_itself=True) -> List[int]:
     return list(divs_sums)
 
 
+def power_mat(mat: np.ndarray, p: int, dtype="object") -> np.ndarray:
+    """
+    calculate mat^p, where mat is a square matrix, and using matrix multiplication
+    :param mat: the matrix
+    :param p: the power
+    :param dtype: the dtype of the matrix. default is object, for the case where numbers because too big for the int64,
+        which is likely to happen in this function. If you know for sure that the values should not exceed a certain
+        int size limit, you can make it much faster with this dtype (and also have this dtype in mat)
+    :return: the result matrix
+    """
+    if p == 0:
+        return np.identity(mat.shape[0], dtype=dtype)
+    temp = power_mat(mat, p // 2)
+    if p % 2 == 0:
+        return temp @ temp
+    else:
+        return (temp @ temp) @ mat
+
+
 def fibonacci_number_by_index(index: int):
     """
     calculated fast using matrix multiplication and power, in log(n) time
@@ -115,23 +134,9 @@ def fibonacci_number_by_index(index: int):
     if index == 1 or index == 2:
         return 1
 
-    def mult_mat(x: ((int, int), (int, int)), y: ((int, int), (int, int))) -> ((int, int), (int, int)):
-        return ((x[0][0] * y[0][0] + x[0][1] * y[1][0], x[0][0] * y[0][1] + x[0][1] * y[1][1]),
-                (x[1][0] * y[0][0] + x[1][1] * y[1][0], x[1][0] * y[0][1] + x[1][1] * y[1][1]))
-
-    def power_mat(x, y) -> ((int, int), (int, int)):
-        if y == 0:
-            return (1, 0), (0, 1)  # identity mat
-        temp = power_mat(x, y // 2)
-
-        if y % 2 == 0:
-            return mult_mat(temp, temp)
-        else:
-            return mult_mat(x, mult_mat(temp, temp))
-
-    fib_mat = ((1, 1), (1, 0))  # the fibonacci matrix
+    fib_mat = np.array([[1, 1], [1, 0]])  # the fibonacci matrix
     mat_n = power_mat(fib_mat, index - 2)
-    return sum(mat_n[0])
+    return np.sum(mat_n[0])
 
 
 def list_product(nums: List[int]):
