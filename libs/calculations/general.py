@@ -168,3 +168,13 @@ def pascal_triangle(n_rows: int, mod: int = None) -> np.ndarray:
         if mod is not None:
             tri[r] %= mod
     return tri
+
+
+def factorial_modulo(n, m) -> int:
+    """
+    :return: n!%m
+    """
+    res = 1
+    for i in range(2, n + 1):
+        res = (res * i) % m
+    return res
