@@ -19,14 +19,17 @@ def totient_euler(n: int) -> int:
     return int(result)
 
 
-def totient_euler_range(n: int) -> np.ndarray:
+def totient_euler_range(n: int, *, primes=None) -> np.ndarray:
     """
     calculate simultaneously the phi() of all numbers from 0 to n-1
     :param n: the highest number to get phi() of
+    :param primes: if this is not None, trust this to be the list of primes in the range(n)
     :return: a list of the results of phi() of all numbers from 0 to n-1
     """
     results = np.array(range(n), dtype="float64")  # init an array
-    for p in sympy.primerange(1, n + 1):
+    if primes is None:
+        primes = sieve_primes(n)
+    for p in primes:
         # for each prime, multiply all numbers it divides by the known formula
         results[p::p] *= (1 - 1 / p)
     # return [int(i) for i in results]

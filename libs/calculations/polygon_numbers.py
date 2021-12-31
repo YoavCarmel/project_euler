@@ -26,3 +26,7 @@ def all_polygons_fit_to_number(num: int, polygons: List[int]) -> List[int]:
 
 def all_polygons_of_number(num: int, polygons: List[int]) -> List[int]:
     return [polygonal_number(num, i) for i in polygons]
+
+
+def triangle_number(n):
+    return (n * (n + 1)) // 2
