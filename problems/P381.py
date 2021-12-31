@@ -7,18 +7,18 @@ from libs.calculations.general import factorial_modulo
 def ans():
     max_p = 10 ** 8
     primes = sieve_primes(max_p)
-    primes = [int(p) for p in primes[2:]]  # skip 2,3
     res = 0
-    for p in tqdm(primes):
-        res += s(p)
+    for p in tqdm(primes[2:]):  # skip 2,3
+        res += s(int(p))
     return res
 
 
 def s(p):
     # we know that (n-1)=-1 for all n
-    res = (p - 1)
-    inv = 1
-    for k in range(2, 5 + 1):
-        inv = (inv * inverse_mod(p - k + 1, p)) % p
-        res += (p - 1) * inv
+    res = -1
+    inv = p - 1
+    for k in range(1, 4 + 1):
+        # in each step remove (p-k) from the product
+        inv = (inv * inverse_mod(p - k, p)) % p
+        res += inv
     return res % p
