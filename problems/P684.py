@@ -14,7 +14,7 @@ def ans():
 def best_s_sum(n, m):
     """
     :param n: n of S sum
-    :param m: modulu of S sum
+    :param m: modulo of S sum
     :return: the S sum
     """
     return s_sum7(n, m)
@@ -88,7 +88,7 @@ def s_sum6(n, mod):
 def s_sum7(n, mod):
     """
     :param n: n of S sum
-    :param mod: modulu of S sum
+    :param mod: modulo of S sum
     :return: the S sum
     """
     s1to9 = 45
