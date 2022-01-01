@@ -118,11 +118,12 @@ def divisors_count(n: int, including_itself=True) -> np.ndarray:
     return divs_sums
 
 
-def power_mat(mat: np.ndarray, p: int, dtype="object") -> np.ndarray:
+def power_mat(mat: np.ndarray, p: int, *, mod=None, dtype="object") -> np.ndarray:
     """
     calculate mat^p, where mat is a square matrix, and using matrix multiplication
     :param mat: the matrix
     :param p: the power
+    :param mod: mod on all values
     :param dtype: the dtype of the matrix. default is object, for the case where numbers because too big for the int64,
         which is likely to happen in this function. If you know for sure that the values should not exceed a certain
         int size limit, you can make it much faster with this dtype (and also have this dtype in mat)
@@ -130,17 +131,26 @@ def power_mat(mat: np.ndarray, p: int, dtype="object") -> np.ndarray:
     """
     if p == 0:
         return np.identity(mat.shape[0], dtype=dtype)
-    temp = power_mat(mat, p // 2)
-    if p % 2 == 0:
-        return temp @ temp
+    temp = power_mat(mat, p // 2, mod=mod)
+    temp_s = temp @ temp
+    if mod is None:
+        if p % 2 == 0:
+            return temp_s
+        else:
+            return temp_s @ mat
     else:
-        return (temp @ temp) @ mat
+        temp_s = temp_s % mod
+        if p % 2 == 0:
+            return temp_s
+        else:
+            return (temp_s @ mat) % mod
 
 
-def fibonacci_number_by_index(index: int):
+def fibonacci_number_by_index(index: int, *, mod=None):
     """
     calculated fast using matrix multiplication and power, in log(n) time
     :param index: index of wanted fibonacci number
+    :param mod: mod on the result
     :return: the number
 
     NOTE: cant use numpy here because numbers are too big
@@ -151,7 +161,7 @@ def fibonacci_number_by_index(index: int):
         return 1
 
     fib_mat = np.array([[1, 1], [1, 0]])  # the fibonacci matrix
-    mat_n = power_mat(fib_mat, index - 2)
+    mat_n = power_mat(fib_mat, index - 2, mod=mod)
     return np.sum(mat_n[0])
 
 
