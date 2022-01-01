@@ -1,5 +1,5 @@
 from libs.calculations.general import base2
-from libs.calculations.numbers_properties import is_palindrome
+from libs.calculations.palindromes import is_palindrome
 
 
 def ans():

@@ -1,5 +1,5 @@
 from libs.calculations.numbers_operations import reverse_num
-from libs.calculations.numbers_properties import is_palindrome
+from libs.calculations.palindromes import is_palindrome
 
 
 def ans():

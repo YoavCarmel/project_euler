@@ -1,6 +1,6 @@
 from typing import List
 
-from libs.special_groups import is_special_sum_set
+from libs.calculations.special_groups import is_special_sum_set
 
 
 def ans():

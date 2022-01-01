@@ -1,10 +1,8 @@
-import pandas as pd
-
-from main_functions.solution_file_handler import SOLUTION_FILE_PATH, RUNTIME, PROBLEM_NUM, GRADE
+from main_functions.solution_file_handler import RUNTIME, PROBLEM_NUM, GRADE, read_solutions_file
 
 
 def worst_solutions(n=10):
-    df = pd.read_csv(SOLUTION_FILE_PATH)
+    df = read_solutions_file()
     df = df.sort_values(by=RUNTIME)[::-1]
     df = df.head(n)
     df = df[[PROBLEM_NUM, RUNTIME, GRADE]]

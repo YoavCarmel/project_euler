@@ -1,4 +1,4 @@
-from libs.calculations.general import binom
+from libs.calculations.combinatorics import binom
 
 
 def ans():

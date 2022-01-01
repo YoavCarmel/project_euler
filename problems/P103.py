@@ -1,6 +1,6 @@
 from typing import List, Set, NamedTuple, Optional
 
-from libs.special_groups import is_special_sum_set
+from libs.calculations.special_groups import is_special_sum_set
 
 
 class MinValueDepth(NamedTuple):

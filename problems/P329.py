@@ -1,5 +1,5 @@
-from functools import lru_cache
 from typing import List
+
 from sympy import isprime
 
 from libs.objects.frac import Frac

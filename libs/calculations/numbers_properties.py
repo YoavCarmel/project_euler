@@ -1,16 +1,9 @@
-import math
-from collections import defaultdict, Counter
+from collections import Counter
 from typing import Union, Dict, Collection
 
 import gmpy2 as gmpy2
 
-from libs.calculations.numbers_operations import reverse_num
 from libs.types_converting import num_to_list
-
-
-def is_palindrome(x: int) -> bool:
-    s = str(x)
-    return s == s[::-1]
 
 
 def is_int(x: Union[int, float]) -> bool:

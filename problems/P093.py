@@ -2,7 +2,7 @@ from collections import Counter
 from itertools import permutations, combinations_with_replacement, combinations, product
 from typing import List, Tuple, Optional
 
-from tqdm import trange, tqdm
+from tqdm import tqdm
 
 from libs.types_converting import list_to_num
 

@@ -1,5 +1,4 @@
 import time
-from typing import List, Union
 
 import pandas as pd
 from tqdm import tqdm
@@ -20,8 +19,12 @@ def create_file():
     df.to_csv(SOLUTION_FILE_PATH, index=False)
 
 
+def read_solutions_file():
+    return pd.read_csv(SOLUTION_FILE_PATH).astype({SOLUTION: "object"})
+
+
 def add_solution_to_file(problem_number, override=False, should_update_readme=True):
-    df = pd.read_csv(SOLUTION_FILE_PATH).astype({SOLUTION: "object"})
+    df = read_solutions_file()
     if not override and problem_number in df[PROBLEM_NUM].values:
         return
     # run the solution
@@ -58,7 +61,7 @@ def _get_grade(t):
 
 
 def get_all_problems():
-    df = pd.read_csv(SOLUTION_FILE_PATH)
+    df = read_solutions_file()
     return list(df[PROBLEM_NUM].sort_values())
 
 

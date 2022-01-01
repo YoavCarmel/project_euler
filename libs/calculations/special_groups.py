@@ -1,6 +1,6 @@
 from typing import List, Set, Dict, Tuple
 
-from libs.calculations.general import power_set
+from libs.calculations.groups_theory import power_set
 
 
 def is_special_sum_set(curr_nums: List[int], subsets_sums: Set[int] = None, is_sorted_big_to_small=False) -> bool:
@@ -32,18 +32,3 @@ def is_special_sum_set(curr_nums: List[int], subsets_sums: Set[int] = None, is_s
             if min_max[i][0] <= min_max[j][1]:  # there is a subset which is smaller but has a bigger sum
                 return False
     return True
-
-
-def all_palindromes_n_digits(n: int) -> List[int]:
-    if n % 2 == 1:
-        if n == 1:  # special case
-            return list(range(1, 10))
-        # e.g. for n=7 do all "abcd"+"cba"
-        return [int(str(num) + str(num // 10)[::-1]) for num in range(10 ** (n // 2), 10 ** (n // 2 + 1))]
-    else:
-        # e.g. for n=6 do all "abc"+"cba"
-        return [int(str(num) + str(num)[::-1]) for num in range(10 ** (n // 2 - 1), 10 ** (n // 2))]
-
-
-def all_palindromes_up_to_n_digits(n: int) -> List[int]:
-    return [num for d in range(1, n + 1) for num in all_palindromes_n_digits(d)]

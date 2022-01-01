@@ -1,10 +1,9 @@
-import pandas as pd
 import pytest
 
 from main_functions.problem_runner import run
-from main_functions.solution_file_handler import get_all_problems, SOLUTION_FILE_PATH, PROBLEM_NUM, SOLUTION
+from main_functions.solution_file_handler import get_all_problems, PROBLEM_NUM, SOLUTION, read_solutions_file
 
-solutions = pd.read_csv(SOLUTION_FILE_PATH)
+solutions = read_solutions_file()
 
 
 @pytest.mark.parametrize("problem_num", get_all_problems())

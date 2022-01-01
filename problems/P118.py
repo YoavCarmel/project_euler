@@ -1,6 +1,6 @@
 from functools import lru_cache
 from itertools import permutations, combinations
-from typing import Set, FrozenSet, List, Dict
+from typing import Set, FrozenSet, List
 
 from sympy import isprime
 

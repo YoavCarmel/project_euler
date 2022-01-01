@@ -3,7 +3,7 @@ from typing import List
 
 from sympy import primefactors
 
-from libs.calculations.general import list_product
+from libs.calculations.lists_operations import list_product
 
 
 @dataclass(init=True, repr=True, order=True, frozen=True)

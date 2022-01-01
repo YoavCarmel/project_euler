@@ -1,4 +1,4 @@
-from typing import List, TextIO
+from typing import List
 
 import numpy as np
 

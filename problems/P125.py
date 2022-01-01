@@ -1,7 +1,7 @@
 from math import sqrt
 from typing import List, Set
 
-from libs.calculations.numbers_properties import is_palindrome
+from libs.calculations.palindromes import is_palindrome
 
 
 def ans():

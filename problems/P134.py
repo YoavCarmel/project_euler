@@ -1,9 +1,7 @@
-from tqdm import tqdm
-
-from libs.calculations.numbers_theory import inverse_mod, sieve_primes
-from libs.calculations.numbers_properties import num_size
-
 from sympy import nextprime
+
+from libs.calculations.numbers_properties import num_size
+from libs.calculations.numbers_theory import inverse_mod, sieve_primes
 
 
 def ans():

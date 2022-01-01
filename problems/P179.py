@@ -1,6 +1,6 @@
 import numpy as np
 
-from libs.calculations.general import divisors_count
+from libs.calculations.divisors import divisors_count
 
 
 def ans():

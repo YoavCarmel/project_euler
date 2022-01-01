@@ -1,7 +1,7 @@
 from sympy import nextprime
 from tqdm import tqdm
 
-from libs.calculations.general import fibonacci_number_by_index
+from libs.calculations.fibonacci import fibonacci_number_by_index
 
 
 def ans():
