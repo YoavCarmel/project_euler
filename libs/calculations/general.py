@@ -162,7 +162,10 @@ def fibonacci_number_by_index(index: int, *, mod=None):
 
     fib_mat = np.array([[1, 1], [1, 0]])  # the fibonacci matrix
     mat_n = power_mat(fib_mat, index - 2, mod=mod)
-    return np.sum(mat_n[0])
+    res = np.sum(mat_n[0])
+    if mod is not None:
+        res = res % mod
+    return res
 
 
 def list_product(nums: List[int]):
