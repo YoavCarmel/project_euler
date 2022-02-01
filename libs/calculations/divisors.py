@@ -24,8 +24,9 @@ def divisors_count(n: int, including_itself=True) -> np.ndarray:
     :return: a list of the number of divisors of all numbers from 0 to n-1
     """
     divs_sums = np.zeros(n, dtype='int16')
-    for i in range(1, len(divs_sums)):
+    for i in range(1, n // 2 + 1):
         divs_sums[i::i] += 1
+    divs_sums[n // 2 + 1:] += 1
     if not including_itself:
         divs_sums -= 1
     return divs_sums
