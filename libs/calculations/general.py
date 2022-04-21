@@ -77,28 +77,6 @@ def sum_first_n(max_n: int):
     return ((max_n + 1) * max_n) // 2
 
 
-def digs_sum_first_n(max_n: int):
-    """
-    sum of the digits of first n numbers: [1,2,3,...,max_n]
-    """
-
-    def sum_to_power_10(power_10):
-        return sum_first_n(9) * round(math.log(power_10, 10)) * power_10 // 10
-
-    def sum_to_power_10_multiple(power_10_mult):
-        if power_10_mult == 0:
-            return 0
-        power_10 = 10 ** int(math.log(power_10_mult, 10))
-        mult = power_10_mult // power_10
-        return sum_to_power_10(power_10) * mult + sum_first_n(mult - 1) * power_10
-
-    digs = num_to_list(max_n)[::-1]
-    s = 0
-    for i, d in enumerate(digs):
-        s += d * 10 ** i * sum(digs[i + 1:]) + sum_to_power_10_multiple(d * 10 ** i) + d
-    return s
-
-
 def pascal_triangle(n_rows: int, mod: int = None) -> np.ndarray:
     tri = np.zeros((n_rows, n_rows), dtype="uint64")
     tri[0][0] = 1
